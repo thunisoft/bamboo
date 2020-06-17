@@ -449,7 +449,7 @@ define([
                     if (this.branding && this.branding.logo && this.branding.logo.image && this.logo) {
                         this.logo.html('<img src="' + this.branding.logo.image + '" style="max-width:100px; max-height:20px; margin: 0;"/>');
                         this.logo.css({'background-image': 'none', width: 'auto'});
-                        (this.branding.logo.url || this.branding.logo.url===undefined) && this.logo.addClass('link');
+                        // (this.branding.logo.url || this.branding.logo.url===undefined) && this.logo.addClass('link');
                     }
 
                     return $html;
