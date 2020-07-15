@@ -343,10 +343,11 @@ define([
                 this.api.asc_Resize();
             }, this);
 
-            var leftPanel = $('#left-menu');
+            var leftPanel = $('#left-menu'),
+                histPanel = $('#left-panel-history');
             this.viewport.hlayout.on('layout:resizedrag', function() {
-                this.api.asc_Resize();
-                Common.localStorage.setItem('sse-mainmenu-width',leftPanel.width());
+                this.api.Resize();
+                Common.localStorage.setItem('de-mainmenu-width', histPanel.is(':visible') ? (histPanel.width()+SCALE_MIN) : leftPanel.width() );
             }, this);
 
             this.boxSdk = $('#editor_sdk');
@@ -379,6 +380,14 @@ define([
                         this.boxSdk.css('border-left', 'none');
                         this.boxFormula.css('border-left', 'none');
                     }
+                }
+                this.viewport.hlayout.doLayout();
+                break;
+            case 'history':
+                var panel = this.viewport.hlayout.items[1];
+                if (panel.resize.el) {
+                    this.boxSdk.css('border-left', '');
+                    panel.resize.el.show();
                 }
                 this.viewport.hlayout.doLayout();
                 break;

@@ -730,8 +730,14 @@ define([
                     (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view') && // if mode=="view" -> canRequestEditRights must be defined
                     me.isSupportEditFeature();
                 me.appOptions.isEdit         = (me.appOptions.canLicense || me.appOptions.isEditDiagram || me.appOptions.isEditMailMerge) && me.permissions.edit !== false && me.editorConfig.mode !== 'view' && me.isSupportEditFeature();
+                me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
+                me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
                 me.appOptions.canDownload    = (me.permissions.download !== false);
                 me.appOptions.canPrint       = (me.permissions.print !== false);
+
+                if ( me.appOptions.isLightVersion ) {
+                    me.appOptions.canUseHistory = me.appOptions.canReview = me.appOptions.isReviewOnly = false;
+                }
 
                 me.applyModeCommonElements();
                 me.applyModeEditorElements();

@@ -156,6 +156,13 @@ define([
                 canFocused: false
             });
 
+            this.miHistory = new Common.UI.MenuItem({
+                el      : $markup.elementById('#fm-btn-history'),
+                action  : 'history',
+                caption : this.btnHistoryCaption,
+                canFocused: false
+            });
+
             this.miSettings = new Common.UI.MenuItem({
                 el      : $markup.elementById('#fm-btn-settings'),
                 action  : 'opts',
@@ -195,6 +202,7 @@ define([
                     canFocused: false
                 }),
                 this.miAccess,
+                this.miHistory,
                 this.miSettings,
                 this.miHelp,
                 new Common.UI.MenuItem({
@@ -311,6 +319,7 @@ define([
             }
 
             if (this.mode.canDownload && (this.mode.canRequestSaveAs || this.mode.saveAsUrl)) {
+
                 !this.panels['save-copy'] && (this.panels['save-copy'] = (new SSE.Views.FileMenuPanels.ViewSaveCopy({menu: this})).render());
             }
 
@@ -318,6 +327,8 @@ define([
                 this.panels['help'] = ((new SSE.Views.FileMenuPanels.Help({menu: this})).render());
                 this.panels['help'].setLangConfig(this.mode.lang);
             }
+
+            this.miHistory[this.mode.canUseHistory&&!this.mode.isDisconnected?'show':'hide']();
         },
 
         setMode: function(mode, delay) {
@@ -401,6 +412,7 @@ define([
         btnDownloadCaption      : 'Download as...',
         btnInfoCaption          : 'Document Info...',
         btnRightsCaption        : 'Access Rights...',
+        btnHistoryCaption       : 'Versions History',
         btnCreateNewCaption     : 'Create New',
         btnRecentFilesCaption   : 'Open Recent...',
         btnPrintCaption         : 'Print',
