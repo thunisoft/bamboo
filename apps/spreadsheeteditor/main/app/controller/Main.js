@@ -1015,65 +1015,65 @@ define([
             },
 
             onLicenseChanged: function(params) {
-                if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
-
-                var licType = params.asc_getLicenseType();
-                if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
-                    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
-                    this._state.licenseType = licType;
-
-                if (this._isDocReady)
-                    this.applyLicense();
+                // if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
+                //
+                // var licType = params.asc_getLicenseType();
+                // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
+                //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
+                //     this._state.licenseType = licType;
+                //
+                // if (this._isDocReady)
+                //     this.applyLicense();
             },
 
             applyLicense: function() {
-                if (this._state.licenseType) {
-                    var license = this._state.licenseType,
-                        buttons = ['ok'],
-                        primary = 'ok';
-                    if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
-                        license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
-                    } else {
-                        license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
-                        buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
-                        primary = 'buynow';
-                    }
-
-                    this.disableEditing(true);
-                    Common.NotificationCenter.trigger('api:disconnect');
-
-                    var value = Common.localStorage.getItem("sse-license-warning");
-                    value = (value!==null) ? parseInt(value) : 0;
-                    var now = (new Date).getTime();
-                    if (now - value > 86400000) {
-                        Common.UI.info({
-                            width: 500,
-                            title: this.textNoLicenseTitle,
-                            msg  : license,
-                            buttons: buttons,
-                            primary: primary,
-                            callback: function(btn) {
-                                Common.localStorage.setItem("sse-license-warning", now);
-                                if (btn == 'buynow')
-                                    window.open('{{PUBLISHER_URL}}', "_blank");
-                                else if (btn == 'contact')
-                                    window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                            }
-                        });
-                    }
-                } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
-                    this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
-                    Common.UI.warning({
-                        title: this.textPaidFeature,
-                        msg  : this.textCustomLoader,
-                        buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
-                        primary: 'contact',
-                        callback: function(btn) {
-                            if (btn == 'contact')
-                                window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                        }
-                    });
-                }
+            //     if (this._state.licenseType) {
+            //         var license = this._state.licenseType,
+            //             buttons = ['ok'],
+            //             primary = 'ok';
+            //         if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
+            //             license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
+            //         } else {
+            //             license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
+            //             buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
+            //             primary = 'buynow';
+            //         }
+            //
+            //         this.disableEditing(true);
+            //         Common.NotificationCenter.trigger('api:disconnect');
+            //
+            //         var value = Common.localStorage.getItem("sse-license-warning");
+            //         value = (value!==null) ? parseInt(value) : 0;
+            //         var now = (new Date).getTime();
+            //         if (now - value > 86400000) {
+            //             Common.UI.info({
+            //                 width: 500,
+            //                 title: this.textNoLicenseTitle,
+            //                 msg  : license,
+            //                 buttons: buttons,
+            //                 primary: primary,
+            //                 callback: function(btn) {
+            //                     Common.localStorage.setItem("sse-license-warning", now);
+            //                     if (btn == 'buynow')
+            //                         window.open('{{PUBLISHER_URL}}', "_blank");
+            //                     else if (btn == 'contact')
+            //                         window.open('mailto:{{SALES_EMAIL}}', "_blank");
+            //                 }
+            //             });
+            //         }
+            //     } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
+            //         this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
+            //         Common.UI.warning({
+            //             title: this.textPaidFeature,
+            //             msg  : this.textCustomLoader,
+            //             buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
+            //             primary: 'contact',
+            //             callback: function(btn) {
+            //                 if (btn == 'contact')
+            //                     window.open('mailto:{{SALES_EMAIL}}', "_blank");
+            //             }
+            //         });
+            //     }
             },
 
             disableEditing: function(disable) {
