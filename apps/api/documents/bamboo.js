@@ -83,17 +83,57 @@
 
     function BambooAPI() {}
 
-    BambooAPI.create = function() {
-        var iframes = document.getElementsByName(frameName);
-        if (!iframes || iframes.length === 0) {
-            throw new Error('BambooAPI对象必须在onAppReady中创建');
+    BambooAPI.create = function(placeholderId, config) {
+        var basePath = _getBasePath() // api所在path
+        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(window.location.hostname + ':' + window.location.port) === 0
+        return sameOrigin ? new SameOriginBambooAPI(placeholderId, config) : new CrossOriginBambooAPI(placeholderId, config);
+    }
+
+    var _apiInit = function (placeholderId, config) {
+        config.events = config.events || {}
+        if (config.events.onAppReady) {
+            var self = this
+            var onAppReady = config.events.onAppReady;
+            config.events.onAppReady = function () {
+                self.frame = document.getElementsByName(frameName)[0];
+                self.frameWindow = self.frame.contentWindow;
+                self.frameDocument = self.frame.contentDocument;
+                onAppReady()
+            }
         }
-        try {
-            iframes[0].contentWindow.document;
-            return new SameOriginBambooAPI(iframes[0]);
-        } catch (e) {
-            return new CrossOriginBambooAPI(iframes[0]);
+        if (!window.DocsAPI) {
+            var self = this
+            var script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.src = _getBasePath() + 'api/documents/api.js'
+            script.onload = function() {
+                var docEditor = new window.DocsAPI.DocEditor(placeholderId, config)
+                _proxyTarget(docEditor)
+            }
+            document.body.appendChild(script)
+        } else {
+            var docEditor = new window.DocsAPI.DocEditor(placeholderId, config)
+            _proxyTarget(docEditor)
         }
+    }
+
+    var _proxyTarget = function(docEditor) {
+        for (var key in docEditor) {
+            BambooAPI.prototype[key] = docEditor[key]
+        }
+    }
+
+    var _getBasePath = function() {
+        var scripts = document.getElementsByTagName('script'),
+            match;
+        for (var i = scripts.length - 1; i >= 0; i--) {
+            match = scripts[i].src.match(/(.*)api\/documents\/bamboo.js/i);
+            if (match) {
+                return match[1];
+            }
+        }
+
+        return "";
     }
 
     var _isString = function(arg) {
@@ -227,10 +267,8 @@
      * @param frame iframe对象
      * @constructor
      */
-    function SameOriginBambooAPI (frame) {
-        this.frame = frame;
-        this.frameWindow = frame.contentWindow;
-        this.frameDocument = frame.contentDocument;
+    function SameOriginBambooAPI (placeHolderId, config) {
+        _apiInit.call(this, placeHolderId, config);
     }
 
     SameOriginBambooAPI.prototype = new BambooAPI();
@@ -312,10 +350,8 @@
      * @param frame iframe对象
      * @constructor
      */
-    function CrossOriginBambooAPI (frame) {
-        this.frame = frame;
-        this.frameWindow = frame.contentWindow;
-        this.frameDocument = frame.contentDocument;
+    function CrossOriginBambooAPI (placeHolderId, config) {
+        _apiInit.call(this, placeHolderId, config)
     }
 
     CrossOriginBambooAPI.prototype = new BambooAPI();
