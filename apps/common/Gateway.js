@@ -186,6 +186,15 @@ if (Common === undefined) {
                     //         {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
                     //     ],
                     // };
+                    if (cmd.data.type === 'method') {
+                        var target = _getPropByPath(window, cmd.data.target);
+                        if (!target || !target[cmd.data.methodName]) {
+                            throw new Error(cmd.data.target + ' not found');
+                        }
+                        target[cmd.data.methodName].apply(target, cmd.data.parameters);
+                        return;
+                    }
+                    // event
                     if (cmd.data.selectors) {
                         if (cmd.data.index) {
                             var target = document.querySelectorAll(cmd.data.selectors);

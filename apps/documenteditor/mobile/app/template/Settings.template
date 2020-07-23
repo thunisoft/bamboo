@@ -163,6 +163,7 @@
                                 </div>
                             </a>
                         </li>
+                        <!--
                         <li>
                             <a id="settings-about" class="item-link" data-page="#settings-about-view">
                                 <div class="item-content">
@@ -175,6 +176,7 @@
                                 </div>
                             </a>
                         </li>
+                        -->
                     </ul>
                 </div>
             </div>
@@ -613,6 +615,7 @@
 </div>
 
 <!-- About view -->
+<!--
 <div id="settings-about-view">
     <div class="navbar">
         <div class="navbar-inner">
@@ -653,6 +656,7 @@
         </div>
     </div>
 </div>
+-->
 
 <!-- Advanced Settings view -->
 <div id="settings-advanced-view">

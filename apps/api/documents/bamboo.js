@@ -9,7 +9,7 @@
 
     var frameName = 'frameEditor';
     // 菜单相关操作
-    var menuMap = { // default is target@eventName
+    var map = { // default is target@eventName
         // ============================ header ============================
         save: 'DE.controllers.Viewport.header.btnSave@click', // 保存
         print: 'DE.controllers.Viewport.header.btnPrint@click', // 打印
@@ -34,6 +34,7 @@
         incLeftOffset: 'DE.controllers.Toolbar.toolbar.btnIncLeftOffset@click', // 增加缩进
         decLeftOffset: 'DE.controllers.Toolbar.toolbar.btnDecLeftOffset@click', // 增加缩进
         lineSpace: {
+            type: 'event',
             selectors: '#id-toolbar-btn-linespace [type=menuitem]',
             index: '#argumentsConfig.0',
             eventName: 'click',
@@ -55,17 +56,29 @@
         // ============================ 布局 ============================
         // pageMargins: 'DE.controllers.Toolbar.toolbar.btnPageMargins.menu', //
         pageOrient: { // 布局: 竖向, 横向
+            type: 'event',
             selectors: '#tlbtn-pageorient [type=menuitem]',
             index: '#argumentsConfig.0',
             eventName: 'click',
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
             ]
-        }
+        },
         // btnPageSize: 'DE.controllers.Toolbar.toolbar.btnPageMargins.menu', //
 
         // ============================ 参考 ============================
         // ============================ 协作 ============================
+
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%% 函数 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        goToBookmark: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            methodName: 'GoToBookmark',
+            // parameters: [],
+            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                {type: String, required: true, description: '书签名称'}
+            ]
+        },
     }
 
     function BambooAPI() {}
@@ -142,41 +155,68 @@
         }
     }
 
-    for (var key in menuMap) {
+    for (var key in map) {
         (function(fnName) {
             BambooAPI.prototype[fnName] = function () {
-                var eventObject = menuMap[fnName];
-                if (_isString(eventObject)) {
-                    eventObject = {
-                        target: eventObject.substring(0, eventObject.indexOf('@')),
-                        eventName: eventObject.substring(eventObject.indexOf('@') + 1),
-                        // eventParameters: [
-                        //   {value: '#target', description: 'menu'},
-                        //   {value: '#target.items', index: '#argumentsConfig.0', description: 'item' },
-                        //   {value: true, description: 'state'}
-                        // ],
-                        // argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                        //   {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
-                        // ]
-                    };
+                var callObject = map[fnName];
+                if (_isString(callObject)) {
+                    if (callObject.indexOf('@') > 0) { // event
+                        callObject = {
+                            type: 'event',
+                            target: callObject.substring(0, callObject.indexOf('@')),
+                            eventName: callObject.substring(callObject.indexOf('@') + 1),
+                            // parameters: [
+                            //   {value: '#target', description: 'menu'},
+                            //   {value: '#target.items', index: '#argumentsConfig.0', description: 'item' },
+                            //   {value: true, description: 'state'}
+                            // ],
+                            // argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                            //   {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
+                            // ]
+                        };
+                    } else {
+                        callObject = {
+                            type: 'method',
+                            target: callObject,
+                            // argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                            //   {type: Boolean, default: true, required: false, description: 'true:竖向,false:横向'}
+                            // ]
+                        };
+                    }
                 } else {
-                    eventObject = _deepCopy(eventObject);
+                    callObject = _deepCopy(callObject);
                 }
 
-                var targetIndex = _translateIndex(eventObject, eventObject.index, arguments);
-                if (targetIndex !== undefined) {
-                    eventObject.index = targetIndex;
-                }
-                if (eventObject.eventParameters) {
-                    for (var i = 0; i < eventObject.eventParameters.length; i++) {
-                        var eventParam = eventObject.eventParameters[i];
-                        var itemIndex = _translateIndex(eventObject, eventParam.index, arguments);
-                        if (itemIndex !== undefined) {
-                            eventParam.index = itemIndex;
+                if (callObject.type === 'event') {
+                    var targetIndex = _translateIndex(callObject, callObject.index, arguments);
+                    if (targetIndex !== undefined) {
+                        callObject.index = targetIndex;
+                    }
+                    if (callObject.parameters) {
+                        for (var i = 0; i < callObject.parameters.length; i++) {
+                            var eventParam = callObject.parameters[i];
+                            var itemIndex = _translateIndex(callObject, eventParam.index, arguments);
+                            if (itemIndex !== undefined) {
+                                eventParam.index = itemIndex;
+                            }
                         }
                     }
+                    this.trigger(callObject);
+                } else { // method
+                    callObject.parameters = callObject.parameters || [];
+                    if (callObject.argumentsConfig) {
+                        for (var i = 0; i < callObject.argumentsConfig.length; i++) {
+                            var argConfig = callObject.argumentsConfig[i];
+                            var callArg = arguments[i];
+                            if (argConfig.required && callArg === undefined) {
+                                throw new Error('Argument ' + i + 'is required, correct is ' + JSON.stringify(argConfig));
+                            }
+                            callArg = callArg === undefined ? argConfig.default : argConfig.type(callArg);
+                            callObject.parameters.push(callArg);
+                        }
+                    }
+                    this.invoke(callObject);
                 }
-                this.trigger(eventObject);
             }
         })(key);
     }
@@ -196,29 +236,37 @@
     SameOriginBambooAPI.prototype = new BambooAPI();
     SameOriginBambooAPI.constructor = SameOriginBambooAPI;
 
-    SameOriginBambooAPI.prototype.trigger = function(eventObject) {
-        if (eventObject.selectors) {
-            if (eventObject.index) {
-                var target = this.frameDocument.querySelectorAll(eventObject.selectors);
-                if (!target || target.length < eventObject.index) {
+    SameOriginBambooAPI.prototype.invoke = function(callObject) {
+        var target = _getPropByPath(this.frameWindow, callObject.target);
+        if (!target || !target[callObject.methodName]) {
+            throw new Error(callObject.target + ' not found');
+        }
+        target[callObject.methodName].apply(target, callObject.parameters);
+    }
+
+    SameOriginBambooAPI.prototype.trigger = function(callObject) {
+        if (callObject.selectors) {
+            if (callObject.index) {
+                var target = this.frameDocument.querySelectorAll(callObject.selectors);
+                if (!target || target.length < callObject.index) {
                     // 不做操作
-                    throw new Error(eventObject.selectors + '['+eventObject.index+'] not found');
+                    throw new Error(callObject.selectors + '['+callObject.index+'] not found');
                 }
-                target[eventObject.index][eventObject.eventName]();
+                target[callObject.index][callObject.eventName]();
             } else {
-                var target = this.frameDocument.querySelector(eventObject.selectors);
+                var target = this.frameDocument.querySelector(callObject.selectors);
                 if (!target) {
                     // 不做操作
-                    throw new Error(eventObject.selectors + ' not found');
+                    throw new Error(callObject.selectors + ' not found');
                 }
-                target[eventObject.eventName]();
+                target[callObject.eventName]();
             }
             return;
         }
         //
-        var target = _getPropByPath(this.frameWindow, eventObject.target);
+        var target = _getPropByPath(this.frameWindow, callObject.target);
         if (!target) {
-            throw new Error(eventObject.target + ' not found');
+            throw new Error(callObject.target + ' not found');
         }
         if (target.disabled) {
             return;
@@ -232,14 +280,14 @@
         //         tip.hide();
         //     }
         // }
-        eventObject.target = target;
-        var parameters = [eventObject.eventName];
-        if (eventObject.eventParameters) {
-            for (var i = 0; i < eventObject.eventParameters.length; i++) {
-                var eventParam = eventObject.eventParameters[i];
+        callObject.target = target;
+        var parameters = [callObject.eventName];
+        if (callObject.parameters) {
+            for (var i = 0; i < callObject.parameters.length; i++) {
+                var eventParam = callObject.parameters[i];
                 if (_isString(eventParam.value) && eventParam.value.indexOf('#') === 0) {
                     var ref = eventParam.value.substring(1);
-                    var arg = _getPropByPath(eventObject, ref);
+                    var arg = _getPropByPath(callObject, ref);
                     if (!arg) {
                         throw new Error(eventParam.value + ' not found');
                     }
@@ -251,10 +299,10 @@
                     parameters.push(eventParam.value);
                 }
             }
-        } else if (eventObject.index === undefined) {
+        } else if (callObject.index === undefined) {
             parameters.push(target);
         } else {
-            target = target[eventObject.index];
+            target = target[callObject.index];
             parameters.push(target);
         }
         target.trigger.apply(target, parameters);
@@ -273,12 +321,14 @@
     CrossOriginBambooAPI.prototype = new BambooAPI();
     CrossOriginBambooAPI.constructor = CrossOriginBambooAPI;
 
-    CrossOriginBambooAPI.prototype.trigger = function(eventObject) {
+    CrossOriginBambooAPI.prototype.trigger = function(callObject) {
         var message = {
             source: 'bamboo',
-            data: eventObject
+            data: callObject
         };
         // 为了兼容旧版IE, 先序列化为字符串吧
         this.frameWindow.postMessage(JSON.stringify(message), '*');
     }
+
+    CrossOriginBambooAPI.prototype.invoke = CrossOriginBambooAPI.prototype.trigger
 })(window, document);
