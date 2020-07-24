@@ -11,10 +11,10 @@
     // 菜单相关操作
     var map = { // default is target@eventName
         // ============================ header ============================
-        save: 'DE.controllers.Viewport.header.btnSave@click', // 保存
-        print: 'DE.controllers.Viewport.header.btnPrint@click', // 打印
-        undo: 'DE.controllers.Viewport.header.btnUndo@click', // 撤销
-        redo: 'DE.controllers.Viewport.header.btnRedo@click', // 重做
+        save: 'DE.controllers.Toolbar.toolbar.btnSave@click', // 保存
+        print: 'DE.controllers.Toolbar.toolbar.btnPrint@click', // 打印
+        undo: 'DE.controllers.Toolbar.toolbar.btnUndo@click', // 撤销
+        redo: 'DE.controllers.Toolbar.toolbar.btnRedo@click', // 重做
         // fitPage: 'DE.controllers.Viewport.header.mnuitemFitPage@click', // 适合页面
         // fitWidth: 'DE.controllers.Viewport.header.mnuitemFitWidth@click', // 适合宽度
 
@@ -175,15 +175,13 @@
 
     var _apiInit = function (placeholderId, config) {
         config.events = config.events || {}
-        if (config.events.onAppReady) {
-            var self = this
-            var onAppReady = config.events.onAppReady;
-            config.events.onAppReady = function () {
-                self.frame = document.getElementsByName(frameName)[0];
-                self.frameWindow = self.frame.contentWindow;
-                self.frameDocument = self.frame.contentDocument;
-                onAppReady && onAppReady()
-            }
+        var self = this
+        var onAppReady = config.events.onAppReady;
+        config.events.onAppReady = function () {
+            self.frame = document.getElementsByName(frameName)[0];
+            self.frameWindow = self.frame.contentWindow;
+            self.frameDocument = self.frame.contentDocument;
+            onAppReady && onAppReady()
         }
         _awaitDocsAPI(function() {
             var docEditor = new window.DocsAPI.DocEditor(placeholderId, config);
