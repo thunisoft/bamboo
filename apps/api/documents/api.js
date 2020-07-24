@@ -214,7 +214,7 @@
         _config.editorConfig.canRequestSharingSettings = _config.events && !!_config.events.onRequestSharingSettings;
         _config.frameEditorId = placeholderId;
 
-        // add by xialiang@20200724#hyperlink click message
+        // add by xialiang@20200724#hyperlink click event
         _config.editorConfig.canHyperlinkClick = _config.events && !!_config.events.onHyperlinkClick;
 
         var onMouseUp = function (evt) {

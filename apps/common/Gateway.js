@@ -432,6 +432,11 @@ if (Common === undefined) {
                 _postMessage({event:'onRequestSharingSettings'});
             },
 
+            // add by xialiang@20200724#hyperlink click event
+            requestHyperlinkClick: function (config) {
+                _postMessage({event:'onHyperlinkClick', data: config});
+            },
+
             on: function(event, handler){
                 var localHandler = function(event, data){
                     handler.call(me, data)
@@ -729,11 +734,6 @@ Common.Bamboo = new(function() {
 
         requestSharingSettings:  function () {
             _postMessage({event:'onRequestSharingSettings'});
-        },
-
-        // add by xialiang@20200724#hyperlink click message
-        requestHyperlinkClick: function (config) {
-            _postMessage({event:'onHyperlinkClick', data: config});
         },
 
         on: function(event, handler){

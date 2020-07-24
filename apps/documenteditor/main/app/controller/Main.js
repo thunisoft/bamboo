@@ -366,7 +366,7 @@ define([
                 this.appOptions.canFeatureContentControl = !!this.api.asc_isSupportFeature("content-сontrols");
                 this.appOptions.mentionShare = !((typeof (this.appOptions.customization) == 'object') && (this.appOptions.customization.mentionShare==false));
 
-                // add by xialiang@20200724#hyperlink click show
+                // add by xialiang@20200724#hyperlink click event
                 this.appOptions.canHyperlinkClick = this.editorConfig.canHyperlinkClick;
 
                 appHeader = this.getApplication().getController('Viewport').getView('Common.Views.Header');

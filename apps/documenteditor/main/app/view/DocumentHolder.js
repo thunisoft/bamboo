@@ -539,7 +539,7 @@ define([
                         } else
                             showPoint[1] -= screenTip.tipHeight;
 
-                        // modify by xialiang@20200720#hide screenTip
+                        // modify by xialiang@20200724#hyperlink click event
                         if(false === DE.controllers.Viewport.appConfig.canHyperlinkClick) {
                             screenTip.toolTip.getBSTip().$tip.css({top: showPoint[1] + 'px', left: showPoint[0] + 'px'});
                         }
