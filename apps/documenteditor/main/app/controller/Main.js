@@ -366,6 +366,9 @@ define([
                 this.appOptions.canFeatureContentControl = !!this.api.asc_isSupportFeature("content-сontrols");
                 this.appOptions.mentionShare = !((typeof (this.appOptions.customization) == 'object') && (this.appOptions.customization.mentionShare==false));
 
+                // add by xialiang@20200724#hyperlink click show
+                this.appOptions.canHyperlinkClick = this.editorConfig.canHyperlinkClick;
+
                 appHeader = this.getApplication().getController('Viewport').getView('Common.Views.Header');
                 appHeader.setCanBack(this.appOptions.canBackToFolder === true, (this.appOptions.canBackToFolder) ? this.editorConfig.customization.goback.text : '')
                             .setUserName(this.appOptions.user.fullname);

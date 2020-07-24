@@ -731,6 +731,11 @@ Common.Bamboo = new(function() {
             _postMessage({event:'onRequestSharingSettings'});
         },
 
+        // add by xialiang@20200724#hyperlink click message
+        requestHyperlinkClick: function (config) {
+            _postMessage({event:'onHyperlinkClick', data: config});
+        },
+
         on: function(event, handler){
             var localHandler = function(event, data){
                 handler.call(me, data)

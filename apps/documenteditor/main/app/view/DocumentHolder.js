@@ -539,7 +539,10 @@ define([
                         } else
                             showPoint[1] -= screenTip.tipHeight;
 
-                        screenTip.toolTip.getBSTip().$tip.css({top: showPoint[1] + 'px', left: showPoint[0] + 'px'});
+                        // modify by xialiang@20200720#hide screenTip
+                        if(false === DE.controllers.Viewport.appConfig.canHyperlinkClick) {
+                            screenTip.toolTip.getBSTip().$tip.css({top: showPoint[1] + 'px', left: showPoint[0] + 'px'});
+                        }
                     }
                     /** coauthoring begin **/
                     else if (moveData.get_Type()==2 && me.mode.isEdit) { // 2 - locked object
