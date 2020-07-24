@@ -164,10 +164,12 @@ define([
         },
 
         setMode: function(mode) {
-            this.appOptions = mode;
-            this.customPluginsComplete = !this.appOptions.canBrandingExt;
-            if (this.appOptions.canBrandingExt)
-                this.getAppCustomPlugins(this.configPlugins);
+            if (mode.customization.showPlugin) {
+                this.appOptions = mode;
+                this.customPluginsComplete = !this.appOptions.canBrandingExt;
+                if (this.appOptions.canBrandingExt)
+                    this.getAppCustomPlugins(this.configPlugins);
+            }
             return this;
         },
 
