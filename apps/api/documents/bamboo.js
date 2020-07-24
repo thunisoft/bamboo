@@ -81,48 +81,6 @@
         },
     }
 
-    function BambooAPI() {}
-
-    BambooAPI.create = function(placeholderId, config) {
-        var basePath = _getBasePath() // api所在path
-        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(window.location.hostname + ':' + window.location.port) === 0
-        return sameOrigin ? new SameOriginBambooAPI(placeholderId, config) : new CrossOriginBambooAPI(placeholderId, config);
-    }
-
-    var _apiInit = function (placeholderId, config) {
-        config.events = config.events || {}
-        if (config.events.onAppReady) {
-            var self = this
-            var onAppReady = config.events.onAppReady;
-            config.events.onAppReady = function () {
-                self.frame = document.getElementsByName(frameName)[0];
-                self.frameWindow = self.frame.contentWindow;
-                self.frameDocument = self.frame.contentDocument;
-                onAppReady()
-            }
-        }
-        if (!window.DocsAPI) {
-            var self = this
-            var script = document.createElement('script')
-            script.type = 'text/javascript'
-            script.src = _getBasePath() + 'api/documents/api.js'
-            script.onload = function() {
-                var docEditor = new window.DocsAPI.DocEditor(placeholderId, config)
-                _proxyTarget(docEditor)
-            }
-            document.body.appendChild(script)
-        } else {
-            var docEditor = new window.DocsAPI.DocEditor(placeholderId, config)
-            _proxyTarget(docEditor)
-        }
-    }
-
-    var _proxyTarget = function(docEditor) {
-        for (var key in docEditor) {
-            BambooAPI.prototype[key] = docEditor[key]
-        }
-    }
-
     var _getBasePath = function() {
         var scripts = document.getElementsByTagName('script'),
             match;
@@ -133,7 +91,27 @@
             }
         }
 
-        return "";
+        return '';
+    }
+
+    var _importDocsAPI = function () {
+        if (window.DocsAPI) {
+            return;
+        }
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = _getBasePath() + 'api/documents/api.js';
+        document.body.appendChild(script);
+    }
+
+    var _awaitDocsAPI = function (onload) {
+        if (window.DocsAPI) {
+            onload()
+        } else {
+            setTimeout(function () {
+                _awaitDocsAPI(onload)
+            }, 500)
+        }
     }
 
     var _isString = function(arg) {
@@ -193,6 +171,36 @@
             }
             return itemIndex;
         }
+    }
+
+    var _apiInit = function (placeholderId, config) {
+        config.events = config.events || {}
+        if (config.events.onAppReady) {
+            var self = this
+            var onAppReady = config.events.onAppReady;
+            config.events.onAppReady = function () {
+                self.frame = document.getElementsByName(frameName)[0];
+                self.frameWindow = self.frame.contentWindow;
+                self.frameDocument = self.frame.contentDocument;
+                onAppReady && onAppReady()
+            }
+        }
+        _awaitDocsAPI(function() {
+            var docEditor = new window.DocsAPI.DocEditor(placeholderId, config);
+            for (var key in docEditor) {
+                BambooAPI.prototype[key] = docEditor[key];
+            }
+        })
+    }
+
+    _importDocsAPI();
+
+    function BambooAPI() {}
+
+    BambooAPI.create = function(placeholderId, config) {
+        var basePath = _getBasePath() // api所在path
+        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(window.location.hostname + ':' + window.location.port) === 0
+        return sameOrigin ? new SameOriginBambooAPI(placeholderId, config) : new CrossOriginBambooAPI(placeholderId, config);
     }
 
     for (var key in map) {
