@@ -149,7 +149,9 @@ require([
             'PivotTable',
             'DataTab',
             'Common.Controllers.Fonts',
+            // add by yuanzhy@20200715 --begin
             'Common.Controllers.History',
+            // add by yuanzhy@20200715 --end
             'Common.Controllers.Chat',
             'Common.Controllers.Comments',
             'Common.Controllers.Plugins'
@@ -185,7 +187,9 @@ require([
             'common/main/lib/util/utils',
             'common/main/lib/util/LocalStorage',
             'common/main/lib/controller/Fonts',
+            // add by yuanzhy@20200715 --begin
             'common/main/lib/controller/History',
+            // add by yuanzhy@20200715 --end
             'common/main/lib/controller/Comments',
             'common/main/lib/controller/Chat',
             'common/main/lib/controller/Plugins'

@@ -770,7 +770,9 @@ define([
                     }
                 });
             } else if (config.canViewReview) {
+                // modify by yuanzhy@20200727 --begin
                 config.canViewReview = (config.isEdit || (me.api.asc_HaveRevisionsChanges && me.api.asc_HaveRevisionsChanges(true))); // check revisions from all users
+                // modify by yuanzhy@20200727 --end
                 if (config.canViewReview) {
                     var val = Common.localStorage.getItem(me.view.appPrefix + "review-mode");
                     if (val===null)

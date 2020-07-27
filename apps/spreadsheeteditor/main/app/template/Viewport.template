@@ -16,7 +16,9 @@
                     </div>
                 </div>
                 <div id="right-menu" class="layout-item"></div>
+                <!-- add by yuanzhy@20200715 --begin -->
                 <div id="left-panel-history" class="layout-item" />
+                <!-- add by yuanzhy@20200715 --end -->
             </div>
         </div>
         <div id="statusbar" class="layout-item"></div>

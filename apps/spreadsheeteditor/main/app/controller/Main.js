@@ -86,7 +86,9 @@ define([
                 'ShapeGroups',
                 'EquationGroups',
                 'TableTemplates',
+                // add by yuanzhy@20200715 --begin
                 'Common.Collections.HistoryUsers',
+                // add by yuanzhy@20200715 --end
                 'Common.Collections.TextArt'
             ],
             views: [],
@@ -491,7 +493,7 @@ define([
                     }
                 }
             },
-
+            // add by yuanzhy@20200715 --begin
             onRefreshHistory: function(opts) {
                 if (!this.appOptions.canUseHistory) return;
 
@@ -635,7 +637,7 @@ define([
             generateUserColor: function(color) {
                 return"#"+("000000"+color.toString(16)).substr(-6);
             },
-
+            // add by yuanzhy@20200715 --end
             goBack: function(current) {
                 var me = this;
                 if ( !Common.Controllers.Desktop.process('goback') ) {
@@ -661,8 +663,10 @@ define([
                     this.getApplication().getController('DocumentHolder').getView('DocumentHolder').focus();
                     this.api.isCEditorFocused = false;
                 }
+                // add by yuanzhy@20200715 --begin
                 // TODO 事件太乱了, 暂时找不到地方 先用野路子渲染一下吧 yuanzhy 2020-07-14
                 if (cmp.title === '打开电子表格') this.api.wb.drawWS()
+                // add by yuanzhy@20200715 --end
             },
 
             onSelectionChanged: function(info){
@@ -990,7 +994,9 @@ define([
                 Common.Gateway.on('processsaveresult', _.bind(me.onProcessSaveResult, me));
                 Common.Gateway.on('processrightschange', _.bind(me.onProcessRightsChange, me));
                 Common.Gateway.on('processmouse', _.bind(me.onProcessMouse, me));
+                // add by yuanzhy@20200715 --begin
                 Common.Gateway.on('refreshhistory',         _.bind(me.onRefreshHistory, me));
+                // add by yuanzhy@20200715 --end
                 Common.Gateway.on('downloadas',   _.bind(me.onDownloadAs, me));
                 Common.Gateway.sendInfo({mode:me.appOptions.isEdit?'edit':'view'});
 
@@ -1015,6 +1021,7 @@ define([
             },
 
             onLicenseChanged: function(params) {
+                // modify by yuanzhy@20200723 --begin
                 // if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
                 //
                 // var licType = params.asc_getLicenseType();
@@ -1024,9 +1031,11 @@ define([
                 //
                 // if (this._isDocReady)
                 //     this.applyLicense();
+                // modify by yuanzhy@20200723 --end
             },
 
             applyLicense: function() {
+                // modify by yuanzhy@20200723 --begin
             //     if (this._state.licenseType) {
             //         var license = this._state.licenseType,
             //             buttons = ['ok'],
@@ -1074,6 +1083,7 @@ define([
             //             }
             //         });
             //     }
+                // modify by yuanzhy@20200723 --end
             },
 
             disableEditing: function(disable) {
@@ -1124,7 +1134,9 @@ define([
                     this.appOptions.canViewComments = this.appOptions.canComments || !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.comments===false);
                     this.appOptions.canChat        = this.appOptions.canLicense && !this.appOptions.isOffline && !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.chat===false);
                     this.appOptions.canRename      = this.editorConfig.canRename && !!this.permissions.rename;
+                    // add by yuanzhy@20200715 --begin
                     this.appOptions.buildVersion   = params.asc_getBuildVersion();
+                    // add by yuanzhy@20200715 --end
                     this.appOptions.trialMode      = params.asc_getLicenseMode();
                     this.appOptions.canModifyFilter = (this.permissions.modifyFilter!==false);
                     this.appOptions.canBranding  = params.asc_getCustomization();
@@ -1139,11 +1151,13 @@ define([
                 this.appOptions.canEdit        = this.permissions.edit !== false && // can edit
                                                  (this.editorConfig.canRequestEditRights || this.editorConfig.mode !== 'view'); // if mode=="view" -> canRequestEditRights must be defined
                 this.appOptions.isEdit         = (this.appOptions.canLicense || this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) && this.permissions.edit !== false && this.editorConfig.mode !== 'view';
+                // add by yuanzhy@20200715 --begin
                 // this.appOptions.canReview      = this.permissions.review === true && this.appOptions.canLicense && this.appOptions.isEdit;
                 // this.appOptions.canViewReview  = true; // TODO yuanzhy 开启后xlsx报错 历史高亮问题还需要花时间去研究
                 this.appOptions.canUseHistory  = this.appOptions.canLicense && this.editorConfig.canUseHistory && this.appOptions.canCoAuthoring && !this.appOptions.isOffline;
                 this.appOptions.canHistoryClose  = this.editorConfig.canHistoryClose;
                 this.appOptions.canHistoryRestore= this.editorConfig.canHistoryRestore && (this.permissions.changeHistory !== false);
+                // add by yuanzhy@20200715 --end
                 this.appOptions.canDownload    = (this.permissions.download !== false);
                 this.appOptions.canPrint       = (this.permissions.print !== false);
                 this.appOptions.canForcesave   = this.appOptions.isEdit && !this.appOptions.isOffline && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
@@ -1170,19 +1184,21 @@ define([
                     this.hidePreloader();
                     this.onLongActionBegin(Asc.c_oAscAsyncActionType.BlockInteraction, LoadingDocument);
                 }
-
+                // add by yuanzhy@20200715 --begin
                 if ( this.appOptions.isLightVersion ) {
                     this.appOptions.canUseHistory =
                     this.appOptions.canReview =
                     this.appOptions.isReviewOnly = false;
                 }
+                // add by yuanzhy@20200715 --end
 
                 this.api.asc_setViewMode(!this.appOptions.isEdit && !this.appOptions.isRestrictedEdit);
                 (this.appOptions.isRestrictedEdit && this.appOptions.canComments) && this.api.asc_setRestriction(Asc.c_oAscRestrictionType.OnlyComments);
                 this.api.asc_LoadDocument();
-
+                // add by yuanzhy@20200715 --begin
                 if (this.permissions.changeHistory !== undefined)
                     console.warn("Obsolete: The changeHistory parameter of the document permission section is deprecated. Please use onRequestRestore event instead.");
+                // add by yuanzhy@20200715 --end
             },
 
             applyModeCommonElements: function() {
@@ -2294,10 +2310,12 @@ define([
                 if (url) this.iframePrint.src = url;
             },
 
+            // add by yuanzhy@20200715 --begin
             DisableVersionHistory: function() {
                 this.editorConfig.canUseHistory = false;
                 this.appOptions.canUseHistory = false;
             },
+            // add by yuanzhy@20200715 --end
 
             leavePageText: 'You have unsaved changes in this document. Click \'Stay on this Page\' then \'Save\' to save them. Click \'Leave this Page\' to discard all the unsaved changes.',
             criticalErrorTitle: 'Error',
@@ -2402,7 +2420,9 @@ define([
             errorLockedWorksheetRename: 'The sheet cannot be renamed at the moment as it is being renamed by another user',
             textTryUndoRedo: 'The Undo/Redo functions are disabled for the Fast co-editing mode.<br>Click the \'Strict mode\' button to switch to the Strict co-editing mode to edit the file without other users interference and send your changes only after you save them. You can switch between the co-editing modes using the editor Advanced settings.',
             textStrict: 'Strict mode',
+            // add by yuanzhy@20200715 --begin
             txtErrorLoadHistory: 'Loading history failed',
+            // add by yuanzhy@20200715 --end
             errorOpenWarning: 'The length of one of the formulas in the file exceeded<br>the allowed number of characters and it was removed.',
             errorFrmlWrongReferences: 'The function refers to a sheet that does not exist.<br>Please check the data and try again.',
             textBuyNow: 'Visit website',

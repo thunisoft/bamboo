@@ -212,6 +212,7 @@ define([
                 Common.NotificationCenter.trigger('goback');
             });
 
+            // modify by yuanzhy@20200701 --begin
             if ( me.logo )
                 me.logo.children(0).on('click', function (e) {
                     var newDocumentPage = window.open('/index.html');
@@ -223,6 +224,7 @@ define([
                     //     newDocumentPage && newDocumentPage.focus();
                     // }
                 });
+            // modify by yuanzhy@20200701 --end
 
             onResetUsers(storeUsers);
 

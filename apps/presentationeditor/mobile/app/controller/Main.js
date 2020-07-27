@@ -568,6 +568,7 @@ define([
             },
 
             onLicenseChanged: function(params) {
+                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -575,9 +576,11 @@ define([
                 //
                 // if (this._isDocReady && this._state.licenseType)
                 //     this.applyLicense();
+                // modify by yuanzhy@20200723 --end
             },
 
             applyLicense: function() {
+                // modify by yuanzhy@20200723 --begin
                 PE.getController('Toolbar').activateControls();
                 // var me = this;
                 // if (this.editorConfig.mode !== 'view' && !this.isSupportEditFeature()) {
@@ -651,6 +654,7 @@ define([
                 //     }
                 //     PE.getController('Toolbar').activateControls();
                 // }
+                // modify by yuanzhy@20200723 --end
             },
 
             onOpenDocument: function(progress) {
@@ -696,7 +700,9 @@ define([
                 me.appOptions.canReview       = me.appOptions.canLicense && me.appOptions.isEdit && (me.permissions.review===true);
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
                 me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
+                // modify by yuanzhy@20200724 --begin
                 // me.appOptions.canUseMailMerge = me.appOptions.canLicense && me.appOptions.canEdit && !me.appOptions.isDesktopApp;
+                // modify by yuanzhy@20200724 --end
                 me.appOptions.canSendEmailAddresses  = me.appOptions.canLicense && me.editorConfig.canSendEmailAddresses && me.appOptions.canEdit && me.appOptions.canCoAuthoring;
                 me.appOptions.canComments     = me.appOptions.canLicense && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.comments===false);
                 me.appOptions.canChat         = me.appOptions.canLicense && !me.appOptions.isOffline && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.chat===false);

@@ -155,14 +155,14 @@ define([
                 caption : this.btnRightsCaption,
                 canFocused: false
             });
-
+            // add by yuanzhy@20200701 --begin
             this.miHistory = new Common.UI.MenuItem({
                 el      : $markup.elementById('#fm-btn-history'),
                 action  : 'history',
                 caption : this.btnHistoryCaption,
                 canFocused: false
             });
-
+            // add by yuanzhy@20200701 --end
             this.miSettings = new Common.UI.MenuItem({
                 el      : $markup.elementById('#fm-btn-settings'),
                 action  : 'opts',
@@ -202,7 +202,9 @@ define([
                     canFocused: false
                 }),
                 this.miAccess,
+                // add by yuanzhy@20200701 --begin
                 this.miHistory,
+                // add by yuanzhy@20200701 --end
                 this.miSettings,
                 this.miHelp,
                 new Common.UI.MenuItem({
@@ -319,7 +321,6 @@ define([
             }
 
             if (this.mode.canDownload && (this.mode.canRequestSaveAs || this.mode.saveAsUrl)) {
-
                 !this.panels['save-copy'] && (this.panels['save-copy'] = (new SSE.Views.FileMenuPanels.ViewSaveCopy({menu: this})).render());
             }
 
@@ -327,8 +328,9 @@ define([
                 this.panels['help'] = ((new SSE.Views.FileMenuPanels.Help({menu: this})).render());
                 this.panels['help'].setLangConfig(this.mode.lang);
             }
-
+            // add by yuanzhy@20200701 --begin
             this.miHistory[this.mode.canUseHistory&&!this.mode.isDisconnected?'show':'hide']();
+            // add by yuanzhy@20200701 --end
         },
 
         setMode: function(mode, delay) {
@@ -412,7 +414,9 @@ define([
         btnDownloadCaption      : 'Download as...',
         btnInfoCaption          : 'Document Info...',
         btnRightsCaption        : 'Access Rights...',
+        // add by yuanzhy@20200701 --begin
         btnHistoryCaption       : 'Versions History',
+        // add by yuanzhy@20200701 --end
         btnCreateNewCaption     : 'Create New',
         btnRecentFilesCaption   : 'Open Recent...',
         btnPrintCaption         : 'Print',

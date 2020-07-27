@@ -164,12 +164,14 @@ define([
         },
 
         setMode: function(mode) {
+            // modify by yuanzhy@20200724 --begin
             if (mode.customization.showPlugin) {
                 this.appOptions = mode;
                 this.customPluginsComplete = !this.appOptions.canBrandingExt;
                 if (this.appOptions.canBrandingExt)
                     this.getAppCustomPlugins(this.configPlugins);
             }
+            // modify by yuanzhy@20200724 --end
             return this;
         },
 

@@ -132,7 +132,7 @@ if (Common === undefined) {
                 window.parent.postMessage(window.JSON.stringify(msg), "*");
             }
         };
-
+        // add by yuanzhy@20200723 --begin
         var _getPropByPath = function(obj, path) {
             var tempObj = obj;
             path = path.replace(/\[(\w+)\]/g, '.$1');
@@ -155,6 +155,7 @@ if (Common === undefined) {
         var _isString = function(arg) {
             return Object.prototype.toString.call(arg) === '[object String]';
         }
+        // add by yuanzhy@20200723 --end
 
         var _onMessage = function(msg) {
             // TODO: check message origin
@@ -172,6 +173,7 @@ if (Common === undefined) {
             }
 
             if (cmd) {
+                // modify by yuanzhy@20200723 --begin
                 if (cmd.source === 'bamboo') {
                     // cmd.data is --- eventObject = {
                     //     target: 'DE.controllers.xxx.xxx',
@@ -263,6 +265,7 @@ if (Common === undefined) {
                         handler.call(this, cmd.data);
                     }
                 }
+                // modify by yuanzhy@20200723 --end
 
             }
 

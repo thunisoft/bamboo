@@ -817,6 +817,7 @@ define([
             },
 
             onLicenseChanged: function(params) {
+                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -824,9 +825,11 @@ define([
                 //
                 // if (this._isDocReady)
                 //     this.applyLicense();
+                // modify by yuanzhy@20200723 --end
             },
 
             applyLicense: function() {
+                // modify by yuanzhy@20200723 --begin
                 // if (this._state.licenseType) {
                 //     var license = this._state.licenseType,
                 //         buttons = ['ok'],
@@ -874,6 +877,7 @@ define([
                 //         }
                 //     });
                 // }
+                // modify by yuanzhy@20200723 --end
             },
 
             disableEditing: function(disable) {

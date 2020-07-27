@@ -344,10 +344,14 @@ define([
             }, this);
 
             var leftPanel = $('#left-menu'),
+                // add by yuanzhy@20200715 --begin
                 histPanel = $('#left-panel-history');
+                // add by yuanzhy@20200715 --end
             this.viewport.hlayout.on('layout:resizedrag', function() {
-                this.api.Resize();
-                Common.localStorage.setItem('de-mainmenu-width', histPanel.is(':visible') ? (histPanel.width()+SCALE_MIN) : leftPanel.width() );
+                this.api.asc_Resize();
+                // modify by yuanzhy@20200715 --begin
+                Common.localStorage.setItem('sse-mainmenu-width', histPanel.is(':visible') ? (histPanel.width()+SCALE_MIN) : leftPanel.width() );
+                // modify by yuanzhy@20200715 --end
             }, this);
 
             this.boxSdk = $('#editor_sdk');
@@ -383,6 +387,7 @@ define([
                 }
                 this.viewport.hlayout.doLayout();
                 break;
+                // add by yuanzhy@20200715 --begin
             case 'history':
                 var panel = this.viewport.hlayout.items[1];
                 if (panel.resize.el) {
@@ -391,6 +396,7 @@ define([
                 }
                 this.viewport.hlayout.doLayout();
                 break;
+                // add by yuanzhy@20200715 --end
             case 'header':
             case 'toolbar':
             case 'status':

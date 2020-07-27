@@ -1089,6 +1089,7 @@ define([
             },
 
             onLicenseChanged: function(params) {
+                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -1096,9 +1097,11 @@ define([
                 //
                 // if (this._isDocReady)
                 //     this.applyLicense();
+                // modify by yuanzhy@20200723 --end
             },
 
             applyLicense: function() {
+                // modify by yuanzhy@20200723 --begin
             //     if (this._state.licenseType) {
             //         var license = this._state.licenseType,
             //             buttons = ['ok'],
@@ -1146,6 +1149,7 @@ define([
             //             }
             //         });
             //     }
+                // modify by yuanzhy@20200723 --end
             },
 
             onOpenDocument: function(progress) {
@@ -1192,7 +1196,9 @@ define([
                 this.appOptions.canUseHistory  = this.appOptions.canLicense && this.editorConfig.canUseHistory && this.appOptions.canCoAuthoring && !this.appOptions.isOffline;
                 this.appOptions.canHistoryClose  = this.editorConfig.canHistoryClose;
                 this.appOptions.canHistoryRestore= this.editorConfig.canHistoryRestore && (this.permissions.changeHistory !== false);
+                // modify by yuanzhy@20200724 --begin
                 // this.appOptions.canUseMailMerge= this.appOptions.canLicense && this.appOptions.canEdit && !this.appOptions.isOffline;
+                // modify by yuanzhy@20200724 --end
                 this.appOptions.canSendEmailAddresses  = this.appOptions.canLicense && this.editorConfig.canSendEmailAddresses && this.appOptions.canEdit && this.appOptions.canCoAuthoring;
                 this.appOptions.canComments    = this.appOptions.canLicense && (this.permissions.comment===undefined ? this.appOptions.isEdit : this.permissions.comment) && (this.editorConfig.mode !== 'view');
                 this.appOptions.canComments    = this.appOptions.canComments && !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.comments===false);

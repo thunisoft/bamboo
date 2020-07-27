@@ -2941,12 +2941,14 @@ define([
 
             me.toolbar.render(_.extend({isCompactView: compactview}, config));
 
-            if (config.customization.showCollaboration) {
+            // modify by yuanzhy@20200721 --begin
+            if (!config.customization.hideCollaboration) {
                 var tab = {action: 'review', caption: me.toolbar.textTabCollaboration};
                 var $panel = me.application.getController('Common.Controllers.ReviewChanges').createToolbarPanel();
                 if ( $panel )
                     me.toolbar.addTab(tab, $panel, 4);
             }
+            // modify by yuanzhy@20200721 --end
 
             if ( config.isEdit ) {
                 me.toolbar.setMode(config);

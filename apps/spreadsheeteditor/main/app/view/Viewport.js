@@ -117,7 +117,9 @@ define([
                         max: 600,
                         offset: 4
                     }
-                }, { // history versions
+                },
+                // add by yuanzhy@20200701 --begin
+                { // history versions
                     el: items[3],
                     rely: true,
                     resize: {
@@ -126,7 +128,9 @@ define([
                         min: 300,
                         max: 600
                     }
-                }, {
+                },
+                // add by yuanzhy@20200701 --end
+                    {
                     el: items[1],
                     stretch: true
                 }, {

@@ -593,6 +593,7 @@ define([
             },
 
             onLicenseChanged: function(params) {
+                // modify by yuanzhy@20200723 --begin
                 // if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
                 //
                 // var licType = params.asc_getLicenseType();
@@ -602,9 +603,11 @@ define([
                 //
                 // if (this._isDocReady && this._state.licenseType)
                 //     this.applyLicense();
+                // modify by yuanzhy@20200723 --end
             },
 
             applyLicense: function() {
+                // modify by yuanzhy@20200723 --begin
                 SSE.getController('Toolbar').activateControls();
                 // var me = this;
                 // if (this.editorConfig.mode !== 'view' && !this.isSupportEditFeature()) {
@@ -677,6 +680,7 @@ define([
                 //     }
                 //     SSE.getController('Toolbar').activateControls();
                 // }
+                // modify by yuanzhy@20200723 --end
             },
 
             onOpenDocument: function(progress) {
@@ -731,14 +735,16 @@ define([
                     (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view') && // if mode=="view" -> canRequestEditRights must be defined
                     me.isSupportEditFeature();
                 me.appOptions.isEdit         = (me.appOptions.canLicense || me.appOptions.isEditDiagram || me.appOptions.isEditMailMerge) && me.permissions.edit !== false && me.editorConfig.mode !== 'view' && me.isSupportEditFeature();
-                me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
-                me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
                 me.appOptions.canDownload    = (me.permissions.download !== false);
                 me.appOptions.canPrint       = (me.permissions.print !== false);
 
+                // add by yuanzhy@20200715 --begin
+                me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
+                me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
                 if ( me.appOptions.isLightVersion ) {
                     me.appOptions.canUseHistory = me.appOptions.canReview = me.appOptions.isReviewOnly = false;
                 }
+                // add by yuanzhy@20200715 --end
 
                 me.applyModeCommonElements();
                 me.applyModeEditorElements();

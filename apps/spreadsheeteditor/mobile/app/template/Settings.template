@@ -121,6 +121,7 @@
                                 </div>
                             </a>
                         </li>
+                        <!-- modify by yuanzhy@20200723 --begin -->
                         <!--
                         <li>
                             <a id="settings-about" class="item-link">
@@ -135,6 +136,7 @@
                             </a>
                         </li>
                         -->
+                        <!-- modify by yuanzhy@20200723 --end -->
                     </ul>
                 </div>
             </div>
@@ -418,6 +420,7 @@
 </div>
 
 <!-- About view -->
+<!-- modify by yuanzhy@20200723 --begin -->
 <!--
 <div id="settings-about-view">
     <div class="navbar">
@@ -460,6 +463,7 @@
     </div>
 </div>
 -->
+<!-- modify by yuanzhy@20200723 --end -->
 
 <!-- Application settings -->
 <div id="settings-application-view">
