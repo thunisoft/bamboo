@@ -1064,21 +1064,22 @@ define([
             },
 
             onServerVersion: function(buildVersion) {
-                var me = this;
-                if (me.changeServerVersion) return true;
-
-                if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
-                    me.changeServerVersion = true;
-                    uiApp.alert(
-                        me.errorServerVersion,
-                        me.titleServerVersion,
-                        function () {
-                            _.defer(function() {
-                                Common.Gateway.updateVersion();
-                            })
-                        });
-                    return true;
-                }
+                // modify by xialiang@20200727#version
+                // var me = this;
+                // if (me.changeServerVersion) return true;
+                //
+                // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
+                //     me.changeServerVersion = true;
+                //     uiApp.alert(
+                //         me.errorServerVersion,
+                //         me.titleServerVersion,
+                //         function () {
+                //             _.defer(function() {
+                //                 Common.Gateway.updateVersion();
+                //             })
+                //         });
+                //     return true;
+                // }
                 return false;
             },
 
