@@ -2941,7 +2941,7 @@ define([
 
             me.toolbar.render(_.extend({isCompactView: compactview}, config));
 
-            if (!config.customization.hideCollaboration) {
+            if (config.customization.showCollaboration) {
                 var tab = {action: 'review', caption: me.toolbar.textTabCollaboration};
                 var $panel = me.application.getController('Common.Controllers.ReviewChanges').createToolbarPanel();
                 if ( $panel )
