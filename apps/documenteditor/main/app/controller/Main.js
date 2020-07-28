@@ -70,7 +70,12 @@ define([
             toolbar: '#viewport #toolbar',
             leftMenu: '#viewport #left-menu, #viewport #id-toolbar-full-placeholder-btn-settings, #viewport #id-toolbar-short-placeholder-btn-settings',
             rightMenu: '#viewport #right-menu',
-            statusBar: '#statusbar'
+            statusBar: '#statusbar',
+            // add by yuanzhy@20200727 --begin
+            cntLang: '#statusbar .cnt-lang',
+            docLang: '#statusbar #btn-doc-lang',
+            spellCheck: '#statusbar #btn-doc-spell'
+            // add by yuanzhy@20200727 --end
         };
 
         Common.localStorage.setId('text');
