@@ -175,13 +175,15 @@
 
     var _apiInit = function (placeholderId, config) {
         config.events = config.events || {}
-        var self = this
+        var self = this;
         var onAppReady = config.events.onAppReady;
         config.events.onAppReady = function () {
             self.frame = document.getElementsByName(frameName)[0];
             self.frameWindow = self.frame.contentWindow;
-            self.frameDocument = self.frame.contentDocument;
-            onAppReady && onAppReady()
+            try {
+                self.frameDocument = self.frame.contentDocument;
+            } catch(e) {}
+            onAppReady && onAppReady();
         }
         _awaitDocsAPI(function() {
             var docEditor = new window.DocsAPI.DocEditor(placeholderId, config);
