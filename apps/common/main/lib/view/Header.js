@@ -213,7 +213,7 @@ define([
             });
 
             // modify by yuanzhy@20200701 --begin
-            if ( me.logo )
+            if ( me.logo && mode.customization && mode.customization.customer && mode.customization.customer.www === 'docs.thunisoft.com' )
                 me.logo.children(0).on('click', function (e) {
                     var newDocumentPage = window.open('/index.html');
                     newDocumentPage && newDocumentPage.focus();
