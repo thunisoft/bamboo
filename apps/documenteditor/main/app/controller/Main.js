@@ -74,7 +74,8 @@ define([
             // add by yuanzhy@20200727 --begin
             cntLang: '#statusbar .cnt-lang',
             docLang: '#statusbar #btn-doc-lang',
-            spellCheck: '#statusbar #btn-doc-spell'
+            spellCheck: '#statusbar #btn-doc-spell',
+            saveButton: '#slot-btn-save'
             // add by yuanzhy@20200727 --end
         };
 
