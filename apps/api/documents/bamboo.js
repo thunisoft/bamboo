@@ -79,6 +79,16 @@
                 {type: String, required: true, description: '书签名称'}
             ]
         },
+
+        addText: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'AddText',
+            // parameters: [],
+            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                {type: String, required: true, description: '文本内容'}
+            ]
+        },
     }
 
     var _getBasePath = function() {
