@@ -82,7 +82,7 @@
 
         addText: {
             type: 'method',
-            target: 'DE.controllers.Viewport.api',
+            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument',
             methodName: 'AddText',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
