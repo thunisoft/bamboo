@@ -665,7 +665,7 @@ define([
                 }
                 // add by yuanzhy@20200715 --begin
                 // TODO 事件太乱了, 暂时找不到地方 先用野路子渲染一下吧 yuanzhy 2020-07-14
-                if (cmp.title === '打开电子表格') this.api.wb.drawWS()
+                if (cmp && cmp.title === '打开电子表格') this.api.wb.drawWS()
                 // add by yuanzhy@20200715 --end
             },
 
