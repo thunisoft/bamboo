@@ -55,13 +55,13 @@
 
         // ============================ 布局 ============================
         // pageMargins: 'DE.controllers.Toolbar.toolbar.btnPageMargins.menu', //
-        pageOrient: { // 布局: 竖向, 横向
+        pageOrient: { // 布局: 纵向, 横向
             type: 'event',
             selectors: '#tlbtn-pageorient [type=menuitem]',
             index: '#argumentsConfig.0',
             eventName: 'click',
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
+                {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
             ]
         },
         // btnPageSize: 'DE.controllers.Toolbar.toolbar.btnPageMargins.menu', //
@@ -229,7 +229,7 @@
                             //   {value: true, description: 'state'}
                             // ],
                             // argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                            //   {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
+                            //   {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
                             // ]
                         };
                     } else {
@@ -237,7 +237,7 @@
                             type: 'method',
                             target: callObject,
                             // argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                            //   {type: Boolean, default: true, required: false, description: 'true:竖向,false:横向'}
+                            //   {type: Boolean, default: true, required: false, description: 'true:纵向,false:横向'}
                             // ]
                         };
                     }

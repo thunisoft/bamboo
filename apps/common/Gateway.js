@@ -185,7 +185,7 @@ if (Common === undefined) {
                     //         {value: true, description: 'state'}
                     //     ],
                     //     argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                    //         {type: Boolean, default: true, items: [true, false], description: 'true:竖向,false:横向'}
+                    //         {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
                     //     ],
                     // };
                     if (cmd.data.type === 'method') {
