@@ -381,7 +381,7 @@
   "SSE.Views.EditCell.textInHorBorder": "水平边框",
   "SSE.Views.EditCell.textInteger": "整数",
   "SSE.Views.EditCell.textInVertBorder": "内垂直边界",
-  "SSE.Views.EditCell.textJustified": "正当",
+  "SSE.Views.EditCell.textJustified": "两端对齐",
   "SSE.Views.EditCell.textLeftBorder": "左边界",
   "SSE.Views.EditCell.textMedium": "中",
   "SSE.Views.EditCell.textNoBorder": "没有边框",
