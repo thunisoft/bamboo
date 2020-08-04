@@ -89,6 +89,26 @@
                 {type: String, required: true, description: '文本内容'}
             ]
         },
+
+        addBookmark: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            methodName: 'AddBookmark',
+            // parameters: [],
+            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                {type: String, required: true, description: '书签名称'}
+            ]
+        },
+
+        removeBookmark: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            methodName: 'RemoveBookmark',
+            // parameters: [],
+            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                {type: String, required: true, description: '书签名称'}
+            ]
+        }
     }
 
     var _getBasePath = function() {
