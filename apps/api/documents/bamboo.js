@@ -73,7 +73,7 @@
         goToBookmark: {
             type: 'method',
             target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
-            methodName: 'GoToBookmark',
+            methodName: 'asc_GoToBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
@@ -93,7 +93,7 @@
         addBookmark: {
             type: 'method',
             target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
-            methodName: 'AddBookmark',
+            methodName: 'asc_AddBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
@@ -103,7 +103,7 @@
         removeBookmark: {
             type: 'method',
             target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
-            methodName: 'RemoveBookmark',
+            methodName: 'asc_RemoveBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
