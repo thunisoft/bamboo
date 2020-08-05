@@ -2941,14 +2941,13 @@ define([
 
             me.toolbar.render(_.extend({isCompactView: compactview}, config));
 
-            // modify by yuanzhy@20200721 --begin
-            if (!config.customization.hideCollaboration) {
+            // modify by yuanzhy@20200721#新增配置showCollaboration用来隐藏协作按钮
+            if (!config.customization.showCollaboration) {
                 var tab = {action: 'review', caption: me.toolbar.textTabCollaboration};
                 var $panel = me.application.getController('Common.Controllers.ReviewChanges').createToolbarPanel();
                 if ( $panel )
                     me.toolbar.addTab(tab, $panel, 4);
             }
-            // modify by yuanzhy@20200721 --end
 
             if ( config.isEdit ) {
                 me.toolbar.setMode(config);

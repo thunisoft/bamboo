@@ -163,15 +163,14 @@ define([
             return this;
         },
 
+        // modify by yuanzhy@20200724#插件默认不显示，可通过customization.showPlugin=true控制显示
         setMode: function(mode) {
-            // modify by yuanzhy@20200724 --begin
             if (mode.customization.showPlugin) {
                 this.appOptions = mode;
                 this.customPluginsComplete = !this.appOptions.canBrandingExt;
                 if (this.appOptions.canBrandingExt)
                     this.getAppCustomPlugins(this.configPlugins);
             }
-            // modify by yuanzhy@20200724 --end
             return this;
         },
 
@@ -196,9 +195,9 @@ define([
             });
         },
 
+        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         refreshPluginsList: function() {
-            var me = this;
-            return;
+            // var me = this;
             // var storePlugins = this.getApplication().getCollection('Common.Collections.Plugins'),
             //     arr = [];
             // storePlugins.each(function(item){
@@ -206,7 +205,7 @@ define([
             //     plugin.set_Name(item.get('name'));
             //     plugin.set_Guid(item.get('guid'));
             //     plugin.set_BaseUrl(item.get('baseUrl'));
-
+            //
             //     var variations = item.get('variations'),
             //         variationsArr = [];
             //     variations.forEach(function(itemVar){
@@ -228,10 +227,10 @@ define([
             //         variation.set_Size(itemVar.get('size'));
             //         variation.set_InitOnSelectionChanged(itemVar.get('initOnSelectionChanged'));
             //         variation.set_Events(itemVar.get('events'));
-
+            //
             //         variationsArr.push(variation);
             //     });
-
+            //
             //     plugin.set_Variations(variationsArr);
             //     item.set('pluginObj', plugin);
             //     arr.push(plugin);
@@ -241,26 +240,26 @@ define([
             //     Common.NotificationCenter.trigger('tab:visible', 'plugins', true);
         },
 
+        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         onAddPlugin: function (model) {
-            return;
             // var me = this;
             // if ( me.$toolbarPanelPlugins ) {
             //     var btn = me.panelPlugins.createPluginButton(model);
             //     if (!btn) return;
-
+            //
             //     var _group = $('> .group', me.$toolbarPanelPlugins);
             //     var $slot = $('<span class="slot"></span>').appendTo(_group);
             //     btn.render($slot);
             // }
         },
 
+        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         onResetPlugins: function (collection) {
-            var me = this;
-            return;
+            // var me = this;
             // me.appOptions.canPlugins = !collection.isEmpty();
             // if ( me.$toolbarPanelPlugins ) {
             //     me.$toolbarPanelPlugins.empty();
-
+            //
             //     var _group = $('<div class="group"></div>'),
             //         rank = -1,
             //         rank_plugins = 0;
@@ -272,7 +271,7 @@ define([
             //             _group = $('<div class="group"></div>');
             //             rank_plugins = 0;
             //         }
-
+            //
             //         var btn = me.panelPlugins.createPluginButton(model);
             //         if (btn) {
             //             var $slot = $('<span class="slot"></span>').appendTo(_group);

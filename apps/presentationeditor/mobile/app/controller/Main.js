@@ -256,6 +256,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
                 }
 
                 this.api.asc_registerCallback('asc_onGetEditorPermissions', _.bind(this.onEditorPermissions, this));
@@ -567,8 +568,8 @@ define([
                 $('.doc-placeholder').remove();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -576,11 +577,10 @@ define([
                 //
                 // if (this._isDocReady && this._state.licenseType)
                 //     this.applyLicense();
-                // modify by yuanzhy@20200723 --end
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                // modify by yuanzhy@20200723 --begin
                 PE.getController('Toolbar').activateControls();
                 // var me = this;
                 // if (this.editorConfig.mode !== 'view' && !this.isSupportEditFeature()) {
@@ -654,7 +654,6 @@ define([
                 //     }
                 //     PE.getController('Toolbar').activateControls();
                 // }
-                // modify by yuanzhy@20200723 --end
             },
 
             onOpenDocument: function(progress) {
@@ -700,9 +699,8 @@ define([
                 me.appOptions.canReview       = me.appOptions.canLicense && me.appOptions.isEdit && (me.permissions.review===true);
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
                 me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
-                // modify by yuanzhy@20200724 --begin
+                // modify by yuanzhy@20200724#去掉mailmerge功能
                 // me.appOptions.canUseMailMerge = me.appOptions.canLicense && me.appOptions.canEdit && !me.appOptions.isDesktopApp;
-                // modify by yuanzhy@20200724 --end
                 me.appOptions.canSendEmailAddresses  = me.appOptions.canLicense && me.editorConfig.canSendEmailAddresses && me.appOptions.canEdit && me.appOptions.canCoAuthoring;
                 me.appOptions.canComments     = me.appOptions.canLicense && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.comments===false);
                 me.appOptions.canChat         = me.appOptions.canLicense && !me.appOptions.isOffline && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.chat===false);
@@ -1069,8 +1067,8 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                // modify by xialiang@20200727#version
                 // var me = this;
                 // if (me.changeServerVersion) return true;
                 //

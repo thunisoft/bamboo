@@ -373,6 +373,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
                 }
 
                 this.api.asc_registerCallback('asc_onGetEditorPermissions', _.bind(this.onEditorPermissions, this));
@@ -816,8 +817,8 @@ define([
                 $('.doc-placeholder').remove();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -825,11 +826,10 @@ define([
                 //
                 // if (this._isDocReady)
                 //     this.applyLicense();
-                // modify by yuanzhy@20200723 --end
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                // modify by yuanzhy@20200723 --begin
                 // if (this._state.licenseType) {
                 //     var license = this._state.licenseType,
                 //         buttons = ['ok'],
@@ -877,7 +877,6 @@ define([
                 //         }
                 //     });
                 // }
-                // modify by yuanzhy@20200723 --end
             },
 
             disableEditing: function(disable) {
@@ -1477,8 +1476,8 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                // modify by xialiang@20200727#version
                 // if (this.changeServerVersion) return true;
                 //
                 // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {

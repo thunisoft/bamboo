@@ -55,14 +55,13 @@ define([
                     'plugin:open': _.bind(this.onPluginOpen, this),
                     'hide':        _.bind(this.onHidePlugins, this)
                 },
+                // add by yuanzhy@20200715#研发excel历史功能支持
                 'Common.Views.Header': {
                     'file:settings': _.bind(this.clickToolbarSettings,this),
-                    // add by yuanzhy@20200715 --begin
                     'history:show': function () {
                         if ( !this.leftMenu.panelHistory.isVisible() )
                             this.clickMenuFileItem('header', 'history');
                     }.bind(this)
-                    // add by yuanzhy@20200715 --end
                 },
                 'LeftMenu': {
                     'file:show': _.bind(this.fileShowHide, this, true),
@@ -104,12 +103,12 @@ define([
                 }
             });
             Common.NotificationCenter.on('app:comment:add', _.bind(this.onAppAddComment, this));
-            // add by yuanzhy@20200715 --begin
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
             Common.NotificationCenter.on('collaboration:history', _.bind(function () {
                 if ( !this.leftMenu.panelHistory.isVisible() )
                     this.clickMenuFileItem(null, 'history');
             }, this));
-            // add by yuanzhy@20200715 --end
         },
 
         onLaunch: function() {
@@ -181,10 +180,10 @@ define([
             if (!this.mode.isEditMailMerge && !this.mode.isEditDiagram)
                 this.api.asc_registerCallback('asc_onEditCell', _.bind(this.onApiEditCell, this));
             this.leftMenu.getMenu('file').setApi(api);
-            // add by yuanzhy@20200715 --begin
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
             if (this.mode.canUseHistory)
                 this.getApplication().getController('Common.Controllers.History').setApi(this.api).setMode(this.mode);
-            // add by yuanzhy@20200715 --end
             return this;
         },
 
@@ -226,11 +225,11 @@ define([
 
             this.mode.trialMode && this.leftMenu.setDeveloperMode(this.mode.trialMode);
             /** coauthoring end **/
-            // add by yuanzhy@20200715 --begin
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
             if (this.mode.canUseHistory)
                 this.leftMenu.setOptionsPanel('history', this.getApplication().getController('Common.Controllers.History').getView('Common.Views.History'));
-            // add by yuanzhy@20200715 --end
-            
+
             Common.util.Shortcuts.resumeEvents();
             if (!this.mode.isEditMailMerge && !this.mode.isEditDiagram)
                 Common.NotificationCenter.on('cells:range',   _.bind(this.onCellsRange, this));
@@ -262,7 +261,8 @@ define([
                 if ( isopts ) close_menu = false;
                 else this.onCreateNew(undefined, 'blank');
                 break;
-            // add by yuanzhy@20200715 --begin
+
+                // add by yuanzhy@20200715#研发excel历史功能支持
             case 'history':
                 if (!this.leftMenu.panelHistory.isVisible()) {
                     if (this.api.asc_isDocumentModified()) { // TODO yuanzhy asc_isDocumentModified or isDocumentModified
@@ -275,7 +275,7 @@ define([
                             msg: this.leavePageText,
                             buttons: ['ok', 'cancel'],
                             primary: 'ok',
-                            callback: function(btn) {
+                            callback: function (btn) {
                                 if (btn == 'ok') {
                                     me.api.asc_undoAllChanges();
                                     me.showHistory();
@@ -287,7 +287,6 @@ define([
                         this.showHistory();
                 }
                 break;
-            // add by yuanzhy@20200715 --end
             case 'rename':
                 var me = this,
                     documentCaption = me.api.asc_getDocumentName();
@@ -957,7 +956,8 @@ define([
                 }
             }
         },
-       // add by yuanzhy@20200715 --begin
+
+        // add by yuanzhy@20200715#研发excel历史功能支持
         showHistory: function() {
             var maincontroller = SSE.getController('Main');
             if (!maincontroller.loadMask)
@@ -966,7 +966,7 @@ define([
             maincontroller.loadMask.show();
             Common.Gateway.requestHistory();
         },
-        // add by yuanzhy@20200715 --end
+
         onShowHideChat: function(state) {
             if (this.mode.canCoAuthoring && this.mode.canChat && !this.mode.isLightVersion) {
                 if (state) {
@@ -985,9 +985,10 @@ define([
         requestEditRightsText   : 'Requesting editing rights...',
         textReplaceSuccess      : 'Search has been done. {0} occurrences have been replaced',
         textReplaceSkipped      : 'The replacement has been made. {0} occurrences were skipped.',
-        // add by yuanzhy@20200715 --begin
+
+        // add by yuanzhy@20200715#研发excel历史功能支持
         textLoadHistory         : 'Loading version history...',
-        // add by yuanzhy@20200715 --end
+
         warnDownloadAs          : 'If you continue saving in this format all features except the text will be lost.<br>Are you sure you want to continue?' ,
         textWarning: 'Warning',
         textSheet: 'Sheet',

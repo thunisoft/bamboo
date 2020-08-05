@@ -132,7 +132,8 @@ if (Common === undefined) {
                 window.parent.postMessage(window.JSON.stringify(msg), "*");
             }
         };
-        // add by yuanzhy@20200723 --begin
+
+        // add by yuanzhy@20200723#竹简1.0 beta版
         var _getPropByPath = function(obj, path) {
             var tempObj = obj;
             path = path.replace(/\[(\w+)\]/g, '.$1');
@@ -152,15 +153,15 @@ if (Common === undefined) {
             return tempObj[keyArr[i]];
         }
 
+        // add by yuanzhy@20200723#竹简1.0 beta版
         var _isString = function(arg) {
             return Object.prototype.toString.call(arg) === '[object String]';
         }
-        // add by yuanzhy@20200723 --end
 
         var _onMessage = function(msg) {
             // TODO: check message origin
             var data = msg.data;
-            if (!_isString(data) || !window.JSON) {
+            if (Object.prototype.toString.apply(data) !== '[object String]' || !window.JSON) {
                 return;
             }
 
@@ -172,8 +173,8 @@ if (Common === undefined) {
                 cmd = '';
             }
 
+            // modify by yuanzhy@20200723#gateway bamboo
             if (cmd) {
-                // modify by yuanzhy@20200723 --begin
                 if (cmd.source === 'bamboo') {
                     // cmd.data is --- eventObject = {
                     //     target: 'DE.controllers.xxx.xxx',
@@ -265,10 +266,7 @@ if (Common === undefined) {
                         handler.call(this, cmd.data);
                     }
                 }
-                // modify by yuanzhy@20200723 --end
-
             }
-
         };
 
         var fn = function(e) { _onMessage(e); };

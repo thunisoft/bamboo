@@ -71,12 +71,12 @@ define([
             leftMenu: '#viewport #left-menu, #viewport #id-toolbar-full-placeholder-btn-settings, #viewport #id-toolbar-short-placeholder-btn-settings',
             rightMenu: '#viewport #right-menu',
             statusBar: '#statusbar',
-            // add by yuanzhy@20200727 --begin
+            // add by yuanzhy@20200728#菜单栏语言栏支持隐藏
             cntLang: '#statusbar .cnt-lang',
             docLang: '#statusbar #btn-doc-lang',
             spellCheck: '#statusbar #btn-doc-spell',
+            // add by yuanzhy@20200730#api支持隐藏保存按钮
             saveButton: '#slot-btn-save'
-            // add by yuanzhy@20200727 --end
         };
 
         Common.localStorage.setId('text');
@@ -421,6 +421,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
 //                    docInfo.put_Review(this.permissions.review);
 
                     var type = /^(?:(pdf|djvu|xps))$/.exec(data.doc.fileType);
@@ -1094,8 +1095,8 @@ define([
                 $('.doc-placeholder').remove();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                // modify by yuanzhy@20200723 --begin
                 // var licType = params.asc_getLicenseType();
                 // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
                 //    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
@@ -1103,59 +1104,57 @@ define([
                 //
                 // if (this._isDocReady)
                 //     this.applyLicense();
-                // modify by yuanzhy@20200723 --end
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                // modify by yuanzhy@20200723 --begin
-            //     if (this._state.licenseType) {
-            //         var license = this._state.licenseType,
-            //             buttons = ['ok'],
-            //             primary = 'ok';
-            //         if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
-            //             license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
-            //         } else {
-            //             license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
-            //             buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
-            //             primary = 'buynow';
-            //         }
-            //
-            //         this.disableEditing(true);
-            //         Common.NotificationCenter.trigger('api:disconnect');
-            //
-            //         var value = Common.localStorage.getItem("de-license-warning");
-            //         value = (value!==null) ? parseInt(value) : 0;
-            //         var now = (new Date).getTime();
-            //         if (now - value > 86400000) {
-            //             Common.UI.info({
-            //                 width: 500,
-            //                 title: this.textNoLicenseTitle,
-            //                 msg  : license,
-            //                 buttons: buttons,
-            //                 primary: primary,
-            //                 callback: function(btn) {
-            //                     Common.localStorage.setItem("de-license-warning", now);
-            //                     if (btn == 'buynow')
-            //                         window.open('{{PUBLISHER_URL}}', "_blank");
-            //                     else if (btn == 'contact')
-            //                         window.open('mailto:{{SALES_EMAIL}}', "_blank");
-            //                 }
-            //             });
-            //         }
-            //     } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt &&
-            //                 this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
-            //         Common.UI.warning({
-            //             title: this.textPaidFeature,
-            //             msg  : this.textCustomLoader,
-            //             buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
-            //             primary: 'contact',
-            //             callback: function(btn) {
-            //                 if (btn == 'contact')
-            //                     window.open('mailto:{{SALES_EMAIL}}', "_blank");
-            //             }
-            //         });
-            //     }
-                // modify by yuanzhy@20200723 --end
+                // if (this._state.licenseType) {
+                //     var license = this._state.licenseType,
+                //         buttons = ['ok'],
+                //         primary = 'ok';
+                //     if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
+                //         license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
+                //     } else {
+                //         license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
+                //         buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
+                //         primary = 'buynow';
+                //     }
+                //
+                //     this.disableEditing(true);
+                //     Common.NotificationCenter.trigger('api:disconnect');
+                //
+                //     var value = Common.localStorage.getItem("de-license-warning");
+                //     value = (value!==null) ? parseInt(value) : 0;
+                //     var now = (new Date).getTime();
+                //     if (now - value > 86400000) {
+                //         Common.UI.info({
+                //             width: 500,
+                //             title: this.textNoLicenseTitle,
+                //             msg  : license,
+                //             buttons: buttons,
+                //             primary: primary,
+                //             callback: function(btn) {
+                //                 Common.localStorage.setItem("de-license-warning", now);
+                //                 if (btn == 'buynow')
+                //                     window.open('{{PUBLISHER_URL}}', "_blank");
+                //                 else if (btn == 'contact')
+                //                     window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //             }
+                //         });
+                //     }
+                // } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt &&
+                //             this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
+                //     Common.UI.warning({
+                //         title: this.textPaidFeature,
+                //         msg  : this.textCustomLoader,
+                //         buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
+                //         primary: 'contact',
+                //         callback: function(btn) {
+                //             if (btn == 'contact')
+                //                 window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //         }
+                //     });
+                // }
             },
 
             onOpenDocument: function(progress) {
@@ -1202,9 +1201,8 @@ define([
                 this.appOptions.canUseHistory  = this.appOptions.canLicense && this.editorConfig.canUseHistory && this.appOptions.canCoAuthoring && !this.appOptions.isOffline;
                 this.appOptions.canHistoryClose  = this.editorConfig.canHistoryClose;
                 this.appOptions.canHistoryRestore= this.editorConfig.canHistoryRestore && (this.permissions.changeHistory !== false);
-                // modify by yuanzhy@20200724 --begin
+                // modify by yuanzhy@20200724#去掉mailmerge功能
                 // this.appOptions.canUseMailMerge= this.appOptions.canLicense && this.appOptions.canEdit && !this.appOptions.isOffline;
-                // modify by yuanzhy@20200724 --end
                 this.appOptions.canSendEmailAddresses  = this.appOptions.canLicense && this.editorConfig.canSendEmailAddresses && this.appOptions.canEdit && this.appOptions.canCoAuthoring;
                 this.appOptions.canComments    = this.appOptions.canLicense && (this.permissions.comment===undefined ? this.appOptions.isEdit : this.permissions.comment) && (this.editorConfig.mode !== 'view');
                 this.appOptions.canComments    = this.appOptions.canComments && !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.comments===false);
@@ -1809,8 +1807,8 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                // modify by xialiang@20200727#version
                 // if (this.changeServerVersion) return true;
                 //
                 // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
