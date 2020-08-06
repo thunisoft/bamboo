@@ -10,7 +10,7 @@
     <!-- splash -->
 
     <style type="text/css">
-        .loadmask {
+        /*.loadmask {
             left: 0;
             top: 0;
             position: absolute;
@@ -28,12 +28,12 @@
             position: absolute;
             text-align: center;
             line-height: 10px;
-        }
+        }*/
         .loader-logo {
             max-height: 160px;
             margin-bottom: 10px;
         }
-        .loader-page-romb {
+        /*.loader-page-romb {
             width: 40px;
             display: inline-block;
         }
@@ -48,12 +48,12 @@
         }
         .loader-page-text-loading {
             font-size: 14px;
-        }
+        }*/
         .loader-page-text-customer {
             font-size: 16px;
             margin-bottom: 5px;
         }
-        .romb {
+        /*.romb {
             width: 40px;
             height: 40px;
             -webkit-transform: rotate(135deg) skew(20deg, 20deg);
@@ -95,7 +95,7 @@
             -ms-animation-name: green;
             -o-animation-name: green;
             animation-name: green;
-        }
+        }*/
         @-webkit-keyframes red {
             0%    { top:120px; background: #de7a59; }
             10%    { top:120px; background: #F2CBBF; }
@@ -232,21 +232,21 @@
         else if ( lang == 'uk') loading = 'Завантаження...';
         else if ( lang == 'vi') loading = 'Đang tải...';
         else if ( lang == 'zh') loading = '加载中...';
-        if ( !stopLoading )
-            document.write(
-                '<div id="loading-mask" class="loadmask">' +
-                '<div class="loader-page" style="margin-bottom: ' + margin + 'px;' + ((logo!==null) ? 'height: auto;' : '') + '">' +
-                ((logo!==null) ? logo :
-                '<div class="loader-page-romb">' +
-                '<div class="romb" id="blue"></div>' +
-                '<div class="romb" id="green"></div>' +
-                '<div class="romb" id="red"></div>' +
-                '</div>') +
-                '</div>' +
-                '<div class="loader-page-text">' + customer +
-                '<div class="loader-page-text-loading">' + loading + '</div>' +
-                '</div>' +
-                '</div>');
+        // if ( !stopLoading )
+        //     document.write(
+        //         '<div id="loading-mask" class="loadmask">' +
+        //         '<div class="loader-page" style="margin-bottom: ' + margin + 'px;' + ((logo!==null) ? 'height: auto;' : '') + '">' +
+        //         ((logo!==null) ? logo :
+        //         '<div class="loader-page-romb">' +
+        //         '<div class="romb" id="blue"></div>' +
+        //         '<div class="romb" id="green"></div>' +
+        //         '<div class="romb" id="red"></div>' +
+        //         '</div>') +
+        //         '</div>' +
+        //         '<div class="loader-page-text">' + customer +
+        //         '<div class="loader-page-text-loading">' + loading + '</div>' +
+        //         '</div>' +
+        //         '</div>');
     </script>
 
     <!-- debug begin -->
