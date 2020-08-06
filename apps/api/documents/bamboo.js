@@ -167,7 +167,7 @@
             if (key in tempObj) {
                 tempObj = tempObj[key];
             } else {
-                throw new Error('[iView warn]: please transfer a valid prop path to form item!');
+                throw new Error('please transfer a valid prop path to form item!');
             }
         }
         return tempObj[keyArr[i]];
