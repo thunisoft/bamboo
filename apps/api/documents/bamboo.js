@@ -8,6 +8,16 @@
 ;(function(window, document) {
 
     var frameName = 'frameEditor';
+    var getBookmarkManager = {
+        type: 'method',
+        target: 'DE.controllers.Viewport.api',
+        methodName: 'asc_GetBookmarksManager',
+    };
+    var getLogicDocument = {
+        type: 'method',
+        target: 'DE.controllers.Viewport.api',
+        methodName: 'asc_GetLogicDocument',
+    };
     // 菜单相关操作
     var map = { // default is target@eventName
         // ============================ header ============================
@@ -72,43 +82,40 @@
         // %%%%%%%%%%%%%%%%%%%%%%%%%%%% 函数 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
         goToBookmark: {
             type: 'method',
-            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            target: getBookmarkManager,
             methodName: 'asc_GoToBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
             ]
         },
-
-        addText: {
-            type: 'method',
-            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument',
-            methodName: 'AddText',
-            // parameters: [],
-            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                {type: String, required: true, description: '文本内容'}
-            ]
-        },
-
         addBookmark: {
             type: 'method',
-            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            target: getBookmarkManager,
             methodName: 'asc_AddBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
             ]
         },
-
         removeBookmark: {
             type: 'method',
-            target: 'DE.controllers.Viewport.api.WordControl.m_oLogicDocument.BookmarksManager',
+            target: getBookmarkManager,
             methodName: 'asc_RemoveBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '书签名称'}
             ]
-        }
+        },
+        addText: {
+            type: 'method',
+            target: getLogicDocument,
+            methodName: 'AddText',
+            // parameters: [],
+            argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+                {type: String, required: true, description: '文本内容'}
+            ]
+        },
     }
 
     var _getBasePath = function() {
@@ -160,7 +167,7 @@
             if (key in tempObj) {
                 tempObj = tempObj[key];
             } else {
-                throw new Error('[iView warn]: please transfer a valid prop path to form item!');
+                throw new Error('please transfer a valid prop path to form item!');
             }
         }
         return tempObj[keyArr[i]];
@@ -313,11 +320,16 @@
     SameOriginBambooAPI.constructor = SameOriginBambooAPI;
 
     SameOriginBambooAPI.prototype.invoke = function(callObject) {
-        var target = _getPropByPath(this.frameWindow, callObject.target);
+        var target;
+        if (!_isString(callObject.target)) {
+            target = this.invoke(callObject.target);
+        } else {
+            target = _getPropByPath(this.frameWindow, callObject.target);
+        }
         if (!target || !target[callObject.methodName]) {
             throw new Error(callObject.target + ' not found');
         }
-        target[callObject.methodName].apply(target, callObject.parameters);
+        return target[callObject.methodName].apply(target, callObject.parameters);
     }
 
     SameOriginBambooAPI.prototype.trigger = function(callObject) {

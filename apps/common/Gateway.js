@@ -157,11 +157,105 @@ if (Common === undefined) {
         var _isString = function(arg) {
             return Object.prototype.toString.call(arg) === '[object String]';
         }
+        var _isObject = function(arg) {
+            return Object.prototype.toString.call(arg) === '[object Object]';
+        }
+        var _invokeBamboo = function(config) {
+            // cmd.data is --- eventObject = {
+            //     target: 'DE.controllers.xxx.xxx',
+            //     index:  0,
+            //     eventName: 'click',
+            //     eventParameters: [
+            //         {value: 'DE.xxx', description: 'menu'},
+            //         {value: 'DE.xxx.items', index: '#argumentsConfig.0', description: 'item' },
+            //         {value: true, description: 'state'}
+            //     ],
+            //     argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+            //         {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
+            //     ],
+            // };
+            var target;
+            // special event
+            if (config.selectors) {
+                if (config.index) {
+                    target = document.querySelectorAll(config.selectors);
+                    if (!target || target.length < config.index) {
+                        // 不做操作
+                        throw new Error(config.selectors + '['+config.index+'] not found');
+                    }
+                    return target[config.index][config.eventName]();
+                } else {
+                    target = document.querySelector(config.selectors);
+                    if (!target) {
+                        // 不做操作
+                        throw new Error(config.selectors + ' not found');
+                    }
+                    return target[config.eventName]();
+                }
+            }
+
+            if (_isObject(config.target)) {
+                target = _invokeBamboo(config.target);
+            } else {
+                target = _getPropByPath(window, config.target);
+            }
+            if (!target) {
+                throw new Error(config.target + ' not found');
+            }
+            // method
+            if (config.type === 'method') {
+                if (!target[config.methodName]) {
+                    throw new Error(config.target + '#' + config.methodName + ' not found');
+                }
+                return target[config.methodName].apply(target, config.parameters);
+            }
+
+            // other event
+            if (target.disabled) {
+                return;
+            }
+            target.doToggle && target.doToggle();
+            // if (target.options.hint) {
+            //     var tip = target.btnEl.data('bs.tooltip');
+            //     if (tip) {
+            //         if (tip.dontShow===undefined)
+            //             tip.dontShow = true;
+            //         tip.hide();
+            //     }
+            // }
+            config.target = target;
+            var parameters = [config.eventName];
+            if (config.eventParameters) {
+                for (var i = 0; i < config.eventParameters.length; i++) {
+                    var eventParam = config.eventParameters[i];
+                    if (_isString(eventParam.value) && eventParam.value.indexOf('#') === 0) {
+                        var ref = eventParam.value.substring(1);
+                        var arg = _getPropByPath(config, ref);
+                        if (!arg) {
+                            throw new Error(eventParam.value + ' not found');
+                        }
+                        if (eventParam.index !== undefined) {
+                            arg = arg[eventParam.index];
+                        }
+                        parameters.push(arg);
+                    } else {
+                        parameters.push(eventParam.value);
+                    }
+                }
+            } else if (config.index === undefined) {
+                parameters.push(target);
+            } else {
+                target = target[config.index];
+                parameters.push(target);
+            }
+            return target.trigger.apply(target, parameters);
+        }
+        // add by yuanzhy@20200723 --end
 
         var _onMessage = function(msg) {
             // TODO: check message origin
             var data = msg.data;
-            if (Object.prototype.toString.apply(data) !== '[object String]' || !window.JSON) {
+            if (!_isString(data) || !window.JSON) {
                 return;
             }
 
@@ -173,92 +267,10 @@ if (Common === undefined) {
                 cmd = '';
             }
 
-            // modify by yuanzhy@20200723#gateway bamboo
             if (cmd) {
+                // modify by yuanzhy@20200723 --begin
                 if (cmd.source === 'bamboo') {
-                    // cmd.data is --- eventObject = {
-                    //     target: 'DE.controllers.xxx.xxx',
-                    //     index:  0,
-                    //     eventName: 'click',
-                    //     eventParameters: [
-                    //         {value: 'DE.xxx', description: 'menu'},
-                    //         {value: 'DE.xxx.items', index: '#argumentsConfig.0', description: 'item' },
-                    //         {value: true, description: 'state'}
-                    //     ],
-                    //     argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                    //         {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
-                    //     ],
-                    // };
-                    if (cmd.data.type === 'method') {
-                        var target = _getPropByPath(window, cmd.data.target);
-                        if (!target || !target[cmd.data.methodName]) {
-                            throw new Error(cmd.data.target + ' not found');
-                        }
-                        target[cmd.data.methodName].apply(target, cmd.data.parameters);
-                        return;
-                    }
-                    // event
-                    if (cmd.data.selectors) {
-                        if (cmd.data.index) {
-                            var target = document.querySelectorAll(cmd.data.selectors);
-                            if (!target || target.length < cmd.data.index) {
-                                // 不做操作
-                                throw new Error(cmd.data.selectors + '['+cmd.data.index+'] not found');
-                            }
-                            target[cmd.data.index][cmd.data.eventName]();
-                        } else {
-                            var target = document.querySelector(cmd.data.selectors);
-                            if (!target) {
-                                // 不做操作
-                                throw new Error(cmd.data.selectors + ' not found');
-                            }
-                            target[cmd.data.eventName]();
-                        }
-                        return;
-                    }
-
-                    var target = _getPropByPath(window, cmd.data.target);
-                    if (!target) {
-                        throw new Error(cmd.data.target + ' not found');
-                    }
-                    if (target.disabled) {
-                        return;
-                    }
-                    target.doToggle && target.doToggle();
-                    // if (target.options.hint) {
-                    //     var tip = target.btnEl.data('bs.tooltip');
-                    //     if (tip) {
-                    //         if (tip.dontShow===undefined)
-                    //             tip.dontShow = true;
-                    //         tip.hide();
-                    //     }
-                    // }
-                    cmd.data.target = target;
-                    var parameters = [cmd.data.eventName];
-                    if (cmd.data.eventParameters) {
-                        for (var i = 0; i < cmd.data.eventParameters.length; i++) {
-                            var eventParam = cmd.data.eventParameters[i];
-                            if (_isString(eventParam.value) && eventParam.value.indexOf('#') === 0) {
-                                var ref = eventParam.value.substring(1);
-                                var arg = _getPropByPath(cmd.data, ref);
-                                if (!arg) {
-                                    throw new Error(eventParam.value + ' not found');
-                                }
-                                if (eventParam.index !== undefined) {
-                                    arg = arg[eventParam.index];
-                                }
-                                parameters.push(arg);
-                            } else {
-                                parameters.push(eventParam.value);
-                            }
-                        }
-                    } else if (cmd.data.index === undefined) {
-                        parameters.push(target);
-                    } else {
-                        target = target[cmd.data.index];
-                        parameters.push(target);
-                    }
-                    target.trigger.apply(target, parameters);
+                    _invokeBamboo(cmd.data);
                 } else {
                     //
                     handler = commandMap[cmd.command];

@@ -221,15 +221,6 @@ module.exports = function(grunt) {
                       },{
                           from: /\/\*\*[\s\S]+\.com\s+\*\//,
                           to: copyright
-                      },{
-                          from: /DE\.controllers\.Viewport\.api\.WordControl\.m_oLogicDocument\.BookmarksManager/g,
-                          to: 'DE.controllers.Viewport.api.Ha.Xa.lC'
-                      },{
-                          from: /DE\.controllers\.Viewport\.api\.WordControl\.m_oLogicDocument/g,
-                          to: 'DE.controllers.Viewport.api.Ha.Xa'
-                      },{
-                          from: /'AddText'/,
-                          to: "'lp'"
                       }]
                   }
             }
