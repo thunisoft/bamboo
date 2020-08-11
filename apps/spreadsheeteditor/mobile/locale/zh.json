@@ -167,7 +167,7 @@
   "SSE.Controllers.Main.errorProcessSaveResult": "保存失败",
   "SSE.Controllers.Main.errorServerVersion": "该编辑版本已经更新。该页面将被重新加载以应用更改。",
   "SSE.Controllers.Main.errorSessionAbsolute": "文档编辑会话已过期。请重新加载页面。",
-  "SSE.Controllers.Main.errorSessionIdle": "长时间未编辑连接已断开，如需编辑请重新加载页面。",
+  "SSE.Controllers.Main.errorSessionIdle": "由于长时间未编辑连接已断开，如需编辑请重新加载页面。",
   "SSE.Controllers.Main.errorSessionToken": "与服务器的连接已中断。请重新加载页面。",
   "SSE.Controllers.Main.errorStockChart": "行顺序不正确。建立股票图表将数据按照以下顺序放置在表格上：<br>开盘价，最高价格，最低价格，收盘价。",
   "SSE.Controllers.Main.errorToken": "文档安全令牌未正确形成。<br>请与您的文件服务器管理员联系。",
