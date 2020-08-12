@@ -302,8 +302,8 @@ define([
                 break;
             default: close_menu = false;
             }
-
-            if (close_menu) {
+            // modify by yuanzhy@20200812
+            if (close_menu && menu) {
                 menu.hide();
             }
         },

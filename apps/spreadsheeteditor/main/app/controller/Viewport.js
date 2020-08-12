@@ -347,7 +347,7 @@ define([
             var leftPanel = $('#left-menu'),
                 histPanel = $('#left-panel-history');
             this.viewport.hlayout.on('layout:resizedrag', function() {
-                this.api.Resize();
+                this.api.asc_Resize();
                 Common.localStorage.setItem('de-mainmenu-width', histPanel.is(':visible') ? (histPanel.width()+SCALE_MIN) : leftPanel.width() );
             }, this);
 

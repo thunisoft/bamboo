@@ -576,7 +576,8 @@ define([
                                 var changes = version.changes, change, i;
                                 if (changes && changes.length>0) {
                                     arrVersions[arrVersions.length-1].set('docIdPrev', docIdPrev);
-                                    if (!_.isEmpty(version.serverVersion) && version.serverVersion == this.appOptions.buildVersion) {
+                                    // modify by yuanzhy@20200811
+                                    if (!_.isEmpty(version.serverVersion) /*&& version.serverVersion == this.appOptions.buildVersion*/) {
                                         arrVersions[arrVersions.length-1].set('changeid', changes.length-1);
                                         arrVersions[arrVersions.length-1].set('hasChanges', changes.length>1);
                                         for (i=changes.length-2; i>=0; i--) {
@@ -665,11 +666,6 @@ define([
                     this.getApplication().getController('DocumentHolder').getView('DocumentHolder').focus();
                     this.api.isCEditorFocused = false;
                 }
-
-                // add by yuanzhy@20200715#研发excel历史功能支持
-                // TODO 事件太乱了, 暂时找不到地方 先用野路子渲染一下吧 yuanzhy 2020-07-14
-                // modify by yuanzhy@20200731#修改某些情况打开excel报错问题
-                if (cmp && cmp.title === '打开电子表格') this.api.wb.drawWS()
             },
 
             onSelectionChanged: function(info){
@@ -1190,11 +1186,11 @@ define([
                 }
 
                 // add by yuanzhy@20200715#研发excel历史功能支持
-                if ( this.appOptions.isLightVersion ) {
-                    this.appOptions.canUseHistory =
-                        this.appOptions.canReview =
-                            this.appOptions.isReviewOnly = false;
-                }
+                // if ( this.appOptions.isLightVersion ) {
+                //     this.appOptions.canUseHistory =
+                //         this.appOptions.canReview =
+                //             this.appOptions.isReviewOnly = false;
+                // }
 
                 this.api.asc_setViewMode(!this.appOptions.isEdit && !this.appOptions.isRestrictedEdit);
                 (this.appOptions.isRestrictedEdit && this.appOptions.canComments) && this.api.asc_setRestriction(Asc.c_oAscRestrictionType.OnlyComments);
