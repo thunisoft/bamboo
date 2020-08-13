@@ -373,6 +373,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
                 }
 
                 this.api.asc_registerCallback('asc_onGetEditorPermissions', _.bind(this.onEditorPermissions, this));
@@ -816,64 +817,66 @@ define([
                 $('.doc-placeholder').remove();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                var licType = params.asc_getLicenseType();
-                if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
-                    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
-                    this._state.licenseType = licType;
-
-                if (this._isDocReady)
-                    this.applyLicense();
+                // var licType = params.asc_getLicenseType();
+                // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
+                //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
+                //     this._state.licenseType = licType;
+                //
+                // if (this._isDocReady)
+                //     this.applyLicense();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                if (this._state.licenseType) {
-                    var license = this._state.licenseType,
-                        buttons = ['ok'],
-                        primary = 'ok';
-                    if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
-                        license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
-                    } else {
-                        license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
-                        buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
-                        primary = 'buynow';
-                    }
-
-                    this.disableEditing(true);
-                    Common.NotificationCenter.trigger('api:disconnect');
-
-                    var value = Common.localStorage.getItem("pe-license-warning");
-                    value = (value!==null) ? parseInt(value) : 0;
-                    var now = (new Date).getTime();
-                    if (now - value > 86400000) {
-                        Common.UI.info({
-                            width: 500,
-                            title: this.textNoLicenseTitle,
-                            msg  : license,
-                            buttons: buttons,
-                            primary: primary,
-                            callback: function(btn) {
-                                Common.localStorage.setItem("pe-license-warning", now);
-                                if (btn == 'buynow')
-                                    window.open('{{PUBLISHER_URL}}', "_blank");
-                                else if (btn == 'contact')
-                                    window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                            }
-                        });
-                    }
-                } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt &&
-                    this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
-                    Common.UI.warning({
-                        title: this.textPaidFeature,
-                        msg  : this.textCustomLoader,
-                        buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
-                        primary: 'contact',
-                        callback: function(btn) {
-                            if (btn == 'contact')
-                                window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                        }
-                    });
-                }
+                // if (this._state.licenseType) {
+                //     var license = this._state.licenseType,
+                //         buttons = ['ok'],
+                //         primary = 'ok';
+                //     if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
+                //         license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
+                //     } else {
+                //         license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
+                //         buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
+                //         primary = 'buynow';
+                //     }
+                //
+                //     this.disableEditing(true);
+                //     Common.NotificationCenter.trigger('api:disconnect');
+                //
+                //     var value = Common.localStorage.getItem("pe-license-warning");
+                //     value = (value!==null) ? parseInt(value) : 0;
+                //     var now = (new Date).getTime();
+                //     if (now - value > 86400000) {
+                //         Common.UI.info({
+                //             width: 500,
+                //             title: this.textNoLicenseTitle,
+                //             msg  : license,
+                //             buttons: buttons,
+                //             primary: primary,
+                //             callback: function(btn) {
+                //                 Common.localStorage.setItem("pe-license-warning", now);
+                //                 if (btn == 'buynow')
+                //                     window.open('{{PUBLISHER_URL}}', "_blank");
+                //                 else if (btn == 'contact')
+                //                     window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //             }
+                //         });
+                //     }
+                // } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt &&
+                //     this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
+                //     Common.UI.warning({
+                //         title: this.textPaidFeature,
+                //         msg  : this.textCustomLoader,
+                //         buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
+                //         primary: 'contact',
+                //         callback: function(btn) {
+                //             if (btn == 'contact')
+                //                 window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //         }
+                //     });
+                // }
             },
 
             disableEditing: function(disable) {
@@ -1473,22 +1476,23 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                if (this.changeServerVersion) return true;
-
-                if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
-                    this.changeServerVersion = true;
-                    Common.UI.warning({
-                        title: this.titleServerVersion,
-                        msg: this.errorServerVersion,
-                        callback: function() {
-                            _.defer(function() {
-                                Common.Gateway.updateVersion();
-                            })
-                        }
-                    });
-                    return true;
-                }
+                // if (this.changeServerVersion) return true;
+                //
+                // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
+                //     this.changeServerVersion = true;
+                //     Common.UI.warning({
+                //         title: this.titleServerVersion,
+                //         msg: this.errorServerVersion,
+                //         callback: function() {
+                //             _.defer(function() {
+                //                 Common.Gateway.updateVersion();
+                //             })
+                //         }
+                //     });
+                //     return true;
+                // }
                 return false;
             },
 

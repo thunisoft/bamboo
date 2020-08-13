@@ -490,7 +490,7 @@ define([
                     }
                 }
             },
-            // 根据滚动条的位置，展示部分字体
+
             updateVisibleFontsTiles: function(e, scrollY) {
                 var me = this, j = 0, storeCount = me.store.length, index = 0;
 

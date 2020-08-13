@@ -86,6 +86,8 @@ define([
                 'ShapeGroups',
                 'EquationGroups',
                 'TableTemplates',
+                // add by yuanzhy@20200715#研发excel历史功能支持
+                'Common.Collections.HistoryUsers',
                 'Common.Collections.TextArt'
             ],
             views: [],
@@ -413,6 +415,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
 
                     this.headerView && this.headerView.setDocumentCaption(data.doc.title);
                 }
@@ -489,6 +492,153 @@ define([
                         this.api.asc_onMouseUp(event, data.x - rect.left, data.y - rect.top);
                     }
                 }
+            },
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
+            onRefreshHistory: function(opts) {
+                if (!this.appOptions.canUseHistory) return;
+
+                this.loadMask && this.loadMask.hide();
+                if (opts.data.error || !opts.data.history) {
+                    var historyStore = this.getApplication().getCollection('Common.Collections.HistoryVersions');
+                    if (historyStore && historyStore.size()>0) {
+                        historyStore.each(function(item){
+                            item.set('canRestore', false);
+                        });
+                    }
+                    Common.UI.alert({
+                        title: this.notcriticalErrorTitle,
+                        msg: (opts.data.error) ? opts.data.error : this.txtErrorLoadHistory,
+                        iconCls: 'warn',
+                        buttons: ['ok'],
+                        callback: _.bind(function(btn){
+                            this.onEditComplete();
+                        }, this)
+                    });
+                } else {
+                    this.api.asc_coAuthoringDisconnect();
+                    this.headerView.setCanRename(false);
+                    this.getApplication().getController('LeftMenu').getView('LeftMenu').showHistory();
+                    this.disableEditing(true);
+                    var versions = opts.data.history,
+                        historyStore = this.getApplication().getCollection('Common.Collections.HistoryVersions'),
+                        currentVersion = null;
+                    if (historyStore) {
+                        var arrVersions = [], ver, version, group = -1, prev_ver = -1, arrColors = [], docIdPrev = '',
+                            usersStore = this.getApplication().getCollection('Common.Collections.HistoryUsers'), user = null, usersCnt = 0;
+
+                        for (ver=versions.length-1; ver>=0; ver--) {
+                            version = versions[ver];
+                            if (version.versionGroup===undefined || version.versionGroup===null)
+                                version.versionGroup = version.version;
+                            if (version) {
+                                if (!version.user) version.user = {};
+                                docIdPrev = (ver>0 && versions[ver-1]) ? versions[ver-1].key : version.key + '0';
+                                user = usersStore.findUser(version.user.id);
+                                if (!user) {
+                                    user = new Common.Models.User({
+                                        id          : version.user.id,
+                                        username    : version.user.name,
+                                        colorval    : Asc.c_oAscArrUserColors[usersCnt],
+                                        color       : this.generateUserColor(Asc.c_oAscArrUserColors[usersCnt++])
+                                    });
+                                    usersStore.add(user);
+                                }
+
+                                arrVersions.push(new Common.Models.HistoryVersion({
+                                    version: version.versionGroup,
+                                    revision: version.version,
+                                    userid : version.user.id,
+                                    username : version.user.name,
+                                    usercolor: user.get('color'),
+                                    created: version.created,
+                                    docId: version.key,
+                                    markedAsVersion: (group!==version.versionGroup),
+                                    selected: (opts.data.currentVersion == version.version),
+                                    canRestore: this.appOptions.canHistoryRestore && (ver < versions.length-1),
+                                    isExpanded: true,
+                                    serverVersion: version.serverVersion
+                                }));
+                                if (opts.data.currentVersion == version.version) {
+                                    currentVersion = arrVersions[arrVersions.length-1];
+                                }
+                                group = version.versionGroup;
+                                if (prev_ver!==version.version) {
+                                    prev_ver = version.version;
+                                    arrColors.reverse();
+                                    for (i=0; i<arrColors.length; i++) {
+                                        arrVersions[arrVersions.length-i-2].set('arrColors',arrColors);
+                                    }
+                                    arrColors = [];
+                                }
+                                arrColors.push(user.get('colorval'));
+
+                                var changes = version.changes, change, i;
+                                if (changes && changes.length>0) {
+                                    arrVersions[arrVersions.length-1].set('docIdPrev', docIdPrev);
+                                    // modify by yuanzhy@20200811
+                                    if (!_.isEmpty(version.serverVersion) /*&& version.serverVersion == this.appOptions.buildVersion*/) {
+                                        arrVersions[arrVersions.length-1].set('changeid', changes.length-1);
+                                        arrVersions[arrVersions.length-1].set('hasChanges', changes.length>1);
+                                        for (i=changes.length-2; i>=0; i--) {
+                                            change = changes[i];
+
+                                            user = usersStore.findUser(change.user.id);
+                                            if (!user) {
+                                                user = new Common.Models.User({
+                                                    id          : change.user.id,
+                                                    username    : change.user.name,
+                                                    colorval    : Asc.c_oAscArrUserColors[usersCnt],
+                                                    color       : this.generateUserColor(Asc.c_oAscArrUserColors[usersCnt++])
+                                                });
+                                                usersStore.add(user);
+                                            }
+
+                                            arrVersions.push(new Common.Models.HistoryVersion({
+                                                version: version.versionGroup,
+                                                revision: version.version,
+                                                changeid: i,
+                                                userid : change.user.id,
+                                                username : change.user.name,
+                                                usercolor: user.get('color'),
+                                                created: change.created,
+                                                docId: version.key,
+                                                docIdPrev: docIdPrev,
+                                                selected: false,
+                                                canRestore: this.appOptions.canHistoryRestore && this.appOptions.canDownload,
+                                                isRevision: false,
+                                                isVisible: true,
+                                                serverVersion: version.serverVersion
+                                            }));
+                                            arrColors.push(user.get('colorval'));
+                                        }
+                                    }
+                                } else if (ver==0 && versions.length==1) {
+                                    arrVersions[arrVersions.length-1].set('docId', version.key + '1');
+                                }
+                            }
+                        }
+                        if (arrColors.length>0) {
+                            arrColors.reverse();
+                            for (i=0; i<arrColors.length; i++) {
+                                arrVersions[arrVersions.length-i-1].set('arrColors',arrColors);
+                            }
+                            arrColors = [];
+                        }
+                        historyStore.reset(arrVersions);
+                        if (currentVersion===null && historyStore.size()>0) {
+                            currentVersion = historyStore.at(0);
+                            currentVersion.set('selected', true);
+                        }
+                        if (currentVersion)
+                            this.getApplication().getController('Common.Controllers.History').onSelectRevision(null, null, currentVersion);
+                    }
+                }
+            },
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
+            generateUserColor: function(color) {
+                return"#"+("000000"+color.toString(16)).substr(-6);
             },
 
             goBack: function(current) {
@@ -843,6 +993,10 @@ define([
                 Common.Gateway.on('processsaveresult', _.bind(me.onProcessSaveResult, me));
                 Common.Gateway.on('processrightschange', _.bind(me.onProcessRightsChange, me));
                 Common.Gateway.on('processmouse', _.bind(me.onProcessMouse, me));
+
+                // add by yuanzhy@20200715#研发excel历史功能支持
+                Common.Gateway.on('refreshhistory',         _.bind(me.onRefreshHistory, me));
+
                 Common.Gateway.on('downloadas',   _.bind(me.onDownloadAs, me));
                 Common.Gateway.sendInfo({mode:me.appOptions.isEdit?'edit':'view'});
 
@@ -866,66 +1020,68 @@ define([
                 Common.Gateway.documentReady();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
-
-                var licType = params.asc_getLicenseType();
-                if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
-                    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
-                    this._state.licenseType = licType;
-
-                if (this._isDocReady)
-                    this.applyLicense();
+                // if (this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) return;
+                //
+                // var licType = params.asc_getLicenseType();
+                // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
+                //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
+                //     this._state.licenseType = licType;
+                //
+                // if (this._isDocReady)
+                //     this.applyLicense();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                if (this._state.licenseType) {
-                    var license = this._state.licenseType,
-                        buttons = ['ok'],
-                        primary = 'ok';
-                    if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
-                        license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
-                    } else {
-                        license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
-                        buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
-                        primary = 'buynow';
-                    }
-
-                    this.disableEditing(true);
-                    Common.NotificationCenter.trigger('api:disconnect');
-
-                    var value = Common.localStorage.getItem("sse-license-warning");
-                    value = (value!==null) ? parseInt(value) : 0;
-                    var now = (new Date).getTime();
-                    if (now - value > 86400000) {
-                        Common.UI.info({
-                            width: 500,
-                            title: this.textNoLicenseTitle,
-                            msg  : license,
-                            buttons: buttons,
-                            primary: primary,
-                            callback: function(btn) {
-                                Common.localStorage.setItem("sse-license-warning", now);
-                                if (btn == 'buynow')
-                                    window.open('{{PUBLISHER_URL}}', "_blank");
-                                else if (btn == 'contact')
-                                    window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                            }
-                        });
-                    }
-                } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
-                    this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
-                    Common.UI.warning({
-                        title: this.textPaidFeature,
-                        msg  : this.textCustomLoader,
-                        buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
-                        primary: 'contact',
-                        callback: function(btn) {
-                            if (btn == 'contact')
-                                window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                        }
-                    });
-                }
+                // if (this._state.licenseType) {
+                //     var license = this._state.licenseType,
+                //         buttons = ['ok'],
+                //         primary = 'ok';
+                //     if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
+                //         license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
+                //     } else {
+                //         license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
+                //         buttons = [{value: 'buynow', caption: this.textBuyNow}, {value: 'contact', caption: this.textContactUs}];
+                //         primary = 'buynow';
+                //     }
+                //
+                //     this.disableEditing(true);
+                //     Common.NotificationCenter.trigger('api:disconnect');
+                //
+                //     var value = Common.localStorage.getItem("sse-license-warning");
+                //     value = (value!==null) ? parseInt(value) : 0;
+                //     var now = (new Date).getTime();
+                //     if (now - value > 86400000) {
+                //         Common.UI.info({
+                //             width: 500,
+                //             title: this.textNoLicenseTitle,
+                //             msg  : license,
+                //             buttons: buttons,
+                //             primary: primary,
+                //             callback: function(btn) {
+                //                 Common.localStorage.setItem("sse-license-warning", now);
+                //                 if (btn == 'buynow')
+                //                     window.open('{{PUBLISHER_URL}}', "_blank");
+                //                 else if (btn == 'contact')
+                //                     window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //             }
+                //         });
+                //     }
+                // } else if (!this.appOptions.isDesktopApp && !this.appOptions.canBrandingExt && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
+                //     this.editorConfig && this.editorConfig.customization && (this.editorConfig.customization.loaderName || this.editorConfig.customization.loaderLogo)) {
+                //     Common.UI.warning({
+                //         title: this.textPaidFeature,
+                //         msg  : this.textCustomLoader,
+                //         buttons: [{value: 'contact', caption: this.textContactUs}, {value: 'close', caption: this.textClose}],
+                //         primary: 'contact',
+                //         callback: function(btn) {
+                //             if (btn == 'contact')
+                //                 window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //         }
+                //     });
+                // }
             },
 
             disableEditing: function(disable) {
@@ -976,6 +1132,10 @@ define([
                     this.appOptions.canViewComments = this.appOptions.canComments || !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.comments===false);
                     this.appOptions.canChat        = this.appOptions.canLicense && !this.appOptions.isOffline && !((typeof (this.editorConfig.customization) == 'object') && this.editorConfig.customization.chat===false);
                     this.appOptions.canRename      = this.editorConfig.canRename && !!this.permissions.rename;
+
+                    // add by yuanzhy@20200715#研发excel历史功能支持
+                    this.appOptions.buildVersion   = params.asc_getBuildVersion();
+
                     this.appOptions.trialMode      = params.asc_getLicenseMode();
                     this.appOptions.canModifyFilter = (this.permissions.modifyFilter!==false);
                     this.appOptions.canBranding  = params.asc_getCustomization();
@@ -990,6 +1150,14 @@ define([
                 this.appOptions.canEdit        = this.permissions.edit !== false && // can edit
                                                  (this.editorConfig.canRequestEditRights || this.editorConfig.mode !== 'view'); // if mode=="view" -> canRequestEditRights must be defined
                 this.appOptions.isEdit         = (this.appOptions.canLicense || this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) && this.permissions.edit !== false && this.editorConfig.mode !== 'view';
+
+                // add by yuanzhy@20200715#研发excel历史功能支持
+                // this.appOptions.canReview      = this.permissions.review === true && this.appOptions.canLicense && this.appOptions.isEdit;
+                // this.appOptions.canViewReview  = true; // TODO yuanzhy 开启后xlsx报错 历史高亮问题还需要花时间去研究
+                this.appOptions.canUseHistory  = this.appOptions.canLicense && this.editorConfig.canUseHistory && this.appOptions.canCoAuthoring && !this.appOptions.isOffline;
+                this.appOptions.canHistoryClose  = this.editorConfig.canHistoryClose;
+                this.appOptions.canHistoryRestore= this.editorConfig.canHistoryRestore && (this.permissions.changeHistory !== false);
+
                 this.appOptions.canDownload    = (this.permissions.download !== false);
                 this.appOptions.canPrint       = (this.permissions.print !== false);
                 this.appOptions.canForcesave   = this.appOptions.isEdit && !this.appOptions.isOffline && !(this.appOptions.isEditDiagram || this.appOptions.isEditMailMerge) &&
@@ -1017,9 +1185,20 @@ define([
                     this.onLongActionBegin(Asc.c_oAscAsyncActionType.BlockInteraction, LoadingDocument);
                 }
 
+                // add by yuanzhy@20200715#研发excel历史功能支持
+                // if ( this.appOptions.isLightVersion ) {
+                //     this.appOptions.canUseHistory =
+                //         this.appOptions.canReview =
+                //             this.appOptions.isReviewOnly = false;
+                // }
+
                 this.api.asc_setViewMode(!this.appOptions.isEdit && !this.appOptions.isRestrictedEdit);
                 (this.appOptions.isRestrictedEdit && this.appOptions.canComments) && this.api.asc_setRestriction(Asc.c_oAscRestrictionType.OnlyComments);
                 this.api.asc_LoadDocument();
+
+                // add by yuanzhy@20200715#研发excel历史功能支持
+                if (this.permissions.changeHistory !== undefined)
+                    console.warn("Obsolete: The changeHistory parameter of the document permission section is deprecated. Please use onRequestRestore event instead.");
             },
 
             applyModeCommonElements: function() {
@@ -1436,9 +1615,9 @@ define([
                         if (icon!==undefined) {
                             config.iconCls = (icon==Asc.c_oAscEDataValidationErrorStyle.Stop) ? 'error' : ((icon==Asc.c_oAscEDataValidationErrorStyle.Information) ? 'info' : 'warn');
                         }
-                        errData && errData.asc_getErrorTitle() && (config.title = errData.asc_getErrorTitle());
+                        errData && errData.asc_getErrorTitle() && (config.title = Common.Utils.String.htmlEncode(errData.asc_getErrorTitle()));
                         config.buttons  = ['ok', 'cancel'];
-                        config.msg = errData && errData.asc_getError() ? errData.asc_getError() : this.errorDataValidate;
+                        config.msg = errData && errData.asc_getError() ? Common.Utils.String.htmlEncode(errData.asc_getError()) : this.errorDataValidate;
                         config.maxwidth = 600;
                         break;
 
@@ -1673,22 +1852,23 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                if (this.changeServerVersion) return true;
-
-                if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
-                    this.changeServerVersion = true;
-                    Common.UI.warning({
-                        title: this.titleServerVersion,
-                        msg: this.errorServerVersion,
-                        callback: function() {
-                            _.defer(function() {
-                                Common.Gateway.updateVersion();
-                            })
-                        }
-                    });
-                    return true;
-                }
+                // if (this.changeServerVersion) return true;
+                //
+                // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
+                //     this.changeServerVersion = true;
+                //     Common.UI.warning({
+                //         title: this.titleServerVersion,
+                //         msg: this.errorServerVersion,
+                //         callback: function() {
+                //             _.defer(function() {
+                //                 Common.Gateway.updateVersion();
+                //             })
+                //         }
+                //     });
+                //     return true;
+                // }
                 return false;
             },
 
@@ -2130,6 +2310,12 @@ define([
                 if (url) this.iframePrint.src = url;
             },
 
+            // add by yuanzhy@20200715#研发excel历史功能支持
+            DisableVersionHistory: function() {
+                this.editorConfig.canUseHistory = false;
+                this.appOptions.canUseHistory = false;
+            },
+
             leavePageText: 'You have unsaved changes in this document. Click \'Stay on this Page\' then \'Save\' to save them. Click \'Leave this Page\' to discard all the unsaved changes.',
             criticalErrorTitle: 'Error',
             notcriticalErrorTitle: 'Warning',
@@ -2233,6 +2419,10 @@ define([
             errorLockedWorksheetRename: 'The sheet cannot be renamed at the moment as it is being renamed by another user',
             textTryUndoRedo: 'The Undo/Redo functions are disabled for the Fast co-editing mode.<br>Click the \'Strict mode\' button to switch to the Strict co-editing mode to edit the file without other users interference and send your changes only after you save them. You can switch between the co-editing modes using the editor Advanced settings.',
             textStrict: 'Strict mode',
+
+            // add by yuanzhy@20200715#研发excel历史功能支持
+            txtErrorLoadHistory: 'Loading history failed',
+
             errorOpenWarning: 'The length of one of the formulas in the file exceeded<br>the allowed number of characters and it was removed.',
             errorFrmlWrongReferences: 'The function refers to a sheet that does not exist.<br>Please check the data and try again.',
             textBuyNow: 'Visit website',

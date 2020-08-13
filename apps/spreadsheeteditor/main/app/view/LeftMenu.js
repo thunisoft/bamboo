@@ -41,6 +41,8 @@ define([
     'common/main/lib/view/Comments',
     'common/main/lib/view/Chat',
     /** coauthoring end **/
+    // add by yuanzhy@20200715#研发excel历史功能支持
+    'common/main/lib/view/History',
     'common/main/lib/view/SearchDialog',
     'common/main/lib/view/Plugins',
     'spreadsheeteditor/main/app/view/FileMenu'
@@ -239,6 +241,10 @@ define([
             } else if (name == 'comment') {
                 this.panelComments = panel;
             } else
+            // add by yuanzhy@20200715#研发excel历史功能支持
+            if (name == 'history') {
+                this.panelHistory = panel.render('#left-panel-history');
+            } else
             if (name == 'plugins' && !this.panelPlugins) {
                 this.panelPlugins = panel.render('#left-panel-plugins');
             } else
@@ -347,6 +353,14 @@ define([
             this.mode = mode;
             this.btnAbout.panel.setMode(mode);
             return this;
+        },
+
+        // add by yuanzhy@20200715#研发excel历史功能支持
+        showHistory: function() {
+            this._state.pluginIsRunning = false;
+            this.panelHistory.show();
+            this.panelHistory.$el.width((parseInt(Common.localStorage.getItem('de-mainmenu-width')) || MENU_SCALE_PART) - SCALE_MIN);
+            Common.NotificationCenter.trigger('layout:changed', 'history');
         },
 
         setDeveloperMode: function(mode) {

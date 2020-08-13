@@ -133,10 +133,129 @@ if (Common === undefined) {
             }
         };
 
+        // add by yuanzhy@20200723#竹简1.0 beta版
+        var _getPropByPath = function(obj, path) {
+            var tempObj = obj;
+            path = path.replace(/\[(\w+)\]/g, '.$1');
+            path = path.replace(/^\./, '');
+
+            var keyArr = path.split('.');
+            var i = 0;
+
+            for (var len = keyArr.length; i < len - 1; ++i) {
+                var key = keyArr[i];
+                if (key in tempObj) {
+                    tempObj = tempObj[key];
+                } else {
+                    throw new Error('[iView warn]: please transfer a valid prop path to form item!');
+                }
+            }
+            return tempObj[keyArr[i]];
+        }
+
+        // add by yuanzhy@20200723#竹简1.0 beta版
+        var _isString = function(arg) {
+            return Object.prototype.toString.call(arg) === '[object String]';
+        }
+        var _isObject = function(arg) {
+            return Object.prototype.toString.call(arg) === '[object Object]';
+        }
+        var _invokeBamboo = function(config) {
+            // cmd.data is --- eventObject = {
+            //     target: 'DE.controllers.xxx.xxx',
+            //     index:  0,
+            //     eventName: 'click',
+            //     eventParameters: [
+            //         {value: 'DE.xxx', description: 'menu'},
+            //         {value: 'DE.xxx.items', index: '#argumentsConfig.0', description: 'item' },
+            //         {value: true, description: 'state'}
+            //     ],
+            //     argumentsConfig: [ // sdk调用方需要传递的参数描述信息
+            //         {type: Boolean, default: true, items: [true, false], description: 'true:纵向,false:横向'}
+            //     ],
+            // };
+            var target;
+            // special event
+            if (config.selectors) {
+                if (config.index) {
+                    target = document.querySelectorAll(config.selectors);
+                    if (!target || target.length < config.index) {
+                        // 不做操作
+                        throw new Error(config.selectors + '['+config.index+'] not found');
+                    }
+                    return target[config.index][config.eventName]();
+                } else {
+                    target = document.querySelector(config.selectors);
+                    if (!target) {
+                        // 不做操作
+                        throw new Error(config.selectors + ' not found');
+                    }
+                    return target[config.eventName]();
+                }
+            }
+
+            if (_isObject(config.target)) {
+                target = _invokeBamboo(config.target);
+            } else {
+                target = _getPropByPath(window, config.target);
+            }
+            if (!target) {
+                throw new Error(config.target + ' not found');
+            }
+            // method
+            if (config.type === 'method') {
+                if (!target[config.methodName]) {
+                    throw new Error(config.target + '#' + config.methodName + ' not found');
+                }
+                return target[config.methodName].apply(target, config.parameters);
+            }
+
+            // other event
+            if (target.disabled) {
+                return;
+            }
+            target.doToggle && target.doToggle();
+            // if (target.options.hint) {
+            //     var tip = target.btnEl.data('bs.tooltip');
+            //     if (tip) {
+            //         if (tip.dontShow===undefined)
+            //             tip.dontShow = true;
+            //         tip.hide();
+            //     }
+            // }
+            config.target = target;
+            var parameters = [config.eventName];
+            if (config.eventParameters) {
+                for (var i = 0; i < config.eventParameters.length; i++) {
+                    var eventParam = config.eventParameters[i];
+                    if (_isString(eventParam.value) && eventParam.value.indexOf('#') === 0) {
+                        var ref = eventParam.value.substring(1);
+                        var arg = _getPropByPath(config, ref);
+                        if (!arg) {
+                            throw new Error(eventParam.value + ' not found');
+                        }
+                        if (eventParam.index !== undefined) {
+                            arg = arg[eventParam.index];
+                        }
+                        parameters.push(arg);
+                    } else {
+                        parameters.push(eventParam.value);
+                    }
+                }
+            } else if (config.index === undefined) {
+                parameters.push(target);
+            } else {
+                target = target[config.index];
+                parameters.push(target);
+            }
+            return target.trigger.apply(target, parameters);
+        }
+        // add by yuanzhy@20200723 --end
+
         var _onMessage = function(msg) {
             // TODO: check message origin
             var data = msg.data;
-            if (Object.prototype.toString.apply(data) !== '[object String]' || !window.JSON) {
+            if (!_isString(data) || !window.JSON) {
                 return;
             }
 
@@ -149,9 +268,15 @@ if (Common === undefined) {
             }
 
             if (cmd) {
-                handler = commandMap[cmd.command];
-                if (handler) {
-                    handler.call(this, cmd.data);
+                // modify by yuanzhy@20200723 --begin
+                if (cmd.source === 'bamboo') {
+                    _invokeBamboo(cmd.data);
+                } else {
+                    //
+                    handler = commandMap[cmd.command];
+                    if (handler) {
+                        handler.call(this, cmd.data);
+                    }
                 }
             }
         };
@@ -318,6 +443,11 @@ if (Common === undefined) {
 
             requestSharingSettings:  function () {
                 _postMessage({event:'onRequestSharingSettings'});
+            },
+
+            // add by xialiang@20200724#hyperlink click event
+            requestHyperlinkClick: function (config) {
+                _postMessage({event:'onHyperlinkClick', data: config});
             },
 
             on: function(event, handler){

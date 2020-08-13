@@ -163,6 +163,8 @@
                                 </div>
                             </a>
                         </li>
+                        <!-- modify by yuanzhy@20200723#remove -->
+                        <!--
                         <li>
                             <a id="settings-about" class="item-link" data-page="#settings-about-view">
                                 <div class="item-content">
@@ -175,6 +177,7 @@
                                 </div>
                             </a>
                         </li>
+                        -->
                     </ul>
                 </div>
             </div>
@@ -613,6 +616,8 @@
 </div>
 
 <!-- About view -->
+<!-- modify by yuanzhy@20200723#remove -->
+<!--
 <div id="settings-about-view">
     <div class="navbar">
         <div class="navbar-inner">
@@ -653,6 +658,7 @@
         </div>
     </div>
 </div>
+-->
 
 <!-- Advanced Settings view -->
 <div id="settings-advanced-view">

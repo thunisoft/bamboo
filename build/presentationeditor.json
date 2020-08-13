@@ -1,7 +1,7 @@
 {
     "name": "presentationeditor",
     "version": "4.3.0",
-    "build": 782,
+    "build": 789,
     "homepage": "http://www.onlyoffice.com",
     "private": true,
     "main": {
@@ -418,7 +418,8 @@
                 }
             ],
             "index-page": {
-                "../deploy/web-apps/apps/presentationeditor/embed/index.html": "../apps/presentationeditor/embed/index.html.deploy"
+                "../deploy/web-apps/apps/presentationeditor/embed/index.html": "../apps/presentationeditor/embed/index.html.deploy",
+                "../deploy/web-apps/apps/presentationeditor/embed/index_loader.html": "../apps/presentationeditor/embed/index_loader.html.deploy"
             },
             "images-app": [
                 {

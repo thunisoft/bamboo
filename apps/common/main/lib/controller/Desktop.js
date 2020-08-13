@@ -141,6 +141,7 @@ define([
                 }
             };
 
+            window.on_native_message('editor:config', 'request');
             if ( !!window.native_message_cmd ) {
                 for ( var c in window.native_message_cmd ) {
                     window.on_native_message(c, window.native_message_cmd[c]);
@@ -151,7 +152,7 @@ define([
 
             // hide mask for modal window
             var style = document.createElement('style');
-            style.appendChild(document.createTextNode('.modals-mask{opacity:0;}'));
+            style.appendChild(document.createTextNode('.modals-mask{opacity:0 !important;}'));
             document.getElementsByTagName('head')[0].appendChild(style);
         }
 
@@ -208,32 +209,37 @@ define([
                             Common.NotificationCenter.trigger('app:config', {canUndock: true});
                         }
 
-                        var header = webapp.getController('Viewport').getView('Common.Views.Header');
                         titlebuttons = {};
-                        if ( !!header.btnSave ) {
-                            titlebuttons['save'] = {btn: header.btnSave};
+                        if ( !mode.isEdit ) {
+                            native.execCommand('webapps:features', JSON.stringify(
+                                    {version: config.version, eventloading:true, titlebuttons:true, viewmode:true} ));
+                        } else {
+                            var header = webapp.getController('Viewport').getView('Common.Views.Header');
+                            if (!!header.btnSave) {
+                                titlebuttons['save'] = {btn: header.btnSave};
 
-                            var iconname = /\s?([^\s]+)$/.exec(titlebuttons.save.btn.$icon.attr('class'));
-                            !!iconname && iconname.length && (titlebuttons.save.icon = btnsave_icons[iconname]);
-                        }
+                                var iconname = /\s?([^\s]+)$/.exec(titlebuttons.save.btn.$icon.attr('class'));
+                                !!iconname && iconname.length && (titlebuttons.save.icon = btnsave_icons[iconname]);
+                            }
 
-                        if ( !!header.btnPrint )
-                            titlebuttons['print'] = {btn: header.btnPrint};
+                            if (!!header.btnPrint)
+                                titlebuttons['print'] = {btn: header.btnPrint};
 
-                        if ( !!header.btnUndo )
-                            titlebuttons['undo'] = {btn: header.btnUndo};
+                            if (!!header.btnUndo)
+                                titlebuttons['undo'] = {btn: header.btnUndo};
 
-                        if ( !!header.btnRedo )
-                            titlebuttons['redo'] = {btn: header.btnRedo};
+                            if (!!header.btnRedo)
+                                titlebuttons['redo'] = {btn: header.btnRedo};
 
-                        for (var i in titlebuttons) {
-                            titlebuttons[i].btn.options.signals = ['disabled'];
-                            titlebuttons[i].btn.on('disabled', _onTitleButtonDisabled.bind(this, i));
-                        }
+                            for (var i in titlebuttons) {
+                                titlebuttons[i].btn.options.signals = ['disabled'];
+                                titlebuttons[i].btn.on('disabled', _onTitleButtonDisabled.bind(this, i));
+                            }
 
-                        if (!!titlebuttons.save) {
-                            titlebuttons.save.btn.options.signals.push('icon:changed');
-                            titlebuttons.save.btn.on('icon:changed', _onSaveIconChanged.bind(this));
+                            if (!!titlebuttons.save) {
+                                titlebuttons.save.btn.options.signals.push('icon:changed');
+                                titlebuttons.save.btn.on('icon:changed', _onSaveIconChanged.bind(this));
+                            }
                         }
 
                         if ( !!config.callback_editorconfig ) {

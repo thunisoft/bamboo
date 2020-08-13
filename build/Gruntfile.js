@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         defaultConfig,
         packageFile;
 
-    const copyrightHeader = 'Copyright (c) Ascensio System SIA <%= grunt.template.today("yyyy") %>. All rights reserved'
+    const copyrightHeader = 'Copyright (c) <%= grunt.template.today("yyyy") %> 华宇（大连）信息服务有限公司'
     var copyright = '/*\n' +
                     ' * ' + (process.env['APP_COPYRIGHT'] || copyrightHeader) + '\n' +
                     ' *\n' +
@@ -35,49 +35,49 @@ module.exports = function(grunt) {
     var jsreplacements = [
                 {
                     from: /\{\{SUPPORT_EMAIL\}\}/g,
-                    to: _encode(process.env.SUPPORT_EMAIL) || 'support@onlyoffice.com'
+                    to: _encode(process.env.SUPPORT_EMAIL) || 'dlyjy@thunisoft.com'
                 },{
                     from: /\{\{SUPPORT_URL\}\}/g,
-                    to: _encode(process.env.SUPPORT_URL) || 'https://support.onlyoffice.com'
+                    to: _encode(process.env.SUPPORT_URL) || 'http://docs.thunisoft.com/support'
                 },{
                     from: /\{\{SALES_EMAIL\}\}/g,
-                    to: _encode(process.env.SALES_EMAIL) || 'sales@onlyoffice.com'
+                    to: _encode(process.env.SALES_EMAIL) || 'dlyjy@thunisoft.com'
                 },{
                     from: /\{\{PUBLISHER_URL\}\}/g,
-                    to: _encode(process.env.PUBLISHER_URL) || 'https://www.onlyoffice.com'
+                    to: _encode(process.env.PUBLISHER_URL) || 'http://docs.thunisoft.com'
                 },{
                     from: /\{\{PUBLISHER_PHONE\}\}/,
-                    to: process.env['PUBLISHER_PHONE'] || '+371 633-99867'
+                    to: process.env['PUBLISHER_PHONE'] || '0411-39782288'
                 },{
                     from: /\{\{PUBLISHER_NAME\}\}/g,
                     to: _encode(process.env.PUBLISHER_NAME) || 'Ascensio System SIA'
                 },{
                     from: /\{\{PUBLISHER_ADDRESS\}\}/,
-                    to: _encode(process.env.PUBLISHER_ADDRESS) || '20A-12 Ernesta Birznieka-Upisha street, Riga, Latvia, EU, LV-1050'
+                    to: _encode(process.env.PUBLISHER_ADDRESS) || '辽宁省大连市甘井子区金虹东路301号'
                 },{
                     from: /\{\{API_URL_EDITING_CALLBACK\}\}/,
-                    to: _encode(process.env.API_URL_EDITING_CALLBACK) || 'https://api.onlyoffice.com/editors/callback'
+                    to: _encode(process.env.API_URL_EDITING_CALLBACK) || 'http://docs.thunisoft.com/api/editors/callback'
                 },{
                     from: /\{\{COMPANY_NAME\}\}/g,
-                    to: _encode(process.env.COMPANY_NAME) || 'ONLYOFFICE'
+                    to: _encode(process.env.COMPANY_NAME) || '竹简OFFICE'
                 }, {
                     from: /\{\{APP_TITLE_TEXT\}\}/g,
-                    to: _encode(process.env.APP_TITLE_TEXT) || 'ONLYOFFICE'
+                    to: _encode(process.env.APP_TITLE_TEXT) || '竹简OFFICE'
                 }, {
                     from: /\{\{HELP_URL\}\}/g,
-                    to: _encode(process.env.HELP_URL) || 'https://helpcenter.onlyoffice.com'
+                    to: _encode(process.env.HELP_URL) || 'http://docs.thunisoft.com/'
                 }];
 
     var helpreplacements = [
                 {
                     from: /\{\{COEDITING_DESKTOP\}\}/g,
-                    to: _encode(process.env.COEDITING_DESKTOP) || 'Подключиться к облаку'
+                    to: _encode(process.env.COEDITING_DESKTOP) || '连接到云'
                 },{
                     from: /\{\{PLUGIN_LINK\}\}/g,
-                    to: _encode(process.env.PLUGIN_LINK) || 'https://api.onlyoffice.com/plugin/basic'
+                    to: _encode(process.env.PLUGIN_LINK) || 'http://docs.thunisoft.com/api/plugin'
                 },{
                     from: /\{\{PLUGIN_LINK_MACROS\}\}/g,
-                    to: _encode(process.env.PLUGIN_LINK_MACROS) || 'https://api.onlyoffice.com/plugin/macros'
+                    to: _encode(process.env.PLUGIN_LINK_MACROS) || 'http://docs.thunisoft.com/api/plugin/macros'
                 }];
 
     let path = require('path');
@@ -217,7 +217,7 @@ module.exports = function(grunt) {
                           to: packageFile.version
                       },{
                           from: /\{\{APP_CUSTOMER_NAME\}\}/g,
-                          to: process.env['APP_CUSTOMER_NAME'] || 'ONLYOFFICE'
+                          to: process.env['APP_CUSTOMER_NAME'] || '竹简OFFICE'
                       },{
                           from: /\/\*\*[\s\S]+\.com\s+\*\//,
                           to: copyright

@@ -253,6 +253,7 @@ define([
                     docInfo.put_CallbackUrl(this.editorConfig.callbackUrl);
                     docInfo.put_Token(data.doc.token);
                     docInfo.put_Permissions(_permissions);
+                    docInfo.put_EncryptedInfo(this.editorConfig.encryptionKeys);
 
                     var type = /^(?:(pdf|djvu|xps))$/.exec(data.doc.fileType);
                     if (type && typeof type[1] === 'string') {
@@ -631,89 +632,92 @@ define([
                 $('.doc-placeholder').remove();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             onLicenseChanged: function(params) {
-                var licType = params.asc_getLicenseType();
-                if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
-                    (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
-                    this._state.licenseType = licType;
-
-                if (this._isDocReady && this._state.licenseType)
-                    this.applyLicense();
+                // var licType = params.asc_getLicenseType();
+                // if (licType !== undefined && this.appOptions.canEdit && this.editorConfig.mode !== 'view' &&
+                //     (licType===Asc.c_oLicenseResult.Connections || licType===Asc.c_oLicenseResult.UsersCount || licType===Asc.c_oLicenseResult.ConnectionsOS || licType===Asc.c_oLicenseResult.UsersCountOS))
+                //     this._state.licenseType = licType;
+                //
+                // if (this._isDocReady && this._state.licenseType)
+                //     this.applyLicense();
             },
 
+            // modify by yuanzhy@20200723#去掉license提示
             applyLicense: function() {
-                var me = this;
-                if (this.editorConfig.mode !== 'view' && !this.isSupportEditFeature()) {
-                    var value = Common.localStorage.getItem("de-opensource-warning");
-                    value = (value!==null) ? parseInt(value) : 0;
-                    var now = (new Date).getTime();
-                    if (now - value > 86400000) {
-                        Common.localStorage.setItem("de-opensource-warning", now);
-                        uiApp.modal({
-                            title: me.notcriticalErrorTitle,
-                            text : me.errorOpensource,
-                            buttons: [{text: 'OK'}]
-                        });
-                    }
-                    DE.getController('Toolbar').activateControls();
-                    return;
-                }
-
-                if (this._state.licenseType) {
-                    var license = this._state.licenseType,
-                        buttons = [{text: 'OK'}];
-                    if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
-                        license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
-                    } else {
-                        license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
-                        buttons = [{
-                                        text: me.textBuyNow,
-                                        bold: true,
-                                        onClick: function() {
-                                            window.open('{{PUBLISHER_URL}}', "_blank");
-                                        }
-                                    },
-                                    {
-                                        text: me.textContactUs,
-                                        onClick: function() {
-                                            window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                                        }
-                                    }];
-                    }
-                    DE.getController('Toolbar').activateViewControls();
-                    DE.getController('Toolbar').deactivateEditControls();
-                    Common.NotificationCenter.trigger('api:disconnect');
-
-                    var value = Common.localStorage.getItem("de-license-warning");
-                    value = (value!==null) ? parseInt(value) : 0;
-                    var now = (new Date).getTime();
-
-                    if (now - value > 86400000) {
-                        Common.localStorage.setItem("de-license-warning", now);
-                        uiApp.modal({
-                            title: me.textNoLicenseTitle,
-                            text : license,
-                            buttons: buttons
-                        });
-                    }
-                } else {
-                    if (!me.appOptions.isDesktopApp && !me.appOptions.canBrandingExt &&
-                        me.editorConfig && me.editorConfig.customization && (me.editorConfig.customization.loaderName || me.editorConfig.customization.loaderLogo)) {
-                        uiApp.modal({
-                            title: me.textPaidFeature,
-                            text  : me.textCustomLoader,
-                            buttons: [{
-                                        text: me.textContactUs,
-                                        bold: true,
-                                        onClick: function() {
-                                            window.open('mailto:{{SALES_EMAIL}}', "_blank");
-                                        }
-                                    },
-                                    { text: me.textClose }]
-                        });
-                    }
-                    DE.getController('Toolbar').activateControls();
-                }
+                DE.getController('Toolbar').activateControls();
+                // var me = this;
+                // if (this.editorConfig.mode !== 'view' && !this.isSupportEditFeature()) {
+                //     var value = Common.localStorage.getItem("de-opensource-warning");
+                //     value = (value!==null) ? parseInt(value) : 0;
+                //     var now = (new Date).getTime();
+                //     if (now - value > 86400000) {
+                //         Common.localStorage.setItem("de-opensource-warning", now);
+                //         uiApp.modal({
+                //             title: me.notcriticalErrorTitle,
+                //             text : me.errorOpensource,
+                //             buttons: [{text: 'OK'}]
+                //         });
+                //     }
+                //     DE.getController('Toolbar').activateControls();
+                //     return;
+                // }
+                //
+                // if (this._state.licenseType) {
+                //     var license = this._state.licenseType,
+                //         buttons = [{text: 'OK'}];
+                //     if (license===Asc.c_oLicenseResult.Connections || license===Asc.c_oLicenseResult.UsersCount) {
+                //         license = (license===Asc.c_oLicenseResult.Connections) ? this.warnLicenseExceeded : this.warnLicenseUsersExceeded;
+                //     } else {
+                //         license = (license===Asc.c_oLicenseResult.ConnectionsOS) ? this.warnNoLicense : this.warnNoLicenseUsers;
+                //         buttons = [{
+                //                         text: me.textBuyNow,
+                //                         bold: true,
+                //                         onClick: function() {
+                //                             window.open('{{PUBLISHER_URL}}', "_blank");
+                //                         }
+                //                     },
+                //                     {
+                //                         text: me.textContactUs,
+                //                         onClick: function() {
+                //                             window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //                         }
+                //                     }];
+                //     }
+                //     DE.getController('Toolbar').activateViewControls();
+                //     DE.getController('Toolbar').deactivateEditControls();
+                //     Common.NotificationCenter.trigger('api:disconnect');
+                //
+                //     var value = Common.localStorage.getItem("de-license-warning");
+                //     value = (value!==null) ? parseInt(value) : 0;
+                //     var now = (new Date).getTime();
+                //
+                //     if (now - value > 86400000) {
+                //         Common.localStorage.setItem("de-license-warning", now);
+                //         uiApp.modal({
+                //             title: me.textNoLicenseTitle,
+                //             text : license,
+                //             buttons: buttons
+                //         });
+                //     }
+                // } else {
+                //     if (!me.appOptions.isDesktopApp && !me.appOptions.canBrandingExt &&
+                //         me.editorConfig && me.editorConfig.customization && (me.editorConfig.customization.loaderName || me.editorConfig.customization.loaderLogo)) {
+                //         uiApp.modal({
+                //             title: me.textPaidFeature,
+                //             text  : me.textCustomLoader,
+                //             buttons: [{
+                //                         text: me.textContactUs,
+                //                         bold: true,
+                //                         onClick: function() {
+                //                             window.open('mailto:{{SALES_EMAIL}}', "_blank");
+                //                         }
+                //                     },
+                //                     { text: me.textClose }]
+                //         });
+                //     }
+                //     DE.getController('Toolbar').activateControls();
+                // }
             },
 
             onOpenDocument: function(progress) {
@@ -759,7 +763,8 @@ define([
                 me.appOptions.canReview       = me.appOptions.canLicense && me.appOptions.isEdit && (me.permissions.review===true);
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
                 me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
-                me.appOptions.canUseMailMerge = me.appOptions.canLicense && me.appOptions.canEdit && !me.appOptions.isDesktopApp;
+                // modify by yuanzhy@20200724#去掉mailmerge功能
+                // me.appOptions.canUseMailMerge = me.appOptions.canLicense && me.appOptions.canEdit && !me.appOptions.isDesktopApp;
                 me.appOptions.canSendEmailAddresses  = me.appOptions.canLicense && me.editorConfig.canSendEmailAddresses && me.appOptions.canEdit && me.appOptions.canCoAuthoring;
                 me.appOptions.canComments     = me.appOptions.canLicense && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.comments===false);
                 me.appOptions.canChat         = me.appOptions.canLicense && !me.appOptions.isOffline && !((typeof (me.editorConfig.customization) == 'object') && me.editorConfig.customization.chat===false);
@@ -1139,22 +1144,23 @@ define([
                 });
             },
 
+            // modify by xialiang@20200727#version
             onServerVersion: function(buildVersion) {
-                var me = this;
-                if (me.changeServerVersion) return true;
-
-                if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
-                    me.changeServerVersion = true;
-                    uiApp.alert(
-                        me.errorServerVersion,
-                        me.titleServerVersion,
-                        function () {
-                            _.defer(function() {
-                                Common.Gateway.updateVersion();
-                            })
-                        });
-                    return true;
-                }
+                // var me = this;
+                // if (me.changeServerVersion) return true;
+                //
+                // if (DocsAPI.DocEditor.version() !== buildVersion && !window.compareVersions) {
+                //     me.changeServerVersion = true;
+                //     uiApp.alert(
+                //         me.errorServerVersion,
+                //         me.titleServerVersion,
+                //         function () {
+                //             _.defer(function() {
+                //                 Common.Gateway.updateVersion();
+                //             })
+                //         });
+                //     return true;
+                // }
                 return false;
             },
 

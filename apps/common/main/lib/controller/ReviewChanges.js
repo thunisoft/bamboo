@@ -770,7 +770,8 @@ define([
                     }
                 });
             } else if (config.canViewReview) {
-                config.canViewReview = (config.isEdit || me.api.asc_HaveRevisionsChanges(true)); // check revisions from all users
+                // modify by yuanzhy@20200727#修改带历史的excel查看报错问题
+                config.canViewReview = (config.isEdit || (me.api.asc_HaveRevisionsChanges && me.api.asc_HaveRevisionsChanges(true))); // check revisions from all users
                 if (config.canViewReview) {
                     var val = Common.localStorage.getItem(me.view.appPrefix + "review-mode");
                     if (val===null)
