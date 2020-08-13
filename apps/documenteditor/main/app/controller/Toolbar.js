@@ -2942,7 +2942,7 @@ define([
             me.toolbar.render(_.extend({isCompactView: compactview}, config));
 
             // modify by yuanzhy@20200721#新增配置showCollaboration用来隐藏协作按钮
-            if (!config.customization.showCollaboration) {
+            if (!config.customization.hideCollaboration) {
                 var tab = {action: 'review', caption: me.toolbar.textTabCollaboration};
                 var $panel = me.application.getController('Common.Controllers.ReviewChanges').createToolbarPanel();
                 if ( $panel )
