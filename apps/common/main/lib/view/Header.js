@@ -74,7 +74,8 @@ define([
 
         var templateRightBox = '<section>' +
                             '<section id="box-doc-name">' +
-                                '<input type="text" id="rib-doc-name" spellcheck="false" data-can-copy="false" style="pointer-events: none;" disabled="disabled">' +
+                                // '<input type="text" id="rib-doc-name" spellcheck="false" data-can-copy="false" style="pointer-events: none;" disabled="disabled">' +
+                                '<label id="rib-doc-name" />' +
                             '</section>' +
                             '<a id="rib-save-status" class="status-label locked"><%= textSaveEnd %></a>' +
                             '<div class="hedset">' +
@@ -115,8 +116,10 @@ define([
                                     '<div class="btn-slot" id="slot-btn-dt-undo"></div>' +
                                     '<div class="btn-slot" id="slot-btn-dt-redo"></div>' +
                                 '</div>' +
-                                '<div class="lr-separator"></div>' +
-                                '<input type="text" id="title-doc-name" spellcheck="false" data-can-copy="false" style="pointer-events: none;" disabled="disabled">' +
+                                '<div class="lr-separator" id="id-box-doc-name">' +
+                                    // '<input type="text" id="title-doc-name" spellcheck="false" data-can-copy="false" style="pointer-events: none;" disabled="disabled">' +
+                                    '<label id="title-doc-name" />' +
+                                '</div>' +
                                 '<label id="title-user-name" style="pointer-events: none;"></label>' +
                             '</section>';
 
@@ -202,7 +205,14 @@ define([
             }
         }
 
-        function onAppShowed(config) {}
+        function onAppShowed(config) {
+            if ( config.isCrypted && this.labelDocName ) {
+                this.labelDocName.before(
+                    '<div class="inner-box-icon crypted">' +
+                        '<svg class="icon"><use xlink:href="#svg-icon-crypted"></use></svg>' +
+                    '</div>');
+            }
+        }
 
         function onAppReady(mode) {
             appConfig = mode;
@@ -212,17 +222,14 @@ define([
                 Common.NotificationCenter.trigger('goback');
             });
 
-            // modify by yuanzhy@20200701#点击logo跳转，小图标点击问题
-            if (me.logo && mode.customization && mode.customization.customer && mode.customization.customer.www === 'docs.thunisoft.com' )
+            if ( me.logo )
                 me.logo.children(0).on('click', function (e) {
-                    var newDocumentPage = window.open('/index.html');
-                    newDocumentPage && newDocumentPage.focus();
-                    //         var _url = !!me.branding && !!me.branding.logo && (me.branding.logo.url!==undefined) ?
-                    //             me.branding.logo.url : '{{PUBLISHER_URL}}';
-                    //         if (_url) {
-                    //             var newDocumentPage = window.open(_url);
-                    //             newDocumentPage && newDocumentPage.focus();
-                    //         }
+                    var _url = !!me.branding && !!me.branding.logo && (me.branding.logo.url!==undefined) ?
+                        me.branding.logo.url : '{{PUBLISHER_URL}}';
+                    if (_url) {
+                        var newDocumentPage = window.open(_url);
+                        newDocumentPage && newDocumentPage.focus();
+                    }
                 });
 
             onResetUsers(storeUsers);
@@ -515,8 +522,7 @@ define([
                     var $html = $(_.template(templateTitleBox)());
 
                     !!me.labelDocName && me.labelDocName.hide().off();                  // hide document title if it was created in right box
-                    me.labelDocName = $html.find('> #title-doc-name');
-                    me.labelDocName.text = function (str) {this.val(str);};             // redefine text function to lock temporaly rename docuemnt option
+                    me.labelDocName = $html.find('#title-doc-name');
                     me.labelDocName.text( me.documentCaption );
 
                     me.labelUserName = $('> #title-user-name', $html);

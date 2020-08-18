@@ -255,7 +255,7 @@ if (Common === undefined) {
         var _onMessage = function(msg) {
             // TODO: check message origin
             var data = msg.data;
-            if (!_isString(data) || !window.JSON) {
+            if (Object.prototype.toString.apply(data) !== '[object String]' || !window.JSON) {
                 return;
             }
 
