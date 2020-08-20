@@ -725,7 +725,7 @@
   "DE.Controllers.Statusbar.textHasChanges": "已经跟踪了新的变化",
   "DE.Controllers.Statusbar.textTrackChanges": "打开文档，并启用“跟踪更改”模式",
   "DE.Controllers.Statusbar.tipReview": "修订",
-  "DE.Controllers.Statusbar.zoomText": "缩放％{0}",
+  "DE.Controllers.Statusbar.zoomText": "缩放{0}％",
   "DE.Controllers.Toolbar.confirmAddFontName": "您要保存的字体在当前设备上不可用。<br>使用其中一种系统字体显示文本样式，当可用时将使用保存的字体。<br>是否要继续？",
   "DE.Controllers.Toolbar.notcriticalErrorTitle": "警告",
   "DE.Controllers.Toolbar.textAccent": "口音",
