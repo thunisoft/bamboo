@@ -600,7 +600,7 @@
   "PE.Controllers.Main.warnNoLicense": "该版本对文档服务器的并发连接有限制。<br>如果需要更多请考虑购买商业许可证。",
   "PE.Controllers.Main.warnNoLicenseUsers": "此版本的 %1 编辑软件对并发用户数量有一定的限制。<br>如果需要更多，请考虑购买商用许可证。",
   "PE.Controllers.Main.warnProcessRightsChange": "您被拒绝编辑文件的权限。",
-  "PE.Controllers.Statusbar.zoomText": "缩放％{0}",
+  "PE.Controllers.Statusbar.zoomText": "缩放{0}％",
   "PE.Controllers.Toolbar.confirmAddFontName": "您要保存的字体在当前设备上不可用。<br>使用其中一种系统字体显示文本样式，当可用时将使用保存的字体。<br>是否要继续？",
   "PE.Controllers.Toolbar.textAccent": "口音",
   "PE.Controllers.Toolbar.textBracket": "括号",
