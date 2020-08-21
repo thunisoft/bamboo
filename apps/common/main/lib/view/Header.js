@@ -222,14 +222,17 @@ define([
                 Common.NotificationCenter.trigger('goback');
             });
 
-            if ( me.logo )
+            // modify by yuanzhy@20200701#点击logo跳转，小图标点击问题
+            if (me.logo && mode.customization && mode.customization.customer && mode.customization.customer.www === 'docs.thunisoft.com' )
                 me.logo.children(0).on('click', function (e) {
-                    var _url = !!me.branding && !!me.branding.logo && (me.branding.logo.url!==undefined) ?
-                        me.branding.logo.url : '{{PUBLISHER_URL}}';
-                    if (_url) {
-                        var newDocumentPage = window.open(_url);
-                        newDocumentPage && newDocumentPage.focus();
-                    }
+                    var newDocumentPage = window.open('/index.html');
+                    newDocumentPage && newDocumentPage.focus();
+                    //         var _url = !!me.branding && !!me.branding.logo && (me.branding.logo.url!==undefined) ?
+                    //             me.branding.logo.url : '{{PUBLISHER_URL}}';
+                    //         if (_url) {
+                    //             var newDocumentPage = window.open(_url);
+                    //             newDocumentPage && newDocumentPage.focus();
+                    //         }
                 });
 
             onResetUsers(storeUsers);
