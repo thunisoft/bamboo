@@ -17,7 +17,7 @@
                         "src": [
                             "Images/*",
                             "Images/placeholders/*",
-                            "Images/content_controls/*",
+							"Images/content_controls/*",
                             "Native/*.js",
                             "libfont/js/fonts.*",
                             "libfont/wasm/fonts.*"
