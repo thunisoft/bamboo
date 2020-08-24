@@ -86,7 +86,8 @@ define([
                 displayField: 'displayValue',
                 valueField  : 'value',
                 search      : false,
-                scrollAlwaysVisible: false
+                scrollAlwaysVisible: false,
+                showChineseFontName : true
             },
 
             template: _.template([
@@ -121,6 +122,7 @@ define([
                 this.valueField     = me.options.valueField;
                 this.search         = me.options.search;
                 this.scrollAlwaysVisible = me.options.scrollAlwaysVisible;
+                this.showChineseFontName = me.options.showChineseFontName;
                 me.rendered         = me.options.rendered || false;
 
                 this.lastValue = null;
@@ -554,6 +556,9 @@ define([
 
                 var obj;
                 this._selectedItem = this.store.findWhere((obj={}, obj[this.valueField]=value, obj));
+                if(this.menuCls === 'cmb-font-size' && !this.showChineseFontName){
+                    this._selectedItem = this.store.findWhere((obj={}, obj[this.displayField]=value.toString(), obj));
+                }
 
                 $('.selected', $(this.el)).removeClass('selected');
 
@@ -613,7 +618,13 @@ define([
                     // set input text and trigger input change event marked as synthetic
                     this.lastValue = this._selectedItem.get(this.displayField);
                     this._input.val(this.lastValue).trigger('change', { synthetic: true });
-
+                    if (this.menuCls === 'cmb-font-size') {
+                        if ( parseFloat(this.lastValue) === this._selectedItem.get(this.valueField) ){
+                            this.showChineseFontName = false;
+                        }else{
+                            this.showChineseFontName = true;
+                        }
+                    }
                     $('.selected', $(this.el)).removeClass('selected');
                     el.addClass('selected');
 
