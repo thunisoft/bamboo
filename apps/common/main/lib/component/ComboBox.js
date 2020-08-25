@@ -87,7 +87,9 @@ define([
                 valueField  : 'value',
                 search      : false,
                 scrollAlwaysVisible: false,
+                //    modify by sunxingyu@20200824 中文字号问题
                 showChineseFontName : true
+
             },
 
             template: _.template([
@@ -122,6 +124,7 @@ define([
                 this.valueField     = me.options.valueField;
                 this.search         = me.options.search;
                 this.scrollAlwaysVisible = me.options.scrollAlwaysVisible;
+                //    modify by sunxingyu@20200824 中文字号问题
                 this.showChineseFontName = me.options.showChineseFontName;
                 me.rendered         = me.options.rendered || false;
 
@@ -556,6 +559,7 @@ define([
 
                 var obj;
                 this._selectedItem = this.store.findWhere((obj={}, obj[this.valueField]=value, obj));
+                //    modify by sunxingyu@20200824 中文字号问题
                 if(this.menuCls === 'cmb-font-size' && !this.showChineseFontName){
                     this._selectedItem = this.store.findWhere((obj={}, obj[this.displayField]=value.toString(), obj));
                 }
@@ -618,6 +622,7 @@ define([
                     // set input text and trigger input change event marked as synthetic
                     this.lastValue = this._selectedItem.get(this.displayField);
                     this._input.val(this.lastValue).trigger('change', { synthetic: true });
+                    //    modify by sunxingyu@20200824 中文字号问题
                     if (this.menuCls === 'cmb-font-size') {
                         if ( parseFloat(this.lastValue) === this._selectedItem.get(this.valueField) ){
                             this.showChineseFontName = false;
