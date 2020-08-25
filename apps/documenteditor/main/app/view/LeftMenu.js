@@ -75,12 +75,13 @@ define([
                 /** coauthoring end **/
                 'click #left-btn-plugins': _.bind(this.onCoauthOptions, this),
                 'click #left-btn-navigation': _.bind(this.onCoauthOptions, this),
-                'click #left-btn-support': function() {
-                    var config = this.mode.customization;
-                    config && !!config.feedback && !!config.feedback.url ?
-                        window.open(config.feedback.url) :
-                        window.open('{{SUPPORT_URL}}');
-                }
+                <!-- /** modify by sunixngyu@20200825#删除spellcheck 和 支持按钮 **/ -->
+                // 'click #left-btn-support': function() {
+                //     var config = this.mode.customization;
+                //     config && !!config.feedback && !!config.feedback.url ?
+                //         window.open(config.feedback.url) :
+                //         window.open('{{SUPPORT_URL}}');
+                // }
             }
         },
 

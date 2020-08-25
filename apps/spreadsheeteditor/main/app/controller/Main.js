@@ -889,8 +889,9 @@ define([
                     leftMenuView                = leftmenuController.getView('LeftMenu'),
                     documentHolderView          = documentHolderController.getView('DocumentHolder'),
                     chatController              = application.getController('Common.Controllers.Chat'),
-                    pluginsController           = application.getController('Common.Controllers.Plugins'),
-                    spellcheckController        = application.getController('Spellcheck');
+                    pluginsController           = application.getController('Common.Controllers.Plugins');
+                    // modify by sunxingyu@20100825 删除 spellcheck
+                    // spellcheckController        = application.getController('Spellcheck');
 
                 leftMenuView.getMenu('file').loadDocument({doc:me.appOptions.spreadsheet});
                 leftmenuController.setMode(me.appOptions).createDelayedElements().setApi(me.api);
@@ -917,7 +918,8 @@ define([
                 this.formulaInput = celleditorController.getView('CellEditor').$el.find('textarea');
 
                 if (me.appOptions.isEdit) {
-                    spellcheckController.setApi(me.api).setMode(me.appOptions);
+                    // modify by sunxingyu@20100825 删除 spellcheck
+                    // spellcheckController.setApi(me.api).setMode(me.appOptions);
 
                     if (me.appOptions.canAutosave) {
                         value = Common.localStorage.getItem("sse-settings-autosave");

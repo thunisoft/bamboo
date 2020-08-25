@@ -6,7 +6,7 @@
         <!-- /** coauthoring end **/ -->
         <button id="left-btn-plugins" class="btn btn-category" content-target=""><i class="icon toolbar__icon btn-menu-plugin">&nbsp;</i></button>
         <button id="left-btn-navigation" class="btn btn-category" content-target=""><i class="icon toolbar__icon btn-menu-navigation">&nbsp;</i></button>
-        <button id="left-btn-support" class="btn btn-category" content-target=""><i class="icon toolbar__icon btn-menu-support">&nbsp;</i></button>
+        <!-- /** modify by sunixngyu@20200825#删除spellcheck 和 支持按钮 **/ -->
     </div>
     <div class="left-panel" style="">
         <!-- /** coauthoring begin **/ -->

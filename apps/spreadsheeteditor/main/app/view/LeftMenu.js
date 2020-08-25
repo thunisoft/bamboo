@@ -65,7 +65,8 @@ define([
                 'click #left-btn-chat': _.bind(this.onCoauthOptions, this),
                 /** coauthoring end **/
                 'click #left-btn-plugins': _.bind(this.onCoauthOptions, this),
-                'click #left-btn-spellcheck': _.bind(this.onCoauthOptions, this),
+                // modify by sunxingyu@20100825 删除 spellcheck
+                // 'click #left-btn-spellcheck': _.bind(this.onCoauthOptions, this),
                 'click #left-btn-support': function() {
                     var config = this.mode.customization;
                     config && !!config.feedback && !!config.feedback.url ?
@@ -142,15 +143,16 @@ define([
             this.btnPlugins.hide();
             this.btnPlugins.on('click',         _.bind(this.onBtnMenuClick, this));
 
-            this.btnSpellcheck = new Common.UI.Button({
-                el: $markup.elementById('#left-btn-spellcheck'),
-                hint: this.tipSpellcheck,
-                enableToggle: true,
-                disabled: true,
-                toggleGroup: 'leftMenuGroup'
-            });
-            this.btnSpellcheck.hide();
-            this.btnSpellcheck.on('click',      _.bind(this.onBtnMenuClick, this));
+            // modify by sunxingyu@20100825 删除 spellcheck
+            // this.btnSpellcheck = new Common.UI.Button({
+            //     el: $markup.elementById('#left-btn-spellcheck'),
+            //     hint: this.tipSpellcheck,
+            //     enableToggle: true,
+            //     disabled: true,
+            //     toggleGroup: 'leftMenuGroup'
+            // });
+            // this.btnSpellcheck.hide();
+            // this.btnSpellcheck.on('click',      _.bind(this.onBtnMenuClick, this));
 
             this.btnSearch.on('click',          _.bind(this.onBtnMenuClick, this));
             this.btnAbout.on('toggle',          _.bind(this.onBtnMenuToggle, this));
@@ -222,10 +224,11 @@ define([
                }
             }
             if (this.panelSpellcheck) {
-                if (this.btnSpellcheck.pressed) {
-                    this.panelSpellcheck.show();
-                } else
-                    this.panelSpellcheck['hide']();
+                // modify by sunxingyu@20100825 删除 spellcheck
+                // if (this.btnSpellcheck.pressed) {
+                //     this.panelSpellcheck.show();
+                // } else
+                this.panelSpellcheck['hide']();
             }
             // if (this.mode.canPlugins && this.panelPlugins) {
             //     if (this.btnPlugins.pressed) {
@@ -289,7 +292,8 @@ define([
             }
             if (this.panelSpellcheck) {
                 this.panelSpellcheck['hide']();
-                this.btnSpellcheck.toggle(false, true);
+                // modify by sunxingyu@20100825 删除 spellcheck
+                // this.btnSpellcheck.toggle(false, true);
             }
         },
 
@@ -310,7 +314,8 @@ define([
             this.btnChat.setDisabled(false);
             /** coauthoring end **/
             this.btnPlugins.setDisabled(false);
-            this.btnSpellcheck.setDisabled(false);
+            // modify by sunxingyu@20100825 删除 spellcheck
+            // this.btnSpellcheck.setDisabled(false);
         },
 
         showMenu: function(menu) {

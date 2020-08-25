@@ -34,7 +34,7 @@
             </div>
         </div>
         <span id="btn-doc-lang" class="el-edit"></span>
-        <span id="btn-doc-spell" class="el-edit"></span>
+        <!-- /** modify by sunixngyu@20200825#删除spellcheck 和 支持按钮 **/ -->
         <div class="separator short el-edit"></div>
         <button id="btn-zoom-topage" type="button" class="btn small btn-toolbar"><i class="icon toolbar__icon btn-ic-zoomtoslide"></i></button>
         <button id="btn-zoom-towidth" type="button" class="btn small btn-toolbar"><i class="icon toolbar__icon btn-ic-zoomtowidth"></i></button>

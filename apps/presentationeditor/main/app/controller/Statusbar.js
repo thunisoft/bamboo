@@ -102,8 +102,9 @@ define([
             Common.NotificationCenter.on('app:face', function (cfg) {
                 if ( cfg.isEdit ) {
                     var review = me.getApplication().getController('Common.Controllers.ReviewChanges').getView();
-                    me.btnSpelling = review.getButton('spelling', 'statusbar');
-                    me.btnSpelling.render( me.statusbar.$el.find('#btn-doc-spell') );
+                    // modify by sunxingyu@20100825 删除 spellcheck
+                    // me.btnSpelling = review.getButton('spelling', 'statusbar');
+                    // me.btnSpelling.render( me.statusbar.$el.find('#btn-doc-spell') );
                     me.btnDocLang = review.getButton('doclang', 'statusbar');
                     me.btnDocLang.render( me.statusbar.$el.find('#btn-doc-lang') );
                 } else {
