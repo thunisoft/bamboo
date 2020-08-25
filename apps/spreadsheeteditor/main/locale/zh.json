@@ -2497,7 +2497,7 @@
   "SSE.Views.Toolbar.txtTableTemplate": "格式为表格模板",
   "SSE.Views.Toolbar.txtText": "文本",
   "SSE.Views.Toolbar.txtTime": "时间",
-  "SSE.Views.Toolbar.txtUnmerge": "不牢固的单元格",
+  "SSE.Views.Toolbar.txtUnmerge": "不合并单元格",
   "SSE.Views.Toolbar.txtYen": "日元",
   "SSE.Views.Top10FilterDialog.textType": "显示",
   "SSE.Views.Top10FilterDialog.txtBottom": "底部",
