@@ -195,95 +195,92 @@ define([
             });
         },
 
-        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         refreshPluginsList: function() {
-            // var me = this;
-            // var storePlugins = this.getApplication().getCollection('Common.Collections.Plugins'),
-            //     arr = [];
-            // storePlugins.each(function(item){
-            //     var plugin = new Asc.CPlugin();
-            //     plugin.set_Name(item.get('name'));
-            //     plugin.set_Guid(item.get('guid'));
-            //     plugin.set_BaseUrl(item.get('baseUrl'));
-            //
-            //     var variations = item.get('variations'),
-            //         variationsArr = [];
-            //     variations.forEach(function(itemVar){
-            //         var variation = new Asc.CPluginVariation();
-            //         variation.set_Description(itemVar.get('description'));
-            //         variation.set_Url(itemVar.get('url'));
-            //         variation.set_Icons(itemVar.get('icons'));
-            //         variation.set_Visual(itemVar.get('isVisual'));
-            //         variation.set_CustomWindow(itemVar.get('isCustomWindow'));
-            //         variation.set_System(itemVar.get('isSystem'));
-            //         variation.set_Viewer(itemVar.get('isViewer'));
-            //         variation.set_EditorsSupport(itemVar.get('EditorsSupport'));
-            //         variation.set_Modal(itemVar.get('isModal'));
-            //         variation.set_InsideMode(itemVar.get('isInsideMode'));
-            //         variation.set_InitDataType(itemVar.get('initDataType'));
-            //         variation.set_InitData(itemVar.get('initData'));
-            //         variation.set_UpdateOleOnResize(itemVar.get('isUpdateOleOnResize'));
-            //         variation.set_Buttons(itemVar.get('buttons'));
-            //         variation.set_Size(itemVar.get('size'));
-            //         variation.set_InitOnSelectionChanged(itemVar.get('initOnSelectionChanged'));
-            //         variation.set_Events(itemVar.get('events'));
-            //
-            //         variationsArr.push(variation);
-            //     });
-            //
-            //     plugin.set_Variations(variationsArr);
-            //     item.set('pluginObj', plugin);
-            //     arr.push(plugin);
-            // });
-            // this.api.asc_pluginsRegister('', arr);
-            // if (storePlugins.hasVisible())
-            //     Common.NotificationCenter.trigger('tab:visible', 'plugins', true);
+            var me = this;
+            var storePlugins = this.getApplication().getCollection('Common.Collections.Plugins'),
+                arr = [];
+            storePlugins.each(function(item){
+                var plugin = new Asc.CPlugin();
+                plugin.set_Name(item.get('name'));
+                plugin.set_Guid(item.get('guid'));
+                plugin.set_BaseUrl(item.get('baseUrl'));
+
+                var variations = item.get('variations'),
+                    variationsArr = [];
+                variations.forEach(function(itemVar){
+                    var variation = new Asc.CPluginVariation();
+                    variation.set_Description(itemVar.get('description'));
+                    variation.set_Url(itemVar.get('url'));
+                    variation.set_Icons(itemVar.get('icons'));
+                    variation.set_Visual(itemVar.get('isVisual'));
+                    variation.set_CustomWindow(itemVar.get('isCustomWindow'));
+                    variation.set_System(itemVar.get('isSystem'));
+                    variation.set_Viewer(itemVar.get('isViewer'));
+                    variation.set_EditorsSupport(itemVar.get('EditorsSupport'));
+                    variation.set_Modal(itemVar.get('isModal'));
+                    variation.set_InsideMode(itemVar.get('isInsideMode'));
+                    variation.set_InitDataType(itemVar.get('initDataType'));
+                    variation.set_InitData(itemVar.get('initData'));
+                    variation.set_UpdateOleOnResize(itemVar.get('isUpdateOleOnResize'));
+                    variation.set_Buttons(itemVar.get('buttons'));
+                    variation.set_Size(itemVar.get('size'));
+                    variation.set_InitOnSelectionChanged(itemVar.get('initOnSelectionChanged'));
+                    variation.set_Events(itemVar.get('events'));
+
+                    variationsArr.push(variation);
+                });
+
+                plugin.set_Variations(variationsArr);
+                item.set('pluginObj', plugin);
+                arr.push(plugin);
+            });
+            this.api.asc_pluginsRegister('', arr);
+            if (storePlugins.hasVisible())
+                Common.NotificationCenter.trigger('tab:visible', 'plugins', true);
         },
 
-        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         onAddPlugin: function (model) {
-            // var me = this;
-            // if ( me.$toolbarPanelPlugins ) {
-            //     var btn = me.panelPlugins.createPluginButton(model);
-            //     if (!btn) return;
-            //
-            //     var _group = $('> .group', me.$toolbarPanelPlugins);
-            //     var $slot = $('<span class="slot"></span>').appendTo(_group);
-            //     btn.render($slot);
-            // }
+            var me = this;
+            if ( me.$toolbarPanelPlugins ) {
+                var btn = me.panelPlugins.createPluginButton(model);
+                if (!btn) return;
+
+                var _group = $('> .group', me.$toolbarPanelPlugins);
+                var $slot = $('<span class="slot"></span>').appendTo(_group);
+                btn.render($slot);
+            }
         },
 
-        // modify by sunxingyu@20200710#提交屏蔽部分无用功能代码
         onResetPlugins: function (collection) {
-            // var me = this;
-            // me.appOptions.canPlugins = !collection.isEmpty();
-            // if ( me.$toolbarPanelPlugins ) {
-            //     me.$toolbarPanelPlugins.empty();
-            //
-            //     var _group = $('<div class="group"></div>'),
-            //         rank = -1,
-            //         rank_plugins = 0;
-            //     collection.each(function (model) {
-            //         var new_rank = model.get('groupRank');
-            //         if (new_rank!==rank && rank>-1 && rank_plugins>0) {
-            //             _group.appendTo(me.$toolbarPanelPlugins);
-            //             $('<div class="separator long"></div>').appendTo(me.$toolbarPanelPlugins);
-            //             _group = $('<div class="group"></div>');
-            //             rank_plugins = 0;
-            //         }
-            //
-            //         var btn = me.panelPlugins.createPluginButton(model);
-            //         if (btn) {
-            //             var $slot = $('<span class="slot"></span>').appendTo(_group);
-            //             btn.render($slot);
-            //             rank_plugins++;
-            //         }
-            //         rank = new_rank;
-            //     });
-            //     _group.appendTo(me.$toolbarPanelPlugins);
-            // } else {
-            //     console.error('toolbar panel isnot created');
-            // }
+            var me = this;
+            me.appOptions.canPlugins = !collection.isEmpty();
+            if (me.$toolbarPanelPlugins) {
+                me.$toolbarPanelPlugins.empty();
+
+                var _group = $('<div class="group"></div>'),
+                    rank = -1,
+                    rank_plugins = 0;
+                collection.each(function (model) {
+                    var new_rank = model.get('groupRank');
+                    if (new_rank !== rank && rank > -1 && rank_plugins > 0) {
+                        _group.appendTo(me.$toolbarPanelPlugins);
+                        $('<div class="separator long"></div>').appendTo(me.$toolbarPanelPlugins);
+                        _group = $('<div class="group"></div>');
+                        rank_plugins = 0;
+                    }
+
+                    var btn = me.panelPlugins.createPluginButton(model);
+                    if (btn) {
+                        var $slot = $('<span class="slot"></span>').appendTo(_group);
+                        btn.render($slot);
+                        rank_plugins++;
+                    }
+                    rank = new_rank;
+                });
+                _group.appendTo(me.$toolbarPanelPlugins);
+            } else {
+                console.error('toolbar panel isnot created');
+            }
         },
 
         onSelectPlugin: function(picker, item, record, e){
