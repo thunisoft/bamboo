@@ -1484,7 +1484,8 @@ define([
         onDocumentKeyDown: function(event){
             if (this.api){
                 var key = event.keyCode;
-                if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey){
+                var ctrlKey = !AscCommon.getAltGr(event) && (event.metaKey || event.ctrlKey);
+                if (ctrlKey && !event.shiftKey && !event.altKey){
                     if (key === Common.UI.Keys.NUM_PLUS || key === Common.UI.Keys.EQUALITY || (Common.Utils.isGecko && key === Common.UI.Keys.EQUALITY_FF) || (Common.Utils.isOpera && key == 43)){
                         if (!this.api.isCellEdited) {
                             var factor = Math.floor(this.api.asc_getZoom() * 10)/10;
@@ -1516,6 +1517,32 @@ define([
                     event.preventDefault();
                     event.stopPropagation();
                     return false;
+                }
+                // add by yuanzhy@20200903
+                else if (event.altKey && event.shiftKey && !ctrlKey) {
+                    if (key === Common.UI.Keys.LEFT) {
+                        this.getApplication().getController('DataTab').view.fireEvent('data:ungroup')
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    } else if (key === Common.UI.Keys.RIGHT) {
+                        this.getApplication().getController('DataTab').view.fireEvent('data:group')
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    }
+                } else if (ctrlKey && event.shiftKey && !event.altKey) {
+                    if (key === 188) { // ,<
+                        this.getApplication().getController('Toolbar').onDecreaseFontSize()
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    } else if (key === 190) { // .>
+                        this.getApplication().getController('Toolbar').onIncreaseFontSize()
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    }
                 }
             }
         },
