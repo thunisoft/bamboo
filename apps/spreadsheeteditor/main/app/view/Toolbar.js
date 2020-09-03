@@ -326,22 +326,22 @@ define([
                     hint        : me.tipFontSize,
                     lock        : [_set.selImage, _set.editFormula, _set.selRangeEdit, _set.coAuth, _set.coAuthText, _set.lostConnect],
                     data        : [
-                        {value: 42, displayValue: "初号"},
-                        {value: 36, displayValue: "小初"},
-                        {value: 26, displayValue: "一号"},
-                        {value: 24, displayValue: "小一"},
-                        {value: 22, displayValue: "二号"},
-                        {value: 18, displayValue: "小二"},
-                        {value: 16, displayValue: "三号"},
-                        {value: 15, displayValue: "小三"},
-                        {value: 14, displayValue: "四号"},
-                        {value: 12, displayValue: "小四"},
-                        {value: 10.5, displayValue: "五号"},
-                        {value: 9, displayValue: "小五"},
-                        {value: 7.5, displayValue: "六号"},
-                        {value: 6.5, displayValue: "小六"},
-                        {value: 5.5, displayValue: "七号"},
-                        {value: 5, displayValue: "八号"},
+                        // {value: 42, displayValue: "初号"},
+                        // {value: 36, displayValue: "小初"},
+                        // {value: 26, displayValue: "一号"},
+                        // {value: 24, displayValue: "小一"},
+                        // {value: 22, displayValue: "二号"},
+                        // {value: 18, displayValue: "小二"},
+                        // {value: 16, displayValue: "三号"},
+                        // {value: 15, displayValue: "小三"},
+                        // {value: 14, displayValue: "四号"},
+                        // {value: 12, displayValue: "小四"},
+                        // {value: 10.5, displayValue: "五号"},
+                        // {value: 9, displayValue: "小五"},
+                        // {value: 7.5, displayValue: "六号"},
+                        // {value: 6.5, displayValue: "小六"},
+                        // {value: 5.5, displayValue: "七号"},
+                        // {value: 5, displayValue: "八号"},
                         {value: 5, displayValue: "5"},
                         {value: 5.5, displayValue: "5.5"},
                         {value: 6.5, displayValue: "6.5"},
@@ -1634,8 +1634,8 @@ define([
             _updateHint(this.btnPaste, this.tipPaste + Common.Utils.String.platformKey('Ctrl+V'));
             _updateHint(this.btnUndo, this.tipUndo + Common.Utils.String.platformKey('Ctrl+Z'));
             _updateHint(this.btnRedo, this.tipRedo + Common.Utils.String.platformKey('Ctrl+Y'));
-            _updateHint(this.btnIncFontSize, this.tipIncFont + Common.Utils.String.platformKey('Ctrl+]'));
-            _updateHint(this.btnDecFontSize, this.tipDecFont + Common.Utils.String.platformKey('Ctrl+['));
+            _updateHint(this.btnIncFontSize, this.tipIncFont + Common.Utils.String.platformKey('Ctrl+Shift+.'));
+            _updateHint(this.btnDecFontSize, this.tipDecFont + Common.Utils.String.platformKey('Ctrl+Shift+,'));
             _updateHint(this.btnBold, this.textBold + Common.Utils.String.platformKey('Ctrl+B'));
             _updateHint(this.btnItalic, this.textItalic + Common.Utils.String.platformKey('Ctrl+I'));
             _updateHint(this.btnUnderline, this.textUnderline + Common.Utils.String.platformKey('Ctrl+U'));
