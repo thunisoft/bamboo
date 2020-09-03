@@ -8,16 +8,16 @@
 ;(function(window, document) {
 
     var frameName = 'frameEditor';
-    var getBookmarkManager = {
+    var bookmarkManager = {
         type: 'method',
         target: 'DE.controllers.Viewport.api',
         methodName: 'asc_GetBookmarksManager',
     };
-    var getLogicDocument = {
-        type: 'method',
-        target: 'DE.controllers.Viewport.api',
-        methodName: 'asc_GetLogicDocument',
-    };
+    // var logicDocument = {
+    //     type: 'method',
+    //     target: 'DE.controllers.Viewport.api',
+    //     methodName: 'asc_GetLogicDocument',
+    // };
     // 菜单相关操作
     var map = { // default is target@eventName
         // ============================ header ============================
@@ -82,7 +82,7 @@
         // %%%%%%%%%%%%%%%%%%%%%%%%%%%% 函数 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
         goToBookmark: {
             type: 'method',
-            target: getBookmarkManager,
+            target: bookmarkManager,
             methodName: 'asc_GoToBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
@@ -91,7 +91,7 @@
         },
         addBookmark: {
             type: 'method',
-            target: getBookmarkManager,
+            target: bookmarkManager,
             methodName: 'asc_AddBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
@@ -100,7 +100,7 @@
         },
         removeBookmark: {
             type: 'method',
-            target: getBookmarkManager,
+            target: bookmarkManager,
             methodName: 'asc_RemoveBookmark',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
@@ -109,8 +109,8 @@
         },
         addText: {
             type: 'method',
-            target: getLogicDocument,
-            methodName: 'AddText',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'pluginMethod_InputText',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
                 {type: String, required: true, description: '文本内容'}
