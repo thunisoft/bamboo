@@ -70,7 +70,8 @@ define([
     'spreadsheeteditor/main/app/view/ParagraphSettingsAdvanced',
     'spreadsheeteditor/main/app/view/ImageSettingsAdvanced',
     'spreadsheeteditor/main/app/view/SetValueDialog',
-    'spreadsheeteditor/main/app/view/AutoFilterDialog'
+    'spreadsheeteditor/main/app/view/AutoFilterDialog',
+    'spreadsheeteditor/main/app/view/InsertCellDialog'
 ], function () {
     'use strict';
 
@@ -1483,10 +1484,12 @@ define([
 
         onDocumentKeyDown: function(event){
             if (this.api){
+                var self = this;
                 var key = event.keyCode;
+                // modify by yuanzhy@20200903
                 var ctrlKey = !AscCommon.getAltGr(event) && (event.metaKey || event.ctrlKey);
                 if (ctrlKey && !event.shiftKey && !event.altKey){
-                    if (key === Common.UI.Keys.NUM_PLUS || key === Common.UI.Keys.EQUALITY || (Common.Utils.isGecko && key === Common.UI.Keys.EQUALITY_FF) || (Common.Utils.isOpera && key == 43)){
+                    if (key === Common.UI.Keys.EQUALITY || (Common.Utils.isGecko && key === Common.UI.Keys.EQUALITY_FF) || (Common.Utils.isOpera && key == 43)){
                         if (!this.api.isCellEdited) {
                             var factor = Math.floor(this.api.asc_getZoom() * 10)/10;
                             factor += .1;
@@ -1498,7 +1501,7 @@ define([
                             event.stopPropagation();
                             return false;
                         }
-                    } else if (key === Common.UI.Keys.NUM_MINUS || key === Common.UI.Keys.MINUS || (Common.Utils.isGecko && key === Common.UI.Keys.MINUS_FF) || (Common.Utils.isOpera && key == 45)){
+                    } else if (key === Common.UI.Keys.MINUS || (Common.Utils.isGecko && key === Common.UI.Keys.MINUS_FF) || (Common.Utils.isOpera && key == 45)){
                         if (!this.api.isCellEdited) {
                             factor = Math.ceil(this.api.asc_getZoom() * 10)/10;
                             factor -= .1;
@@ -1510,6 +1513,38 @@ define([
                             event.stopPropagation();
                             return false;
                         }
+                    } else if (key === Common.UI.Keys.NUM_PLUS) {
+                        (new SSE.Views.InsertCellDialog({
+                            title: '插入',
+                            props: 'insert',
+                            handler: function (dlg, result) {
+                                if (result=='ok') {
+                                    self.api.asc_insertCells(dlg.getSettings());
+                                    Common.NotificationCenter.trigger('edit:complete', self);
+                                    Common.component.Analytics.trackEvent('DocumentHolder', 'Insert Cells');
+                                }
+                            }
+                        })).show();
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    } else if (key === Common.UI.Keys.NUM_MINUS) {
+                        (new SSE.Views.InsertCellDialog({
+                            title: '删除',
+                            props: 'delete',
+                            handler: function (dlg, result) {
+                                if (result=='ok') {
+                                    self.api.asc_deleteCells(dlg.getSettings());
+                                    Common.NotificationCenter.trigger('edit:complete', self);
+                                    Common.component.Analytics.trackEvent('DocumentHolder', 'Delete Cells');
+                                }
+                            }
+                        })).show();
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    } else if (key === Common.UI.Keys.F1) {
+                        this.getApplication().getController('Toolbar').onClickChangeCompact();
                     }
                 } else
                 if (key == Common.UI.Keys.F10 && event.shiftKey) {
