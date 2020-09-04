@@ -1514,32 +1514,36 @@ define([
                             return false;
                         }
                     } else if (key === Common.UI.Keys.NUM_PLUS) {
-                        (new SSE.Views.InsertCellDialog({
-                            title: '插入',
-                            props: 'insert',
-                            handler: function (dlg, result) {
-                                if (result=='ok') {
-                                    self.api.asc_insertCells(dlg.getSettings());
-                                    Common.NotificationCenter.trigger('edit:complete', self);
-                                    Common.component.Analytics.trackEvent('DocumentHolder', 'Insert Cells');
+                        if (!self.getApplication().getController('Main').isModalShowed) {
+                            (new SSE.Views.InsertCellDialog({
+                                title: '插入',
+                                props: 'insert',
+                                handler: function (dlg, result) {
+                                    if (result=='ok') {
+                                        self.api.asc_insertCells(dlg.getSettings());
+                                        Common.NotificationCenter.trigger('edit:complete', self);
+                                        Common.component.Analytics.trackEvent('DocumentHolder', 'Insert Cells');
+                                    }
                                 }
-                            }
-                        })).show();
+                            })).show();
+                        }
                         event.preventDefault();
                         event.stopPropagation();
                         return false;
                     } else if (key === Common.UI.Keys.NUM_MINUS) {
-                        (new SSE.Views.InsertCellDialog({
-                            title: '删除',
-                            props: 'delete',
-                            handler: function (dlg, result) {
-                                if (result=='ok') {
-                                    self.api.asc_deleteCells(dlg.getSettings());
-                                    Common.NotificationCenter.trigger('edit:complete', self);
-                                    Common.component.Analytics.trackEvent('DocumentHolder', 'Delete Cells');
+                        if (!self.getApplication().getController('Main').isModalShowed) {
+                            (new SSE.Views.InsertCellDialog({
+                                title: '删除',
+                                props: 'delete',
+                                handler: function (dlg, result) {
+                                    if (result=='ok') {
+                                        self.api.asc_deleteCells(dlg.getSettings());
+                                        Common.NotificationCenter.trigger('edit:complete', self);
+                                        Common.component.Analytics.trackEvent('DocumentHolder', 'Delete Cells');
+                                    }
                                 }
-                            }
-                        })).show();
+                            })).show();
+                        }
                         event.preventDefault();
                         event.stopPropagation();
                         return false;

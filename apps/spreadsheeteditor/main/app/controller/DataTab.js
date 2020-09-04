@@ -128,16 +128,19 @@ define([
             } else {
                 var val = me.api.asc_checkAddGroup(true);
                 if (val===null) {
-                    (new SSE.Views.GroupDialog({
-                        title: me.view.capBtnUngroup,
-                        props: 'rows',
-                        handler: function (dlg, result) {
-                            if (result=='ok') {
-                                me.api.asc_ungroup(dlg.getSettings());
+                    // modify by yuanzhy@20200904
+                    if (!me.getApplication().getController('Main').isModalShowed) {
+                        (new SSE.Views.GroupDialog({
+                            title: me.view.capBtnUngroup,
+                            props: 'rows',
+                            handler: function (dlg, result) {
+                                if (result=='ok') {
+                                    me.api.asc_ungroup(dlg.getSettings());
+                                }
+                                Common.NotificationCenter.trigger('edit:complete', me.toolbar);
                             }
-                            Common.NotificationCenter.trigger('edit:complete', me.toolbar);
-                        }
-                    })).show();
+                        })).show();
+                    }
                 } else if (val!==undefined) //undefined - error, true - rows, false - columns
                     me.api.asc_ungroup(val);
             }
@@ -157,16 +160,19 @@ define([
                 var me = this,
                     val = me.api.asc_checkAddGroup();
                 if (val===null) {
-                    (new SSE.Views.GroupDialog({
-                        title: me.view.capBtnGroup,
-                        props: 'rows',
-                        handler: function (dlg, result) {
-                            if (result=='ok') {
-                                me.api.asc_group(dlg.getSettings());
+                    // modify by yuanzhy@20200904
+                    if (!me.getApplication().getController('Main').isModalShowed) {
+                        (new SSE.Views.GroupDialog({
+                            title: me.view.capBtnGroup,
+                            props: 'rows',
+                            handler: function (dlg, result) {
+                                if (result=='ok') {
+                                    me.api.asc_group(dlg.getSettings());
+                                }
+                                Common.NotificationCenter.trigger('edit:complete', me.toolbar);
                             }
-                            Common.NotificationCenter.trigger('edit:complete', me.toolbar);
-                        }
-                    })).show();
+                        })).show();
+                    }
                 } else if (val!==undefined) //undefined - error, true - rows, false - columns
                     me.api.asc_group(val);
             }

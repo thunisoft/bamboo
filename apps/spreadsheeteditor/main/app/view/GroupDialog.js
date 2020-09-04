@@ -87,13 +87,25 @@ define([
 
             var $window = this.getChild();
             $window.find('.dlg-btn').on('click', _.bind(this.onBtnClick, this));
+
+            // add by yuanzhy@20200904
+            var self = this;
+            this.onkeydown = function (e) {
+                if (e.keyCode === Common.UI.Keys.UP || e.keyCode === Common.UI.Keys.DOWN) {
+                    var radioChecked = self.radioRows.getValue();
+                    self.radioRows.setValue(!radioChecked);
+                    self.radioColumns.setValue(radioChecked);
+                }
+            }
+            $(document).on('keydown',       this.onkeydown);
         },
 
         _handleInput: function(state) {
             if (this.options.handler) {
                 this.options.handler.call(this, this, state);
             }
-
+            // add by yuanzhy@20200904
+            $(document).off('keydown',       this.onkeydown);
             this.close();
         },
 
