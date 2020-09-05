@@ -209,7 +209,8 @@
             return itemIndex;
         }
     }
-
+    var _callbackMap = {};
+    var _callbackIndex = 0;
     var _apiInit = function (placeholderId, config) {
         config.events = config.events || {}
         var self = this;
@@ -221,6 +222,14 @@
                 self.frameDocument = self.frame.contentDocument;
             } catch(e) {}
             onAppReady && onAppReady();
+        }
+        config.events.onCallbackEntrypoint = function(event) {
+            var data = event.data;
+            var callback = _callbackMap[data.callbackName];
+            if (callback) {
+                callback(data.result);
+                delete _callbackMap[data.callbackName];
+            }
         }
         _awaitDocsAPI(function() {
             var docEditor = new window.DocsAPI.DocEditor(placeholderId, config);
@@ -236,7 +245,8 @@
 
     BambooAPI.create = function(placeholderId, config) {
         var basePath = _getBasePath() // api所在path
-        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(window.location.hostname + ':' + window.location.port) === 0
+        var topBasePath = window.location.port ? (window.location.hostname + ':' + window.location.port + '/') : window.location.hostname + '/';
+        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(topBasePath) === 0
         return sameOrigin ? new SameOriginBambooAPI(placeholderId, config) : new CrossOriginBambooAPI(placeholderId, config);
     }
 
@@ -300,7 +310,14 @@
                             callObject.parameters.push(callArg);
                         }
                     }
-                    this.invoke(callObject);
+                    // 如果额外传递了一个参数, 并且是函数, 则作为callback
+                    var callback = arguments[callObject.argumentsConfig.length];
+                    if (callback && Object.prototype.toString.call(callback) === '[object Function]') {
+                        var callbackName = fnName + '_callback_' + (_callbackIndex++);
+                        _callbackMap[callbackName] = callback;
+                        callObject.callbackName = callbackName;
+                    }
+                    return this.invoke(callObject);
                 }
             }
         })(key);
@@ -329,7 +346,16 @@
         if (!target || !target[callObject.methodName]) {
             throw new Error(callObject.target + ' not found');
         }
-        return target[callObject.methodName].apply(target, callObject.parameters);
+        var result = target[callObject.methodName].apply(target, callObject.parameters);
+        if (callObject.callbackName) {
+            var callback = _callbackMap[callObject.callbackName];
+            if (callback) {
+                callback(result);
+                delete _callbackMap[callObject.callbackName];
+                return;
+            }
+        }
+        return result;
     }
 
     SameOriginBambooAPI.prototype.trigger = function(callObject) {
@@ -407,7 +433,7 @@
     CrossOriginBambooAPI.prototype = new BambooAPI();
     CrossOriginBambooAPI.constructor = CrossOriginBambooAPI;
 
-    CrossOriginBambooAPI.prototype.trigger = function(callObject) {
+    CrossOriginBambooAPI.prototype.invoke = function(callObject) {
         var message = {
             source: 'bamboo',
             data: callObject
@@ -415,6 +441,6 @@
         // 为了兼容旧版IE, 先序列化为字符串吧
         this.frameWindow.postMessage(JSON.stringify(message), '*');
     }
+    CrossOriginBambooAPI.prototype.trigger = CrossOriginBambooAPI.prototype.invoke;
 
-    CrossOriginBambooAPI.prototype.invoke = CrossOriginBambooAPI.prototype.trigger
 })(window, document);

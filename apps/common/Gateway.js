@@ -270,7 +270,16 @@ if (Common === undefined) {
             if (cmd) {
                 // modify by yuanzhy@20200723 --begin
                 if (cmd.source === 'bamboo') {
-                    _invokeBamboo(cmd.data);
+                    var result = _invokeBamboo(cmd.data);
+                    if (cmd.data.callbackName) {
+                        _postMessage({
+                            event: 'onCallbackEntrypoint',
+                            data: {
+                                callbackName: cmd.data.callbackName,
+                                result: result
+                            }
+                        });
+                    }
                 } else {
                     //
                     handler = commandMap[cmd.command];
