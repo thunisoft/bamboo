@@ -244,9 +244,9 @@
     function BambooAPI() {}
 
     BambooAPI.create = function(placeholderId, config) {
-        var basePath = _getBasePath() // api所在path
-        var topBasePath = window.location.port ? (window.location.hostname + ':' + window.location.port + '/') : window.location.hostname + '/';
-        var sameOrigin = basePath.substring(basePath.indexOf('://')+3).indexOf(topBasePath) === 0
+        var apiBasePath = _getBasePath() // api所在path
+        var windowBasePath = window.location.port ? (window.location.hostname + ':' + window.location.port + '/') : window.location.hostname + '/';
+        var sameOrigin = apiBasePath.substring(apiBasePath.indexOf('://')+3).indexOf(windowBasePath) === 0
         return sameOrigin ? new SameOriginBambooAPI(placeholderId, config) : new CrossOriginBambooAPI(placeholderId, config);
     }
 
