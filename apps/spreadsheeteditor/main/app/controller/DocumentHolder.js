@@ -1487,7 +1487,7 @@ define([
                 var self = this;
                 var key = event.keyCode;
                 // modify by yuanzhy@20200903
-                var ctrlKey = !AscCommon.getAltGr(event) && (event.metaKey || event.ctrlKey);
+                var ctrlKey = event.metaKey || event.ctrlKey;
                 if (ctrlKey && !event.shiftKey && !event.altKey){
                     if (key === Common.UI.Keys.EQUALITY || (Common.Utils.isGecko && key === Common.UI.Keys.EQUALITY_FF) || (Common.Utils.isOpera && key == 43)){
                         if (!this.api.isCellEdited) {
