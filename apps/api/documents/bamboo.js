@@ -368,16 +368,15 @@
                     this.trigger(callObject);
                 } else { // method
                     callObject.parameters = callObject.parameters || [];
-                    if (callObject.argumentsConfig) {
-                        for (var i = 0; i < callObject.argumentsConfig.length; i++) {
-                            var argConfig = callObject.argumentsConfig[i];
-                            var callArg = arguments[i];
-                            if (argConfig.required && callArg === undefined) {
-                                throw new Error('Argument ' + i + 'is required, correct is ' + JSON.stringify(argConfig));
-                            }
-                            callArg = callArg === undefined ? argConfig.default : argConfig.type(callArg);
-                            callObject.parameters.push(callArg);
+                    callObject.argumentsConfig = callObject.argumentsConfig || [];
+                    for (var i = 0; i < callObject.argumentsConfig.length; i++) {
+                        var argConfig = callObject.argumentsConfig[i];
+                        var callArg = arguments[i];
+                        if (argConfig.required && callArg === undefined) {
+                            throw new Error('Argument ' + i + 'is required, correct is ' + JSON.stringify(argConfig));
                         }
+                        callArg = callArg === undefined ? argConfig.default : argConfig.type(callArg);
+                        callObject.parameters.push(callArg);
                     }
                     // 如果额外传递了一个参数, 并且是函数, 则作为callback
                     var callback = arguments[callObject.argumentsConfig.length];
