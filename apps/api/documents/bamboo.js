@@ -13,11 +13,11 @@
         target: 'DE.controllers.Viewport.api',
         methodName: 'asc_GetBookmarksManager',
     };
-    // var logicDocument = {
-    //     type: 'method',
-    //     target: 'DE.controllers.Viewport.api',
-    //     methodName: 'asc_GetLogicDocument',
-    // };
+    var logicDocument = {
+        type: 'method',
+        target: 'DE.controllers.Viewport.api',
+        methodName: 'asc_GetLogicDocument'
+    };
     // 菜单相关操作
     var map = { // default is target@eventName
         // ============================ header ============================
@@ -116,6 +116,75 @@
                 {type: String, required: true, description: '文本内容'}
             ]
         },
+        addImageUrl: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'AddImageUrl',
+            argumentsConfig: [
+                {type: String, required: true, description: '图片地址'},
+                // 图片配置，当前支持：
+                // WrappingStyle：0-6控制图片的布局样式
+                // x：图片相对于当前页的横坐标
+                // y：图片相对于当前页的纵坐标
+                {type: Object, required: true, description: '图片配置'}
+            ]
+        },
+        getCurrentPageNumber: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'controller_GetCurPage',
+            argumentsConfig: [
+                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
+            ]
+        },
+        getPageCount: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'GetPagesCount',
+            argumentsConfig: [
+                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
+            ]
+        },
+        getCursorPosition: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'controller_GetCurPosXY',
+            argumentsConfig: [
+                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
+            ]
+        },
+        gotoPage: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'goToPage',
+            argumentsConfig: [
+                {type: Number, required: true, description: '页码，0-base'}
+            ]
+        },
+        gotoHeader: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'GoToHeader',
+            argumentsConfig: [
+                {type: Number, required: true, description: '页码，0-base'}
+            ]
+        },
+        gotoFooter: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'GoToFooter',
+            argumentsConfig: [
+                {type: Number, required: true, description: '页码，0-base'}
+            ]
+        },
+        exitHeaderFooter: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'ExitHeader_Footer',
+            argumentsConfig: [
+                {type: Number, required: true, description: '页码，0-base'}
+            ]
+        }
     }
 
     var _getBasePath = function() {
