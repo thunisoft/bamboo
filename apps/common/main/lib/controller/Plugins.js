@@ -163,14 +163,12 @@ define([
             return this;
         },
 
-        // modify by yuanzhy@20200724#插件默认不显示，可通过customization.showPlugin=true控制显示
+        // modify by yuanzhy@20200909#还原回去了, 在外层判断是否显示
         setMode: function(mode) {
-            if (mode.customization.showPlugin) {
-                this.appOptions = mode;
-                this.customPluginsComplete = !this.appOptions.canBrandingExt;
-                if (this.appOptions.canBrandingExt)
-                    this.getAppCustomPlugins(this.configPlugins);
-            }
+            this.appOptions = mode;
+            this.customPluginsComplete = !this.appOptions.canBrandingExt;
+            if (this.appOptions.canBrandingExt)
+                this.getAppCustomPlugins(this.configPlugins);
             return this;
         },
 

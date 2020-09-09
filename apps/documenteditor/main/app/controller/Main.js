@@ -1012,7 +1012,10 @@ define([
                 application.getController('Common.Controllers.ExternalDiagramEditor').setApi(this.api).loadConfig({config:this.editorConfig, customization: this.editorConfig.customization});
                 application.getController('Common.Controllers.ExternalMergeEditor').setApi(this.api).loadConfig({config:this.editorConfig, customization: this.editorConfig.customization});
 
-                pluginsController.setApi(me.api);
+                // modify by yuanzhy@20200909
+                if (this.appOptions.customization.showPlugin) {
+                    pluginsController.setApi(me.api);
+                }
 
                 documentHolderController.setApi(me.api);
                 documentHolderController.createDelayedElements();
@@ -1248,7 +1251,10 @@ define([
 
                 this.appOptions.canRename && appHeader.setCanRename(true);
                 this.appOptions.canBrandingExt = params.asc_getCanBranding() && (typeof this.editorConfig.customization == 'object' || this.editorConfig.plugins);
-                this.getApplication().getController('Common.Controllers.Plugins').setMode(this.appOptions);
+                // modify by yuanzhy@20200909
+                if (this.appOptions.customization.showPlugin) {
+                    this.getApplication().getController('Common.Controllers.Plugins').setMode(this.appOptions);
+                }
 
                 if (this.appOptions.canComments)
                     Common.NotificationCenter.on('comments:cleardummy', _.bind(this.onClearDummyComment, this));
