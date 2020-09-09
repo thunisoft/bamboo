@@ -89,6 +89,27 @@
                 {type: String, required: true, description: '书签名称'}
             ]
         },
+        selectBookmark: {
+            type: 'method',
+            target: bookmarkManager,
+            methodName: 'SelectBookmark',
+            argumentsConfig: [
+                {type: String, required: true, description: '书签名称'}
+            ]
+        },
+        getAllBookmarkNames: {
+            type: 'method',
+            target: bookmarkManager,
+            methodName: 'GetAllBookmarkNames'
+        },
+        getBookmarkByName: {
+            type: 'method',
+            target: bookmarkManager,
+            methodName: 'GetBookmarkByName2',
+            argumentsConfig: [
+                {type: String, required: true, description: '书签名称'}
+            ]
+        },
         addBookmark: {
             type: 'method',
             target: bookmarkManager,
@@ -132,26 +153,17 @@
         getCurrentPageNumber: {
             type: 'method',
             target: logicDocument,
-            methodName: 'controller_GetCurPage',
-            argumentsConfig: [
-                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
-            ]
+            methodName: 'controller_GetCurPage'
         },
         getPageCount: {
             type: 'method',
             target: logicDocument,
-            methodName: 'GetPagesCount',
-            argumentsConfig: [
-                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
-            ]
+            methodName: 'GetPagesCount'
         },
         getCursorPosition: {
             type: 'method',
             target: logicDocument,
-            methodName: 'controller_GetCurPosXY',
-            argumentsConfig: [
-                // 即使没有入参，也要声明argumentsConfig，缺失该配置将导致回调不可用
-            ]
+            methodName: 'controller_GetCurPosXY'
         },
         gotoPage: {
             type: 'method',
