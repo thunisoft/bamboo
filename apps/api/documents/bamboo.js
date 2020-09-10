@@ -92,20 +92,20 @@
         selectBookmark: {
             type: 'method',
             target: bookmarkManager,
-            methodName: 'SelectBookmark',
+            methodName: 'asc_SelectBookmark',
             argumentsConfig: [
                 {type: String, required: true, description: '书签名称'}
             ]
         },
-        getAllBookmarkNames: {
+        getAllBookmarks: {
             type: 'method',
             target: bookmarkManager,
-            methodName: 'GetAllBookmarkNames'
+            methodName: 'asc_GetAllBookmarks'
         },
         getBookmarkByName: {
             type: 'method',
             target: bookmarkManager,
-            methodName: 'GetBookmarkByName2',
+            methodName: 'asc_GetBookmarkByName2',
             argumentsConfig: [
                 {type: String, required: true, description: '书签名称'}
             ]
@@ -152,18 +152,18 @@
         },
         getCurrentPageNumber: {
             type: 'method',
-            target: logicDocument,
-            methodName: 'controller_GetCurPage'
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'getCurrentPage'
         },
         getPageCount: {
             type: 'method',
-            target: logicDocument,
-            methodName: 'GetPagesCount'
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'getCountPages'
         },
         getCursorPosition: {
             type: 'method',
             target: logicDocument,
-            methodName: 'controller_GetCurPosXY'
+            methodName: 'GetCursorPosXY'
         },
         gotoPage: {
             type: 'method',
