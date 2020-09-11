@@ -134,7 +134,7 @@
             methodName: 'pluginMethod_InputText',
             // parameters: [],
             argumentsConfig: [ // sdk调用方需要传递的参数描述信息
-                {type: String, required: true, description: '文本内容'}
+                {type: String, required: true, description: '文本内容'},
             ]
         },
         addImageUrl: {
@@ -312,6 +312,9 @@
     var _isString = function(arg) {
         return Object.prototype.toString.call(arg) === '[object String]';
     }
+    var _isFunction = function(arg) {
+        return Object.prototype.toString.call(arg) === '[object Function]';
+    }
     var _getPropByPath = function(obj, path) {
         var tempObj = obj;
         path = path.replace(/\[(\w+)\]/g, '.$1');
@@ -458,18 +461,31 @@
                 } else { // method
                     callObject.parameters = callObject.parameters || [];
                     callObject.argumentsConfig = callObject.argumentsConfig || [];
+                    var callback;
                     for (var i = 0; i < callObject.argumentsConfig.length; i++) {
                         var argConfig = callObject.argumentsConfig[i];
                         var callArg = arguments[i];
-                        if (argConfig.required && callArg === undefined) {
-                            throw new Error('Argument ' + i + 'is required, correct is ' + JSON.stringify(argConfig));
+                        var isFn = _isFunction(callArg);
+                        var isUndefined = callArg === undefined;
+                        if (isFn || isUndefined) {
+                            if (argConfig.required) {
+                                throw new Error('Argument ' + i + ' is required, correct is ' + JSON.stringify(argConfig));
+                            }
+                            if (isUndefined) {
+                                callArg = argConfig.default;
+                            } else if (isFn) {
+                                // 竹简API不会支持函数类的参数, 所以遇到函数就作为结果的回调函数
+                                callback = callArg;
+                                break;
+                            }
+                        } else {
+                            callArg = argConfig.type(callArg);
                         }
-                        callArg = callArg === undefined ? argConfig.default : argConfig.type(callArg);
                         callObject.parameters.push(callArg);
                     }
                     // 如果额外传递了一个参数, 并且是函数, 则作为callback
-                    var callback = arguments[callObject.argumentsConfig.length];
-                    if (callback && Object.prototype.toString.call(callback) === '[object Function]') {
+                    callback = callback || arguments[callObject.argumentsConfig.length];
+                    if (_isFunction(callback)) {
                         var callbackName = fnName + '_callback_' + (_callbackIndex++);
                         _callbackMap[callbackName] = callback;
                         callObject.callbackName = callbackName;
