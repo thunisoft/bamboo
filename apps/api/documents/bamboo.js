@@ -196,6 +196,83 @@
             argumentsConfig: [
                 {type: Number, required: true, description: '页码，0-base'}
             ]
+        },
+        moveCursorToEndOfLine:{
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorToEndOfLine'
+        },
+        moveCursorToStartOfLine:{
+            type:'method',
+            target: logicDocument,
+            methodName:'MoveCursorToStartOfLine'
+        },
+        moveCursorUp:{
+            type: 'method',
+            target: logicDocument,
+            methodName:'MoveCursorUp'
+        },
+        moveCursorDown:{
+            type:'method',
+            target:logicDocument,
+            methodName:'MoveCursorDown'
+        },
+        moveCursorToStartPos:{
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorToStartPos'
+        },
+        moveCursorToEndPos:{
+            type: 'method',
+            target:logicDocument,
+            methodName:'MoveCursorToEndPos'
+        },
+        moveCursorToPageStart:{
+            type:'method',
+            target: logicDocument,
+            methodName:'MoveCursorToPageStart'
+        },
+        moveCursorToPageEnd:{
+            type:'method',
+            target:logicDocument,
+            methodName:'MoveCursorToPageEnd'
+        },
+        moveCursorLeft:{
+            type:'method',
+            target:logicDocument,
+            methodName:'MoveCursorLeft'
+        },
+        moveCursorRight:{
+            type:'method',
+            target:logicDocument,
+            methodName:'MoveCursorRight'
+        },
+        selectAll:{
+            type:'method',
+            target:logicDocument,
+            methodName:'SelectAll'
+        },
+        getSelectedText:{
+            type:'method',
+            target:logicDocument,
+            methodName:'GetSelectedText'
+        },
+        findTextObject:{
+            type:'method',
+            target:'DE.controllers.Viewport.api',
+            methodName:'findTextObject',
+            argumentsConfig: [
+                {type: String, required: true, description: '文本内容'},
+                {type: Boolean,required:true,description:'是否从第一个文本进行搜索'}
+            ]
+        },
+        withoutFormatePaste:{
+            type:'method',
+            target:logicDocument,
+            methodName:'withoutFormatePaste',
+            argumentsConfig: [
+                {type: String, required: true, description: '文本内容'}
+            ]
         }
     }
 
