@@ -197,79 +197,79 @@
                 {type: Number, required: true, description: '页码，0-base'}
             ]
         },
-        moveCursorToEndOfLine:{
+        moveCursorToEndOfLine: {
             type: 'method',
             target: logicDocument,
             methodName: 'MoveCursorToEndOfLine'
         },
-        moveCursorToStartOfLine:{
-            type:'method',
-            target: logicDocument,
-            methodName:'MoveCursorToStartOfLine'
-        },
-        moveCursorUp:{
+        moveCursorToStartOfLine: {
             type: 'method',
             target: logicDocument,
-            methodName:'MoveCursorUp'
+            methodName: 'MoveCursorToStartOfLine'
         },
-        moveCursorDown:{
-            type:'method',
-            target:logicDocument,
-            methodName:'MoveCursorDown'
+        moveCursorUp: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorUp'
         },
-        moveCursorToStartPos:{
+        moveCursorDown: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorDown'
+        },
+        moveCursorToStartPos: {
             type: 'method',
             target: logicDocument,
             methodName: 'MoveCursorToStartPos'
         },
-        moveCursorToEndPos:{
+        moveCursorToEndPos: {
             type: 'method',
-            target:logicDocument,
-            methodName:'MoveCursorToEndPos'
-        },
-        moveCursorToPageStart:{
-            type:'method',
             target: logicDocument,
-            methodName:'MoveCursorToPageStart'
+            methodName: 'MoveCursorToEndPos'
         },
-        moveCursorToPageEnd:{
-            type:'method',
-            target:logicDocument,
-            methodName:'MoveCursorToPageEnd'
+        moveCursorToPageStart: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorToPageStart'
         },
-        moveCursorLeft:{
-            type:'method',
-            target:logicDocument,
-            methodName:'MoveCursorLeft'
+        moveCursorToPageEnd: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorToPageEnd'
         },
-        moveCursorRight:{
-            type:'method',
-            target:logicDocument,
-            methodName:'MoveCursorRight'
+        moveCursorLeft: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorLeft'
         },
-        selectAll:{
-            type:'method',
-            target:logicDocument,
-            methodName:'SelectAll'
+        moveCursorRight: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'MoveCursorRight'
         },
-        getSelectedText:{
-            type:'method',
-            target:logicDocument,
-            methodName:'GetSelectedText'
+        selectAll: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'SelectAll'
         },
-        findTextObject:{
-            type:'method',
-            target:'DE.controllers.Viewport.api',
-            methodName:'findTextObject',
+        getSelectedText: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'GetSelectedText'
+        },
+        findTextObject: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'findTextObject',
             argumentsConfig: [
                 {type: String, required: true, description: '文本内容'},
-                {type: Boolean,required:true,description:'是否从第一个文本进行搜索'}
+                {type: Boolean, required: true, description: '是否从第一个文本进行搜索'}
             ]
         },
-        withoutFormatePaste:{
-            type:'method',
-            target:logicDocument,
-            methodName:'withoutFormatePaste',
+        withoutFormatePaste: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'withoutFormatePaste',
             argumentsConfig: [
                 {type: String, required: true, description: '文本内容'}
             ]
