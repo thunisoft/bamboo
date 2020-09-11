@@ -756,26 +756,26 @@ define([
                     (index>-1) && !menu.items[index].checked && menu.setChecked(index, true);
                 }
             };
-
-            var onSpellCheckVariantsFound = function() {
-                var selectedElements = me.api.getSelectedElements(true);
-                var props;
-                if (selectedElements && _.isArray(selectedElements)){
-                    for (var i = 0; i <selectedElements.length; i++) {
-                        if ( selectedElements[i].get_ObjectType() == Asc.c_oAscTypeSelectElement.SpellCheck) {
-                            props = selectedElements[i].get_ObjectValue();
-                            me._currentSpellObj = props;
-                            break;
-                        }
-                    }
-                }
-                if (props && props.get_Checked()===false && props.get_Variants() !== null && props.get_Variants() !== undefined) {
-                    me.addWordVariants();
-                    if (me.textMenu && me.textMenu.isVisible()) {
-                        me.textMenu.alignPosition();
-                    }
-                }
-            };
+            // modify by yuanzhy@20200910
+            // var onSpellCheckVariantsFound = function() {
+            //     var selectedElements = me.api.getSelectedElements(true);
+            //     var props;
+            //     if (selectedElements && _.isArray(selectedElements)){
+            //         for (var i = 0; i <selectedElements.length; i++) {
+            //             if ( selectedElements[i].get_ObjectType() == Asc.c_oAscTypeSelectElement.SpellCheck) {
+            //                 props = selectedElements[i].get_ObjectValue();
+            //                 me._currentSpellObj = props;
+            //                 break;
+            //             }
+            //         }
+            //     }
+            //     if (props && props.get_Checked()===false && props.get_Variants() !== null && props.get_Variants() !== undefined) {
+            //         me.addWordVariants();
+            //         if (me.textMenu && me.textMenu.isVisible()) {
+            //             me.textMenu.alignPosition();
+            //         }
+            //     }
+            // };
 
             this.addWordVariants = function(isParagraph) {
                 if (!me.textMenu || !me.textMenu.isVisible() && !me.tableMenu.isVisible()) return;
@@ -1527,7 +1527,8 @@ define([
                         this.api.asc_registerCallback('asc_onImgWrapStyleChanged',      _.bind(this.onImgWrapStyleChanged, this));
                         this.api.asc_registerCallback('asc_onDialogAddHyperlink',       onDialogAddHyperlink);
                         this.api.asc_registerCallback('asc_doubleClickOnChart',         onDoubleClickOnChart);
-                        this.api.asc_registerCallback('asc_onSpellCheckVariantsFound',  _.bind(onSpellCheckVariantsFound, this));
+                        // modify by yuanzhy@20200910
+                        // this.api.asc_registerCallback('asc_onSpellCheckVariantsFound',  _.bind(onSpellCheckVariantsFound, this));
                         this.api.asc_registerCallback('asc_onRulerDblClick',            _.bind(this.onRulerDblClick, this));
                         this.api.asc_registerCallback('asc_ChangeCropState',            _.bind(this.onChangeCropState, this));
                         this.api.asc_registerCallback('asc_onLockDocumentProps',        _.bind(this.onApiLockDocumentProps, this));

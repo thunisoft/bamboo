@@ -200,7 +200,8 @@ define([
                     this.api.asc_registerCallback('asc_onDocumentName',             _.bind(this.onDocumentName, this));
                     this.api.asc_registerCallback('asc_onPrintUrl',                 _.bind(this.onPrintUrl, this));
                     this.api.asc_registerCallback('asc_onMeta',                     _.bind(this.onMeta, this));
-                    this.api.asc_registerCallback('asc_onSpellCheckInit',           _.bind(this.loadLanguages, this));
+                    // modify by yuanzhy@20200910
+                    // this.api.asc_registerCallback('asc_onSpellCheckInit',           _.bind(this.loadLanguages, this));
 
                     Common.NotificationCenter.on('api:disconnect',                  _.bind(this.onCoAuthoringDisconnect, this));
                     Common.NotificationCenter.on('goback',                          _.bind(this.goBack, this));
@@ -927,9 +928,10 @@ define([
                 value = Common.localStorage.getItem("de-show-tableline");
                 me.api.put_ShowTableEmptyLine((value!==null) ? eval(value) : true);
 
-                value = Common.localStorage.getBool("de-settings-spellcheck", !(this.appOptions.customization && this.appOptions.customization.spellcheck===false));
-                Common.Utils.InternalSettings.set("de-settings-spellcheck", value);
-                me.api.asc_setSpellCheck(value);
+                // modify by yuanzhy@20200910
+                // value = Common.localStorage.getBool("de-settings-spellcheck", !(this.appOptions.customization && this.appOptions.customization.spellcheck===false));
+                // Common.Utils.InternalSettings.set("de-settings-spellcheck", value);
+                // me.api.asc_setSpellCheck(value);
 
                 value = Common.localStorage.getBool("de-settings-compatible", false);
                 Common.Utils.InternalSettings.set("de-settings-compatible", value);
@@ -996,11 +998,10 @@ define([
                 var toolbarController           = application.getController('Toolbar'),
                     statusbarController         = application.getController('Statusbar'),
                     documentHolderController    = application.getController('DocumentHolder'),
-                    fontsController             = application.getController('Common.Controllers.Fonts'),
+                    // fontsController             = application.getController('Common.Controllers.Fonts'),
                     rightmenuController         = application.getController('RightMenu'),
                     leftmenuController          = application.getController('LeftMenu'),
                     chatController              = application.getController('Common.Controllers.Chat'),
-                    pluginsController           = application.getController('Common.Controllers.Plugins'),
                     navigationController        = application.getController('Navigation');
 
                 leftmenuController.getView('LeftMenu').getMenu('file').loadDocument({doc:me.document});
@@ -1014,6 +1015,7 @@ define([
 
                 // modify by yuanzhy@20200909
                 if (this.appOptions.customization.showPlugin) {
+                    var pluginsController = application.getController('Common.Controllers.Plugins');
                     pluginsController.setApi(me.api);
                 }
 

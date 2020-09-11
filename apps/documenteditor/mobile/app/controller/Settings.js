@@ -231,7 +231,8 @@ define([
                 } else if ('#settings-advanced-view' == pageId) {
                     me.initPageAdvancedSettings();
                     $('#settings-spellcheck input:checkbox').attr('checked', Common.Utils.InternalSettings.get("de-mobile-spellcheck"));
-                    $('#settings-spellcheck input:checkbox').single('change',   _.bind(me.onSpellcheck, me));
+                    // modify by yuanzhy@20200910
+                    // $('#settings-spellcheck input:checkbox').single('change',   _.bind(me.onSpellcheck, me));
                     $('#settings-no-characters input:checkbox').attr('checked', (Common.localStorage.getItem("de-mobile-no-characters") == 'true') ? true : false);
                     $('#settings-no-characters input:checkbox').single('change',   _.bind(me.onNoCharacters, me));
                     $('#settings-hidden-borders input:checkbox').attr('checked', (Common.localStorage.getItem("de-mobile-hidden-borders") == 'true') ? true : false);
@@ -532,14 +533,14 @@ define([
 
                 Common.NotificationCenter.trigger('readermode:change', Common.SharedSettings.get('readerMode'));
             },
-
-            onSpellcheck: function (e) {
-                var $checkbox = $(e.currentTarget),
-                    state = $checkbox.is(':checked');
-                Common.localStorage.setItem("de-mobile-spellcheck", state ? 1 : 0);
-                Common.Utils.InternalSettings.set("de-mobile-spellcheck", state);
-                this.api && this.api.asc_setSpellCheck(state);
-            },
+            // modify by yuanzhy@20200910
+            // onSpellcheck: function (e) {
+            //     var $checkbox = $(e.currentTarget),
+            //         state = $checkbox.is(':checked');
+            //     Common.localStorage.setItem("de-mobile-spellcheck", state ? 1 : 0);
+            //     Common.Utils.InternalSettings.set("de-mobile-spellcheck", state);
+            //     this.api && this.api.asc_setSpellCheck(state);
+            // },
 
             onOrthographyCheck: function (e) {
                 this.hideModal();

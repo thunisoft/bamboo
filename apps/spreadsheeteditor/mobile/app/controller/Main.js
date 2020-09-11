@@ -733,9 +733,9 @@ define([
 
                 me.appOptions.canRequestEditRights = me.editorConfig.canRequestEditRights;
                 me.appOptions.canEdit        = me.permissions.edit !== false && // can edit
-                    (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view') && // if mode=="view" -> canRequestEditRights must be defined
-                    me.isSupportEditFeature();
-                me.appOptions.isEdit         = (me.appOptions.canLicense || me.appOptions.isEditDiagram || me.appOptions.isEditMailMerge) && me.permissions.edit !== false && me.editorConfig.mode !== 'view' && me.isSupportEditFeature();
+                    // modify by yuanzhy@20200910
+                    (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view'); // if mode=="view" -> canRequestEditRights must be defined
+                me.appOptions.isEdit         = (me.appOptions.canLicense || me.appOptions.isEditDiagram || me.appOptions.isEditMailMerge) && me.permissions.edit !== false && me.editorConfig.mode !== 'view';
 
                 // add by yuanzhy@20200715#研发excel历史功能支持
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
@@ -1490,10 +1490,6 @@ define([
                     event.preventDefault();
                     return false;
                 }
-            },
-
-            isSupportEditFeature: function() {
-                return false;
             },
 
             leavePageText: 'You have unsaved changes in this document. Click \'Stay on this Page\' to await the autosave of the document. Click \'Leave this Page\' to discard all the unsaved changes.',

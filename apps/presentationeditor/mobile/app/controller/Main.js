@@ -695,8 +695,8 @@ define([
                 me.appOptions.canRequestEditRights = me.editorConfig.canRequestEditRights;
                 me.appOptions.canEdit         = (me.permissions.edit !== false || me.permissions.review === true) && // can edit or review
                     (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view') && // if mode=="view" -> canRequestEditRights must be defined
-                    (!me.appOptions.isReviewOnly || me.appOptions.canLicense) && // if isReviewOnly==true -> canLicense must be true
-                    me.isSupportEditFeature();
+                    // modify by yuanzhy@20200910
+                    (!me.appOptions.isReviewOnly || me.appOptions.canLicense)  // if isReviewOnly==true -> canLicense must be true
                 me.appOptions.isEdit          = me.appOptions.canLicense && me.appOptions.canEdit && me.editorConfig.mode !== 'view';
                 me.appOptions.canReview       = me.appOptions.canLicense && me.appOptions.isEdit && (me.permissions.review===true);
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
@@ -1275,10 +1275,6 @@ define([
                     event.preventDefault();
                     return false;
                 }
-            },
-
-            isSupportEditFeature: function() {
-                return false;
             },
 
             // Translation

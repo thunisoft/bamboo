@@ -179,7 +179,8 @@ define([
                     this.api.asc_registerCallback('asc_onPrintUrl',                 _.bind(this.onPrintUrl, this));
                     this.api.asc_registerCallback('asc_onMeta',                     _.bind(this.onMeta, this));
                     this.api.asc_registerCallback('asc_onAdvancedOptions',          _.bind(this.onAdvancedOptions, this));
-                    this.api.asc_registerCallback('asc_onSpellCheckInit',           _.bind(this.loadLanguages, this));
+                    // modify by yuanzhy@20200910
+                    // this.api.asc_registerCallback('asc_onSpellCheckInit',           _.bind(this.loadLanguages, this));
                     Common.NotificationCenter.on('api:disconnect',                  _.bind(this.onCoAuthoringDisconnect, this));
                     Common.NotificationCenter.on('goback',                          _.bind(this.goBack, this));
                     Common.NotificationCenter.on('showmessage',                     _.bind(this.onExternalMessage, this));

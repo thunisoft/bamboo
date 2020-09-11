@@ -83,7 +83,8 @@ define([
 
         setApi: function(api) {
             this.api = api;
-            this.api.asc_registerCallback('asc_onSpellCheckVariantsFound', _.bind(this.onSpellCheckVariantsFound, this));
+            // modify by yuanzhy@20200910
+            // this.api.asc_registerCallback('asc_onSpellCheckVariantsFound', _.bind(this.onSpellCheckVariantsFound, this));
             this.api.asc_registerCallback('asc_onEditCell', _.bind(this.onApiEditCell, this));
             return this;
         },
@@ -253,33 +254,33 @@ define([
             Common.NotificationCenter.trigger('edit:complete', this, {restorefocus:true});
         },
 
-        onSpellCheckVariantsFound: function (property) {
-            this._currentSpellObj = property;
-
-            var arr = [],
-                word;
-            if (property) {
-                word = property.get_Word();
-                var variants = property.get_Variants();
-                variants && variants.forEach(function (item) {
-                    var rec = new Common.UI.DataViewModel();
-                    rec.set({
-                        value: item
-                    });
-                    arr.push(rec);
-                });
-            }
-            var disabled = this.api.isCellEdited;
-            this.panelSpellcheck.currentWord.setValue(word || '');
-            this.panelSpellcheck.suggestionList.store.reset(arr);
-            (arr.length>0) && this.panelSpellcheck.suggestionList.selectByIndex(0);
-            this.panelSpellcheck.currentWord.setDisabled(!word || disabled);
-            this.panelSpellcheck.btnChange.setDisabled(arr.length<1 || disabled);
-            this.panelSpellcheck.btnIgnore.setDisabled(!word || disabled);
-            this.panelSpellcheck.btnToDictionary.setDisabled(!word || disabled);
-            this.panelSpellcheck.lblComplete.toggleClass('hidden', !property || !!word);
-            this.panelSpellcheck.buttonNext.setDisabled(!this.panelSpellcheck.lblComplete.hasClass('hidden'));
-        },
+        // onSpellCheckVariantsFound: function (property) {
+        //     this._currentSpellObj = property;
+        //
+        //     var arr = [],
+        //         word;
+        //     if (property) {
+        //         word = property.get_Word();
+        //         var variants = property.get_Variants();
+        //         variants && variants.forEach(function (item) {
+        //             var rec = new Common.UI.DataViewModel();
+        //             rec.set({
+        //                 value: item
+        //             });
+        //             arr.push(rec);
+        //         });
+        //     }
+        //     var disabled = this.api.isCellEdited;
+        //     this.panelSpellcheck.currentWord.setValue(word || '');
+        //     this.panelSpellcheck.suggestionList.store.reset(arr);
+        //     (arr.length>0) && this.panelSpellcheck.suggestionList.selectByIndex(0);
+        //     this.panelSpellcheck.currentWord.setDisabled(!word || disabled);
+        //     this.panelSpellcheck.btnChange.setDisabled(arr.length<1 || disabled);
+        //     this.panelSpellcheck.btnIgnore.setDisabled(!word || disabled);
+        //     this.panelSpellcheck.btnToDictionary.setDisabled(!word || disabled);
+        //     this.panelSpellcheck.lblComplete.toggleClass('hidden', !property || !!word);
+        //     this.panelSpellcheck.buttonNext.setDisabled(!this.panelSpellcheck.lblComplete.hasClass('hidden'));
+        // },
 
         onApiEditCell: function(state) {
             if (state == Asc.c_oAscCellEditorState.editEnd) {

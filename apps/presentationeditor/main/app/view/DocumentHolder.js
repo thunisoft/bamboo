@@ -692,25 +692,26 @@ define([
                 }
             };
 
-            var onSpellCheckVariantsFound = function() {
-                var selectedElements = me.api.getSelectedElements(true);
-                var props;
-                if (selectedElements && _.isArray(selectedElements)){
-                    for (var i = 0; i <selectedElements.length; i++) {
-                        if ( selectedElements[i].get_ObjectType() == Asc.c_oAscTypeSelectElement.SpellCheck) {
-                            props = selectedElements[i].get_ObjectValue();
-                            me._currentSpellObj = props;
-                            break;
-                        }
-                    }
-                }
-                if (props && props.get_Checked()===false && props.get_Variants() !== null && props.get_Variants() !== undefined) {
-                    me.addWordVariants();
-                    if (me.textMenu && me.textMenu.isVisible()) {
-                        me.textMenu.alignPosition();
-                    }
-                }
-            };
+            // modify by yuanzhy@20200910
+            // var onSpellCheckVariantsFound = function() {
+            //     var selectedElements = me.api.getSelectedElements(true);
+            //     var props;
+            //     if (selectedElements && _.isArray(selectedElements)){
+            //         for (var i = 0; i <selectedElements.length; i++) {
+            //             if ( selectedElements[i].get_ObjectType() == Asc.c_oAscTypeSelectElement.SpellCheck) {
+            //                 props = selectedElements[i].get_ObjectValue();
+            //                 me._currentSpellObj = props;
+            //                 break;
+            //             }
+            //         }
+            //     }
+            //     if (props && props.get_Checked()===false && props.get_Variants() !== null && props.get_Variants() !== undefined) {
+            //         me.addWordVariants();
+            //         if (me.textMenu && me.textMenu.isVisible()) {
+            //             me.textMenu.alignPosition();
+            //         }
+            //     }
+            // };
 
             this.addWordVariants = function(isParagraph) {
                 if (!me.textMenu || !me.textMenu.isVisible() && !me.tableMenu.isVisible()) return;
@@ -1574,7 +1575,8 @@ define([
                     if (me.mode.isEdit===true) {
                         me.api.asc_registerCallback('asc_onDialogAddHyperlink', _.bind(onDialogAddHyperlink, me));
                         me.api.asc_registerCallback('asc_doubleClickOnChart', _.bind(me.editChartClick, me));
-                        me.api.asc_registerCallback('asc_onSpellCheckVariantsFound',  _.bind(onSpellCheckVariantsFound, me));
+                        // modify by yuanzhy@20200910
+                        // me.api.asc_registerCallback('asc_onSpellCheckVariantsFound',  _.bind(onSpellCheckVariantsFound, me));
                         me.api.asc_registerCallback('asc_onShowSpecialPasteOptions',  _.bind(onShowSpecialPasteOptions, me));
                         me.api.asc_registerCallback('asc_onHideSpecialPasteOptions',  _.bind(onHideSpecialPasteOptions, me));
                         me.api.asc_registerCallback('asc_ChangeCropState',            _.bind(onChangeCropState, me));

@@ -487,9 +487,10 @@ define([
                 Common.Utils.InternalSettings.set("de-settings-autosave", value);
                 this.api.asc_setAutoSaveGap(value);
 
-                value = Common.localStorage.getBool("de-settings-spellcheck", true);
-                Common.Utils.InternalSettings.set("de-settings-spellcheck", value);
-                this.api.asc_setSpellCheck(value);
+                // modify by yuanzhy@20200910
+                // value = Common.localStorage.getBool("de-settings-spellcheck", true);
+                // Common.Utils.InternalSettings.set("de-settings-spellcheck", value);
+                // this.api.asc_setSpellCheck(value);
             }
 
             this.api.put_ShowSnapLines(Common.Utils.InternalSettings.get("de-settings-showsnaplines"));
