@@ -896,8 +896,8 @@ define([
 
                 leftMenuView.getMenu('file').loadDocument({doc:me.appOptions.spreadsheet});
                 leftmenuController.setMode(me.appOptions).createDelayedElements().setApi(me.api);
-
-                 if (!me.appOptions.isEditMailMerge && !me.appOptions.isEditDiagram) {
+                // modify by yuanzhy@20200914
+                 if (!me.appOptions.isEditMailMerge && !me.appOptions.isEditDiagram && this.appOptions.customization.showPlugin) {
                     pluginsController.setApi(me.api);
                  }
 

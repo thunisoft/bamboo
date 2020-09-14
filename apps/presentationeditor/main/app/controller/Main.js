@@ -735,7 +735,10 @@ define([
                 chatController.setApi(this.api).setMode(this.appOptions);
                 application.getController('Common.Controllers.ExternalDiagramEditor').setApi(this.api).loadConfig({config:this.editorConfig, customization: this.editorConfig.customization});
 
-                pluginsController.setApi(me.api);
+                // modify by yuanzhy@20200914
+                if (this.appOptions.showPlugin) {
+                    pluginsController.setApi(me.api);
+                }
 
                 documentHolderController.setApi(me.api);
                 documentHolderController.createDelayedElements();
