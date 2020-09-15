@@ -266,12 +266,12 @@
                 {type: Boolean, required: true, description: '是否从第一个文本进行搜索'}
             ]
         },
-        withoutFormatePaste: {
+        paste: {
             type: 'method',
             target: logicDocument,
-            methodName: 'withoutFormatePaste',
+            methodName: 'paste',
             argumentsConfig: [
-                {type: String, required: true, description: '文本内容'}
+                {type: Boolean, default: false, description: '是否带格式进行粘贴'}
             ]
         }
     }
