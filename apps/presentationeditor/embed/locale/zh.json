@@ -20,7 +20,7 @@
   "PE.ApplicationController.textLoadingDocument": "载入演示",
   "PE.ApplicationController.textOf": "的",
   "PE.ApplicationController.txtClose": "关闭",
-  "PE.ApplicationController.unknownErrorText": "示知错误",
+  "PE.ApplicationController.unknownErrorText": "未知错误",
   "PE.ApplicationController.unsupportedBrowserErrorText": "你的浏览器不支持",
   "PE.ApplicationController.waitText": "请稍候...",
   "PE.ApplicationView.txtDownload": "下载",

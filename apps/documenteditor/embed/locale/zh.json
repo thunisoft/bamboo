@@ -20,7 +20,7 @@
   "DE.ApplicationController.textLoadingDocument": "文件加载中…",
   "DE.ApplicationController.textOf": "的",
   "DE.ApplicationController.txtClose": "关闭",
-  "DE.ApplicationController.unknownErrorText": "示知错误",
+  "DE.ApplicationController.unknownErrorText": "未知错误",
   "DE.ApplicationController.unsupportedBrowserErrorText": "你的浏览器不支持",
   "DE.ApplicationController.waitText": "请稍候...",
   "DE.ApplicationView.txtDownload": "下载",

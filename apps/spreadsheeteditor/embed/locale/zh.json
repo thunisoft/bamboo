@@ -20,7 +20,7 @@
   "SSE.ApplicationController.textLoadingDocument": "正在加载电子表格…",
   "SSE.ApplicationController.textOf": "的",
   "SSE.ApplicationController.txtClose": "关闭",
-  "SSE.ApplicationController.unknownErrorText": "示知错误",
+  "SSE.ApplicationController.unknownErrorText": "未知错误",
   "SSE.ApplicationController.unsupportedBrowserErrorText": "你的浏览器不支持",
   "SSE.ApplicationController.waitText": "请稍候...",
   "SSE.ApplicationView.txtDownload": "下载",

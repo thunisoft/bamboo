@@ -238,7 +238,7 @@
   "DE.Controllers.Main.txtStyle_Title": "标题",
   "DE.Controllers.Main.txtXAxis": "X轴",
   "DE.Controllers.Main.txtYAxis": "Y轴",
-  "DE.Controllers.Main.unknownErrorText": "示知错误",
+  "DE.Controllers.Main.unknownErrorText": "未知错误",
   "DE.Controllers.Main.unsupportedBrowserErrorText": "你的浏览器不支持",
   "DE.Controllers.Main.uploadImageExtMessage": "未知图像格式",
   "DE.Controllers.Main.uploadImageFileCountMessage": "没有图片上传",
