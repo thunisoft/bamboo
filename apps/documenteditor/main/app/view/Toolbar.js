@@ -828,7 +828,7 @@ define([
                             restoreHeight: true,
                             items: [
                                 {
-                                    caption: 'US Letter',
+                                    caption: '美国信纸',
                                     subtitle: '21,59cm x 27,94cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
@@ -836,7 +836,7 @@ define([
                                     value: [215.9, 279.4]
                                 },
                                 {
-                                    caption: 'US Legal',
+                                    caption: '美国法定用纸',
                                     subtitle: '21,59cm x 35,56cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
@@ -869,7 +869,7 @@ define([
                                     value: [176, 250]
                                 },
                                 {
-                                    caption: 'Envelope #10',
+                                    caption: '10号信封',
                                     subtitle: '10,48cm x 24,13cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
@@ -877,7 +877,7 @@ define([
                                     value: [104.8, 241.3]
                                 },
                                 {
-                                    caption: 'Envelope DL',
+                                    caption: '5号信封',
                                     subtitle: '11,01cm x 22,01cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
@@ -909,7 +909,7 @@ define([
                                     value: [304.8, 457.1]
                                 },
                                 {
-                                    caption: 'ROC 16K',
+                                    caption: '16开',
                                     subtitle: '19,68cm x 27,3cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
@@ -917,7 +917,7 @@ define([
                                     value: [196.8, 273]
                                 },
                                 {
-                                    caption: 'Envelope Choukei 3',
+                                    caption: '3号信封',
                                     subtitle: '11,99cm x 23,49cm',
                                     template: pageSizeTemplate,
                                     checkable: true,
