@@ -187,10 +187,6 @@ define([
                 '</tr>','<tr class="divider comments"></tr>',
                 /** coauthoring end **/
                 '<tr class="edit">',
-                    '<td class="left"><label><%= scope.txtSpellCheck %></label></td>',
-                    '<td class="right"><div id="fms-chb-spell-check"/></td>',
-                '</tr>','<tr class="divider edit"></tr>',
-                '<tr class="edit">',
                     '<td class="left"><label><%= scope.txtInput %></label></td>',
                     '<td class="right"><div id="fms-chb-input-mode"/></td>',
                 '</tr>','<tr class="divider edit"></tr>',
@@ -269,11 +265,6 @@ define([
                 labelText: this.strResolvedComment
             });
             /** coauthoring end **/
-
-            this.chSpell = new Common.UI.CheckBox({
-                el: $markup.findById('#fms-chb-spell-check'),
-                labelText: this.strSpellCheckMode
-            });
 
             this.chCompatible = new Common.UI.CheckBox({
                 el: $markup.findById('#fms-chb-compatible'),
@@ -472,7 +463,7 @@ define([
             if (this.mode.canForcesave)
                 this.chForcesave.setValue(Common.Utils.InternalSettings.get("de-settings-forcesave"));
 
-            this.chSpell.setValue(Common.Utils.InternalSettings.get("de-settings-spellcheck"));
+            // this.chSpell.setValue(Common.Utils.InternalSettings.get("de-settings-spellcheck"));
             this.chAlignGuides.setValue(Common.Utils.InternalSettings.get("de-settings-showsnaplines"));
             this.chCompatible.setValue(Common.Utils.InternalSettings.get("de-settings-compatible"));
         },
@@ -497,7 +488,7 @@ define([
             Common.localStorage.setItem("de-settings-autosave", this.chAutosave.isChecked() ? 1 : 0);
             if (this.mode.canForcesave)
                 Common.localStorage.setItem("de-settings-forcesave", this.chForcesave.isChecked() ? 1 : 0);
-            Common.localStorage.setItem("de-settings-spellcheck", this.chSpell.isChecked() ? 1 : 0);
+            // Common.localStorage.setItem("de-settings-spellcheck", this.chSpell.isChecked() ? 1 : 0);
             Common.localStorage.setItem("de-settings-compatible", this.chCompatible.isChecked() ? 1 : 0);
             Common.Utils.InternalSettings.set("de-settings-compatible", this.chCompatible.isChecked() ? 1 : 0);
             Common.Utils.InternalSettings.set("de-settings-showsnaplines", this.chAlignGuides.isChecked());

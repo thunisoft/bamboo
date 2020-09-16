@@ -171,7 +171,6 @@ define([
                 '<div id="id-settings-content" style="position: absolute; left: 200px; top: 0; right: 0; bottom: 0;" class="no-padding">',
                     '<div id="panel-settings-general" style="width:100%; height:100%;" class="no-padding main-settings-panel active"></div>',
                     '<div id="panel-settings-print" style="width:100%; height:100%;" class="no-padding main-settings-panel"></div>',
-                    '<div id="panel-settings-spellcheck" style="width:100%; height:100%;" class="no-padding main-settings-panel"></div>',
                 '</div>',
             '</div>'
         ].join('')),
@@ -201,7 +200,6 @@ define([
                 store: new Common.UI.DataViewStore([
                     {name: this.txtGeneral, panel: this.generalSettings, iconCls:'toolbar__icon btn-settings', selected: true},
                     {name: this.txtPageSettings, panel: this.printSettings, iconCls:'toolbar__icon btn-print'},
-                    {name: this.txtSpellChecking, panel: this.spellcheckSettings, iconCls:'toolbar__icon btn-ic-docspell'}
                 ]),
                 itemTemplate: _.template([
                     '<div id="<%= id %>" class="settings-item-wrap">',

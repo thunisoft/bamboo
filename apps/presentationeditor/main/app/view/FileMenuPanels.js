@@ -169,10 +169,6 @@ define([
         template: _.template([
             '<table><tbody>',
                 '<tr class="edit">',
-                    '<td class="left"><label><%= scope.txtSpellCheck %></label></td>',
-                    '<td class="right"><div id="fms-chb-spell-check"/></td>',
-                '</tr>','<tr class="divider edit"></tr>',
-                '<tr class="edit">',
                     '<td class="left"><label><%= scope.txtInput %></label></td>',
                     '<td class="right"><div id="fms-chb-input-mode"/></td>',
                 '</tr>','<tr class="divider edit"></tr>',
@@ -224,11 +220,6 @@ define([
         render: function(node) {
             var me = this;
             var $markup = $(this.template({scope: this}));
-
-            this.chSpell = new Common.UI.CheckBox({
-                el: $markup.findById('#fms-chb-spell-check'),
-                labelText: this.strSpellCheckMode
-            });
 
             this.chInputMode = new Common.UI.CheckBox({
                 el: $markup.findById('#fms-chb-input-mode'),
@@ -370,8 +361,7 @@ define([
         },
 
         updateSettings: function() {
-            this.chSpell.setValue(Common.Utils.InternalSettings.get("pe-settings-spellcheck"));
-
+            // this.chSpell.setValue(Common.Utils.InternalSettings.get("pe-settings-spellcheck"));
             this.chInputMode.setValue(Common.Utils.InternalSettings.get("pe-settings-inputmode"));
 
             var value = Common.Utils.InternalSettings.get("pe-settings-zoom");
@@ -412,7 +402,7 @@ define([
         },
 
         applySettings: function() {
-            Common.localStorage.setItem("pe-settings-spellcheck", this.chSpell.isChecked() ? 1 : 0);
+            // Common.localStorage.setItem("pe-settings-spellcheck", this.chSpell.isChecked() ? 1 : 0);
             Common.localStorage.setItem("pe-settings-inputmode", this.chInputMode.isChecked() ? 1 : 0);
             Common.localStorage.setItem("pe-settings-zoom", this.cmbZoom.getValue());
             Common.Utils.InternalSettings.set("pe-settings-zoom", Common.localStorage.getItem("pe-settings-zoom"));
