@@ -275,7 +275,7 @@
               </div>
           </div>
           <div class="group center">
-              <span><a id="header-logo" class="brand-logo" href="http://www.onlyoffice.com/" target="_blank"></a></span>
+              <span><a id="header-logo" class="brand-logo" target="_blank"></a></span>
           </div>
           <div class="group right">
               <div class="item"><button id="id-btn-close" class="control-btn close"><span aria-hidden="true">&times;</span></button></div>
