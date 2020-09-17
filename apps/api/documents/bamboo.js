@@ -271,7 +271,8 @@
             target: logicDocument,
             methodName: 'paste',
             argumentsConfig: [
-                {type: Boolean, default: false, description: '是否带格式进行粘贴'}
+                {type: Boolean, default: false, description: '是否带格式进行粘贴'},
+                {type: Object, default: false, description: '自定义颜色'}
             ]
         }
     }
