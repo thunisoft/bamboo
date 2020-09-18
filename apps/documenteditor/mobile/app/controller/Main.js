@@ -759,9 +759,9 @@ define([
                 me.appOptions.canRequestEditRights = me.editorConfig.canRequestEditRights;
                 me.appOptions.canEdit         = (me.permissions.edit !== false || me.permissions.review === true) && // can edit or review
                     (me.editorConfig.canRequestEditRights || me.editorConfig.mode !== 'view') && // if mode=="view" -> canRequestEditRights must be defined
-                    // modify by yuanzhy@20200910
-                    (!me.appOptions.isReviewOnly || me.appOptions.canLicense) // if isReviewOnly==true -> canLicense must be true
-                me.appOptions.isEdit          = me.appOptions.canLicense && me.appOptions.canEdit && me.editorConfig.mode !== 'view';
+                    (!me.appOptions.isReviewOnly || me.appOptions.canLicense) && // if isReviewOnly==true -> canLicense must be true
+                    me.isSupportEditFeature();
+                me.appOptions.isEdit          = me.appOptions.canLicense && me.appOptions.canEdit && me.editorConfig.mode !== 'view' && me.isSupportEditFeature();
                 me.appOptions.canReview       = me.appOptions.canLicense && me.appOptions.isEdit && (me.permissions.review===true);
                 me.appOptions.canUseHistory   = me.appOptions.canLicense && !me.appOptions.isLightVersion && me.editorConfig.canUseHistory && me.appOptions.canCoAuthoring && !me.appOptions.isDesktopApp;
                 me.appOptions.canHistoryClose = me.editorConfig.canHistoryClose;
@@ -1366,6 +1366,10 @@ define([
                     event.preventDefault();
                     return false;
                 }
+            },
+
+            isSupportEditFeature: function() {
+                return false;
             },
 
             leavePageText: 'You have unsaved changes in this document. Click \'Stay on this Page\' to await the autosave of the document. Click \'Leave this Page\' to discard all the unsaved changes.',

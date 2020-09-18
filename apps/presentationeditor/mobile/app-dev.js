@@ -169,7 +169,7 @@ require([
     //Store Framework7 initialized instance for easy access
     window.uiApp = new Framework7({
         // Default title for modals
-        modalTitle: 'ONLYOFFICE',
+        modalTitle: '竹简OFFICE',
 
         // If it is webapp, we can enable hash navigation:
 //        pushState: false,

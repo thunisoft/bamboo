@@ -139,7 +139,7 @@
   "PE.Controllers.Main.textCustomLoader": "请注意，根据许可条款您无权更改加载程序。<br>请联系我们的销售部门获取报价。",
   "PE.Controllers.Main.textDone": "完成",
   "PE.Controllers.Main.textLoadingDocument": "载入演示",
-  "PE.Controllers.Main.textNoLicenseTitle": "ONLYOFFICE开源版本",
+  "PE.Controllers.Main.textNoLicenseTitle": "无效的License",
   "PE.Controllers.Main.textOK": "确定",
   "PE.Controllers.Main.textPaidFeature": "付费功能",
   "PE.Controllers.Main.textPassword": "密码",

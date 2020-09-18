@@ -202,7 +202,7 @@
   "DE.Controllers.Main.textCustomLoader": "请注意，根据许可条款您无权更改加载程序。<br>请联系我们的销售部门获取报价。",
   "DE.Controllers.Main.textDone": "完成",
   "DE.Controllers.Main.textLoadingDocument": "文件加载中…",
-  "DE.Controllers.Main.textNoLicenseTitle": "ONLYOFFICE开源版本",
+  "DE.Controllers.Main.textNoLicenseTitle": "无效的License",
   "DE.Controllers.Main.textOK": "确定",
   "DE.Controllers.Main.textPaidFeature": "付费功能",
   "DE.Controllers.Main.textPassword": "密码",
