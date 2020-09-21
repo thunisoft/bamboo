@@ -41,7 +41,7 @@
         <button id="btn-zoom-down" type="button" class="btn small btn-toolbar"><i class="icon toolbar__icon btn-zoomdown"></i></button>
         <div class="cnt-zoom">
             <div class="dropdown-toggle" data-toggle="dropdown">
-                <label id="status-label-zoom" class="status-label">Zoom 100%</label>
+                <label id="status-label-zoom" class="status-label">缩放100%</label>
             </div>
         </div>
         <button id="btn-zoom-up" type="button" class="btn small btn-toolbar" style="margin-right:40px;"><i class="icon toolbar__icon btn-zoomup"></i></button>
