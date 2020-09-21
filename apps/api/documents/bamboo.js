@@ -257,13 +257,29 @@
             target: logicDocument,
             methodName: 'GetSelectedText'
         },
-        findTextObject: {
+        getTextObject: {
             type: 'method',
             target: 'DE.controllers.Viewport.api',
-            methodName: 'findTextObject',
+            methodName: 'getTextObject',
             argumentsConfig: [
                 {type: String, required: true, description: '文本内容'},
                 {type: Boolean, required: true, description: '是否从第一个文本进行搜索'}
+            ]
+        },
+        getTextExtObject: {
+            type: 'method',
+            target: logicDocument,
+            methodName: 'getTextExtObject',
+            argumentsConfig: [
+                {type: Number, required: true, description: '段落数'},
+            ]
+        },
+        findTextById: {
+            type: 'method',
+            target: 'DE.controllers.Viewport.api',
+            methodName: 'findTextById',
+            argumentsConfig: [
+                {type: Number, required: true, description: '文本ID'},
             ]
         },
         paste: {
@@ -274,6 +290,11 @@
                 {type: Boolean, default: false, description: '是否带格式进行粘贴'},
                 {type: Object, default: false, description: '自定义颜色'}
             ]
+        },
+        copy: {
+            type: 'method',
+            target: logicDocument,
+            method: 'copy',
         }
     }
 
